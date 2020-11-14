@@ -1,2 +1,2 @@
 # glfwpp
-C++ wrapper for GLFW
+C++ wrapper for GLFW 3.3

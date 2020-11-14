@@ -10,7 +10,7 @@ namespace glfw
     class Event
     {
     public:
-        using handler_type = std::function<void(Args...)>;
+        using handler_type = std::function<void(Args...)>; // TODO: use shallow wrapper for better perf
         using iterator = typename std::list<handler_type>::iterator;
 
     private:

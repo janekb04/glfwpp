@@ -1,5 +1,5 @@
 # glfwpp
-A thin modern C++17 wrapper for GLFW 3.3. To use, simply include `glfwpp.h`.
+A thin modern C++17 header only wrapper for GLFW 3.3. To use, simply include `glfwpp.h`.
 The functionality is split between files, as follows:
 * `error.h` - things related to error handling (exception types etc.). All GLFW errors are detected by the library and thrown as exceptions. The exception type matches [the respective GLFW error code](https://www.glfw.org/docs/latest/group__errors.html).
 * `glfwpp.h` - main header with, includes all other headers. Contains:

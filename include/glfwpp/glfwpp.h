@@ -79,7 +79,7 @@ namespace glfw
             glfwSetErrorCallback(_impl::errorCallback);
 
             glfwInitHint(GLFW_JOYSTICK_HAT_BUTTONS, false);
-            glfwInit();
+            glfwInit(); // TODO: check for error
 
             glfwSetMonitorCallback(_impl::monitorCallback);
             glfwSetJoystickCallback(_impl::joystickCallback);

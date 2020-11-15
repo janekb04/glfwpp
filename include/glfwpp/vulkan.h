@@ -51,6 +51,7 @@ namespace glfw::vulkan
         return glfwCreateWindowSurface(instance, window, allocator, surface);
     }
 #endif  // VK_VERSION_1_0
+    //TODO: add Vulkan hpp support
 }  // namespace glfw::vulkan
 
 #endif  //GLFWPP_VULKAN_H

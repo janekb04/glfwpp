@@ -14,6 +14,7 @@ I like C++ and OOP, so when I find a C library, I immediately look for a wrapper
 * `glfw::Event` class to allow for multiple subsribers to a single event
 * Mostly very thin wrapping matching nearly exactly the original GLFW naming which makes it both easier to port and allows to use the official GLFW documentation.
 * Performance overhead should be low, due to the thin nature of the wrapper, with an exception being the use of exceptions and the `glfw:Event` class.
+* Now compatible with [Vulkan-Hpp](https://github.com/KhronosGroup/Vulkan-Hpp)
 # Files
 
 The functionality is split between files, as follows:

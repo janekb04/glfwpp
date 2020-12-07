@@ -1,6 +1,8 @@
 #ifndef GLFWPP_GLFWPP_H
 #define GLFWPP_GLFWPP_H
 
+#include <cassert>
+
 #include <GLFW/glfw3.h>
 
 #include "error.h"
@@ -16,14 +18,24 @@ namespace glfw
     {
         void errorCallback(int errorCode, const char* what)
         {
+            // Application programmer errors. See the GLFW docs and fix the code.
+            assert(errorCode != GLFW_NOT_INITIALIZED);
+            assert(errorCode != GLFW_NO_CURRENT_CONTEXT);
+            assert(errorCode != GLFW_NO_WINDOW_CONTEXT);
+
+            // These errors should never occur
+            assert(errorCode != GLFW_NO_ERROR);
+            assert(errorCode != GLFW_INVALID_ENUM);
+            assert(errorCode != GLFW_INVALID_VALUE);
+
+            // Allocation failure must be treated separately
+            if (errorCode == GLFW_OUT_OF_MEMORY)
+            {
+                throw std::bad_alloc();
+            }
+
             switch(errorCode)
             {
-                case GLFW_NOT_INITIALIZED:
-                    throw NotInitializedError(what);
-                case GLFW_NO_CURRENT_CONTEXT:
-                    throw NoCurrentContextError(what);
-                case GLFW_OUT_OF_MEMORY:
-                    throw OutOfMemoryError(what);
                 case GLFW_API_UNAVAILABLE:
                     throw APIUnavailableError(what);
                 case GLFW_VERSION_UNAVAILABLE:
@@ -32,10 +44,9 @@ namespace glfw
                     throw PlatformError(what);
                 case GLFW_FORMAT_UNAVAILABLE:
                     throw FormatUnavailableError(what);
-                case GLFW_NO_WINDOW_CONTEXT:
-                    throw NoWindowContextError(what);
                 default:
-                    throw Error(what);
+                    // There should be no other error possible
+                    assert(false);
             }
         }
 

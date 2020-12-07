@@ -4,16 +4,15 @@
 #include <GLFW/glfw3.h>
 
 #include "error.h"
-#include "helper.h"
+#include "event.h"
 #include "joystick.h"
 #include "monitor.h"
 #include "native.h"
-#include "vulkan.h"
 #include "window.h"
 
 namespace glfw
 {
-    namespace _impl
+    namespace impl
     {
         void errorCallback(int errorCode, const char* what)
         {
@@ -49,7 +48,7 @@ namespace glfw
         {
             joystickEvent(Joystick{(decltype(Joystick::Joystick1))jid}, (JoystickEvent)eventType);
         }
-    }  // namespace _impl
+    }  // namespace impl
 
     struct InitHints
     {
@@ -76,13 +75,16 @@ namespace glfw
 
         [[nodiscard]] friend GLFWLibrary init()
         {
-            glfwSetErrorCallback(_impl::errorCallback);
+            glfwSetErrorCallback(impl::errorCallback);
 
             glfwInitHint(GLFW_JOYSTICK_HAT_BUTTONS, false);
-            glfwInit(); // TODO: check for error
+            if(!glfwInit())
+            {
+                throw glfw::Error("Could not initialize GLFW");
+            }
 
-            glfwSetMonitorCallback(_impl::monitorCallback);
-            glfwSetJoystickCallback(_impl::joystickCallback);
+            glfwSetMonitorCallback(impl::monitorCallback);
+            glfwSetJoystickCallback(impl::joystickCallback);
 
             return {};
         }
@@ -116,6 +118,68 @@ namespace glfw
     {
         return glfwGetClipboardString(nullptr);
     }
+
+    [[nodiscard]] bool extensionSupported(const char* extensionName)
+    {
+        return glfwExtensionSupported(extensionName);
+    }
+
+    using GLProc = GLFWglproc;
+    [[nodiscard]] GLProc getProcAddress(const char* procName)
+    {
+        return glfwGetProcAddress(procName);
+    }
+
+    namespace vulkan
+    {
+        [[nodiscard]] bool supported()
+        {
+            return glfwVulkanSupported();
+        }
+
+        [[nodiscard]] std::vector<const char*> getRequiredInstanceExtensions()
+        {
+            unsigned count;
+            auto pExtensionNames = glfwGetRequiredInstanceExtensions(&count);
+
+            std::vector<const char*> extensionNames;
+            extensionNames.reserve(count);
+            for(int i = 0; i < count; ++i)
+            {
+                extensionNames.push_back(pExtensionNames[i]);
+            }
+            return extensionNames;
+        }
+        using VkProc = GLFWvkproc;
+#if defined(VK_VERSION_1_0)
+        [[nodiscard]] VkProc getInstanceProcAddress(VkInstance instance, const char* procName)
+        {
+            return glfwGetInstanceProcAddress(instance, procName);
+        }
+
+        [[nodiscard]] bool getPhysicalDevicePresentationSupport(
+                VkInstance instance,
+                VkPhysicalDevice device,
+                uint32_t queueFamily)
+        {
+            return glfwGetPhysicalDevicePresentationSupport(instance, device, queueFamily);
+        }
+#endif  // VK_VERSION_1_0
+
+#ifdef VULKAN_HPP
+        [[nodiscard]] VkProc getInstanceProcAddress(const vk::Instance& instance, const char* procName)
+        {
+            return getInstanceProcAddress(static_cast<VkInstance>(instance), procName);
+        }
+        [[nodiscard]] bool getPhysicalDevicePresentationSupport(
+                const vk::Instance& instance,
+                const vk::PhysicalDevice& device,
+                uint32_t queueFamily)
+        {
+            return getPhysicalDevicePresentationSupport(static_cast<VkInstance>(instance), static_cast<VkPhysicalDevice>(device), queueFamily);
+        }
+#endif  // VULKAN_HPP
+    }  // namespace vulkan
 
     namespace timer
     {

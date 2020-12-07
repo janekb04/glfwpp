@@ -1,5 +1,5 @@
-#ifndef GLFWPP_HELPER_H
-#define GLFWPP_HELPER_H
+#ifndef GLFWPP_EVENT_H
+#define GLFWPP_EVENT_H
 
 #include <functional>
 #include <list>
@@ -34,6 +34,25 @@ namespace glfw
             }
         }
     };
+
+    void pollEvents()
+    {
+        glfwPollEvents();
+    }
+
+    void waitEvents()
+    {
+        glfwWaitEvents();
+    }
+    void waitEvents(double timeout)
+    {
+        glfwWaitEventsTimeout(timeout);
+    }
+
+    void postEmptyEvent()
+    {
+        glfwPostEmptyEvent();
+    }
 }  // namespace glfw
 
-#endif  //GLFWPP_HELPER_H
+#endif  //GLFWPP_EVENT_H

@@ -1,7 +1,7 @@
 #ifndef GLFWPP_WINDOW_H
 #define GLFWPP_WINDOW_H
 
-#include "helper.h"
+#include "event.h"
 #include "monitor.h"
 #include <GLFW/glfw3.h>
 
@@ -887,43 +887,37 @@ namespace glfw
         {
             glfwSetCursor(_handle, cursor._handle);
         }
+
+#if defined(VK_VERSION_1_0)
+        [[nodiscard]] VkResult createSurface(
+                VkInstance instance,
+                const VkAllocationCallbacks* allocator,
+                VkSurfaceKHR* surface)
+        {
+            return glfwCreateWindowSurface(instance, _handle, allocator, surface);
+        }
+#endif  // VK_VERSION_1_0
+#ifdef VULKAN_HPP
+        [[nodiscard]] vk::SurfaceKHR createSurface(
+                const vk::Instance& instance,
+                const vk::AllocationCallbacks* allocator)
+        {
+            VkSurfaceKHR surface;
+            VkResult result = createSurface(instance, allocator, &surface);
+            if (result < 0)
+            {
+                throw Error("Could not create window surface");
+            }
+            return surface;
+        }
+#endif  // VULKAN_HPP
     };
     void makeContextCurrent(const Window& window);
     [[nodiscard]] Window& getCurrentContext();
 
-    void pollEvents()
-    {
-        glfwPollEvents();
-    }
-
-    void waitEvents()
-    {
-        glfwWaitEvents();
-    }
-    void waitEvents(double timeout)
-    {
-        glfwWaitEventsTimeout(timeout);
-    }
-
-    void postEmptyEvent()
-    {
-        glfwPostEmptyEvent();
-    }
-
     void swapInterval(int interval)
     {
         glfwSwapInterval(interval);
-    }
-
-    [[nodiscard]] bool extensionSupported(const char* extensionName)
-    {
-        return glfwExtensionSupported(extensionName);
-    }
-
-    using GLProc = GLFWglproc;
-    [[nodiscard]] GLProc getProcAddress(const char* procName)
-    {
-        return glfwGetProcAddress(procName);
     }
 }  // namespace glfw
 

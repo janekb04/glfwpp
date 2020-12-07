@@ -30,3 +30,8 @@ The functionality is split between files, as follows:
 * `native.h` - [platform specific functionality](https://www.glfw.org/docs/latest/group__native.html). **Not Yet Implemented**.
 * `vulkan.h` - `glfw::vulkan` namespace for [Vulkan specific functionality](https://www.glfw.org/docs/latest/vulkan_guide.html).
 * `window.h` - `glfw::Window` class, `glfw::Cursor` class, `glfw::KeyCode` class and other functionality related to managing [windows](https://www.glfw.org/docs/latest/window_guide.html), [window contexts](https://www.glfw.org/docs/latest/context_guide.html) and [window input](https://www.glfw.org/docs/latest/input_guide.html) (clipboard and time IO in `glfwpp.h`). [Window hints](https://www.glfw.org/docs/latest/window_guide.html#window_hints) are specified using `glfw::WindowHints`.
+
+# Interoperability
+GLFWPP code and GLFW can be mixed with no issues as long as you mind these rules:
+* If GLFW is initialized with `glfw::GLFWLibrary`, you must not call `glfwTerminate` yourself and depend on it being called by the destructor of `glfw::GLFWLibrary`. You may call `glfwInit` though, but it won't have any effect. Also you should not use `glfwSetErrorCallback`, `glfwSetMonitorCallback` nor `glfwSetJoystickCallback` and instead use the appropriate `glfw::XXXXevent`s to register your handlers.
+* If GLFW is initialized with `glfwInit`, you can initialize it again with `glfw::GLFWLibrary`. All the created GLFW objects will remain in a valid and all state will be preserved except that the handlers error callback, monitor callback and joystick callback handlers will be intercepted by GLFWPP and to register your own handlers you will have to use the appropriate `glfw::XXXXevent`.

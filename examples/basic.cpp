@@ -5,6 +5,11 @@
 int main()
 {
     glfw::GLFWLibrary library = glfw::init();
+    glfw::WindowHints{
+            .clientAPI = glfw::ClientAPI::OpenGL,
+            .contextVersionMajor = 4,
+            .contextVersionMinor = 6
+    }.apply();
     glfw::Window wnd(800, 600, "GLFWPP basic example");
 
     if (!glewInit())

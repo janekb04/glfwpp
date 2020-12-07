@@ -504,10 +504,10 @@ namespace glfw
 
     public:
         Window(int width,
-               int height,
-               const char* title,
-               const Monitor* monitor = nullptr,
-               const Window* share = nullptr) :
+                int height,
+                const char* title,
+                const Monitor* monitor = nullptr,
+                const Window* share = nullptr) :
             _handle{glfwCreateWindow(
                     width,
                     height,
@@ -904,7 +904,7 @@ namespace glfw
         {
             VkSurfaceKHR surface;
             VkResult result = createSurface(instance, allocator, &surface);
-            if (result < 0)
+            if(result < 0)
             {
                 throw Error("Could not create window surface");
             }

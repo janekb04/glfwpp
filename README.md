@@ -1,5 +1,10 @@
 # glfwpp
-A thin modern C++17 header only wrapper for GLFW 3.3. To use, simply include `glfwpp.h`.
+A thin modern C++17 header only wrapper for [GLFW 3.3](https://www.glfw.org/). To use, simply include `glfwpp.h`. From [the official GLFW website](https://www.glfw.org/):
+>GLFW is an Open Source, multi-platform library for OpenGL, OpenGL ES and Vulkan development on the desktop. It provides a simple API for creating windows, contexts and >surfaces, receiving input and events.
+>GLFW is written in C and supports Windows, macOS, X11 and Wayland.
+>GLFW is licensed under the zlib/libpng license.
+
+I like C++ and OOP, so when I find a C library, I immediately look for a wrapper which offers classes with RAII instead of free `create` and `destroy` functions, identifiers wrapped in `namespace`s, methods instead of free functions, scoped `enum`s instead of macros and exceptions instead of error codes. As I didn't really find a low-level thin and header-only wrapper, so I made one myself.
 # Main features
 * Error handling using exceptions (defined in `error.h`).
 * Scoped enums for all GLFW constants
@@ -8,7 +13,7 @@ A thin modern C++17 header only wrapper for GLFW 3.3. To use, simply include `gl
 * Hints passed through stuctures (`glfw::InitHints` and `glfw::WindowHints`) instead of through functions with an enum constant.
 * `glfw::Event` class to allow for multiple subsribers to a single event
 * Mostly very thin wrapping matching nearly exactly the original GLFW naming which makes it both easier to port and allows to use the official GLFW documentation.
-
+* Performance overhead should be low, due to the thin nature of the wrapper, with an exception being the use of exceptions and the `glfw:Event` class.
 # Files
 
 The functionality is split between files, as follows:

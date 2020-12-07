@@ -14,7 +14,7 @@ I like C++ and OOP, so when I find a C library, I immediately look for a wrapper
 * `glfw::Event` class to allow for multiple subsribers to a single event
 * Mostly very thin wrapping matching nearly exactly the original GLFW naming which makes it both easier to port and allows to use the official GLFW documentation.
 * Performance overhead should be low, due to the thin nature of the wrapper, with an exception being the use of exceptions and the `glfw:Event` class.
-* Now compatible with [Vulkan-Hpp](https://github.com/KhronosGroup/Vulkan-Hpp)
+* Now also compatible with [Vulkan-Hpp](https://github.com/KhronosGroup/Vulkan-Hpp)
 # Files
 
 The functionality is split between files, as follows:
@@ -25,11 +25,11 @@ The functionality is split between files, as follows:
     * [Version management](https://www.glfw.org/docs/latest/intro_guide.html#intro_version).
     * namespace `glfw::timer` for [time input](https://www.glfw.org/docs/latest/input_guide.html#time).
     * [Clipboard input and output](https://www.glfw.org/docs/latest/input_guide.html#clipboard).
-* `helper.h` - `glfw::Event` class used for specifying all user callbacks.
+    * namespace `glfw::vulkan` for [Vulkan specific functionality](https://www.glfw.org/docs/latest/vulkan_guide.html). Compatible with both `vulkan.h` and [Vulkan-Hpp](https://github.com/KhronosGroup/Vulkan-Hpp).
+* `event.h` - `glfw::Event` class used for specifying all user callbacks as well as event management functions.
 * `joystick.h` - `glfw::Joystick` class and [functionality related to joystick input](https://www.glfw.org/docs/latest/input_guide.html#joystick)
 * `monitor.h` - `glfw::Monitor` and other functionality related to [monitor management](https://www.glfw.org/docs/latest/monitor_guide.html).
 * `native.h` - [platform specific functionality](https://www.glfw.org/docs/latest/group__native.html). **Not Yet Implemented**.
-* `vulkan.h` - `glfw::vulkan` namespace for [Vulkan specific functionality](https://www.glfw.org/docs/latest/vulkan_guide.html).
 * `window.h` - `glfw::Window` class, `glfw::Cursor` class, `glfw::KeyCode` class and other functionality related to managing [windows](https://www.glfw.org/docs/latest/window_guide.html), [window contexts](https://www.glfw.org/docs/latest/context_guide.html) and [window input](https://www.glfw.org/docs/latest/input_guide.html) (clipboard and time IO in `glfwpp.h`). [Window hints](https://www.glfw.org/docs/latest/window_guide.html#window_hints) are specified using `glfw::WindowHints`.
 
 # Interoperability

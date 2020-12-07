@@ -36,3 +36,6 @@ The functionality is split between files, as follows:
 GLFWPP code and GLFW can be mixed with no issues as long as you mind these rules:
 * If GLFW is initialized with `glfw::GLFWLibrary`, you must not call `glfwTerminate` yourself and depend on it being called by the destructor of `glfw::GLFWLibrary`. You may call `glfwInit` though, but it won't have any effect. Also you should not use `glfwSetErrorCallback`, `glfwSetMonitorCallback` nor `glfwSetJoystickCallback` and instead use the appropriate `glfw::XXXXevent`s to register your handlers.
 * If GLFW is initialized with `glfwInit`, you can initialize it again with `glfw::GLFWLibrary`. All the created GLFW objects will remain in a valid and all state will be preserved except that the handlers error callback, monitor callback and joystick callback handlers will be intercepted by GLFWPP and to register your own handlers you will have to use the appropriate `glfw::XXXXevent`.
+
+# Building
+The library is header only, so you only have to include `glfwpp.h`. No building required. To build the examples, use CMake. Just make sure that `GLFWPP_BUILD_EXAMPLES` is `ON` (it is by default).

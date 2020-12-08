@@ -523,7 +523,8 @@ namespace glfw
                     height_,
                     title_,
                     monitor_ ? monitor_->_handle : nullptr,
-                    share_ ? share_->_handle : nullptr)}
+                    share_ ? share_->_handle : nullptr)},
+            _userPtr{nullptr}
         {
             _setPointerFromHandle(_handle, this);
 

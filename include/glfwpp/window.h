@@ -404,7 +404,7 @@ namespace glfw
     {
     private:
         GLFWwindow* _handle;
-        inline static std::unordered_map<GLFWwindow*, Window*> _windows;
+        void* _userPtr;
 
     public:
         Event<int, int> posEvent;
@@ -418,41 +418,51 @@ namespace glfw
         Event<float, float> contentScaleEvent;
 
     private:
+        static Window* _getPointerFromHandle(GLFWwindow* handle_)
+        {
+            return static_cast<Window*>(glfwGetWindowUserPointer(handle_));
+        }
+        static void _setPointerFromHandle(GLFWwindow* handle_, Window* ptr_)
+        {
+            glfwSetWindowUserPointer(handle_, ptr_);
+        }
+
+    private:
         static void _posCallback(GLFWwindow* window_, int xPos_, int yPos_)
         {
-            _windows[window_]->posEvent(xPos_, yPos_);
+            _getPointerFromHandle(window_)->posEvent(xPos_, yPos_);
         }
         static void _sizeCallback(GLFWwindow* window_, int width_, int height_)
         {
-            _windows[window_]->sizeEvent(width_, height_);
+            _getPointerFromHandle(window_)->sizeEvent(width_, height_);
         }
         static void _closeCallback(GLFWwindow* window_)
         {
-            _windows[window_]->closeEvent();
+            _getPointerFromHandle(window_)->closeEvent();
         }
         static void _refreshCallback(GLFWwindow* window_)
         {
-            _windows[window_]->refreshEvent();
+            _getPointerFromHandle(window_)->refreshEvent();
         }
         static void _focusCallback(GLFWwindow* window_, int value_)
         {
-            _windows[window_]->focusEvent(value_);
+            _getPointerFromHandle(window_)->focusEvent(value_);
         }
         static void _iconifyCallback(GLFWwindow* window_, int value_)
         {
-            _windows[window_]->iconifyEvent(value_);
+            _getPointerFromHandle(window_)->iconifyEvent(value_);
         }
         static void _maximizeCallback(GLFWwindow* window_, int value_)
         {
-            _windows[window_]->maximizeEvent(value_);
+            _getPointerFromHandle(window_)->maximizeEvent(value_);
         }
         static void _framebufferSizeCallback(GLFWwindow* window_, int width_, int height_)
         {
-            _windows[window_]->framebufferSizeEvent(width_, height_);
+            _getPointerFromHandle(window_)->framebufferSizeEvent(width_, height_);
         }
         static void _contentScaleCallback(GLFWwindow* window_, float xScale_, float yScale_)
         {
-            _windows[window_]->contentScaleEvent(xScale_, yScale_);
+            _getPointerFromHandle(window_)->contentScaleEvent(xScale_, yScale_);
         }
 
     public:
@@ -467,27 +477,27 @@ namespace glfw
     private:
         static void _keyCallback(GLFWwindow* window_, int key_, int scanCode_, int state_, int mods_)
         {
-            _windows[window_]->keyEvent(static_cast<KeyCode::EnumType>(key_), scanCode_, static_cast<KeyState>(state_), static_cast<ModifierKeyBit>(mods_));
+            _getPointerFromHandle(window_)->keyEvent(static_cast<KeyCode::EnumType>(key_), scanCode_, static_cast<KeyState>(state_), static_cast<ModifierKeyBit>(mods_));
         }
         static void _charCallback(GLFWwindow* window_, unsigned int codePoint_)
         {
-            _windows[window_]->charEvent(codePoint_);
+            _getPointerFromHandle(window_)->charEvent(codePoint_);
         }
         static void _mouseButtonCallback(GLFWwindow* window_, int button_, int state_, int mods_)
         {
-            _windows[window_]->mouseButtonEvent(static_cast<MouseButton>(button_), static_cast<MouseButtonState>(state_), static_cast<ModifierKeyBit>(mods_));
+            _getPointerFromHandle(window_)->mouseButtonEvent(static_cast<MouseButton>(button_), static_cast<MouseButtonState>(state_), static_cast<ModifierKeyBit>(mods_));
         }
         static void _cursorPosCallback(GLFWwindow* window_, double xPos_, double yPos_)
         {
-            _windows[window_]->cursorPosEvent(xPos_, yPos_);
+            _getPointerFromHandle(window_)->cursorPosEvent(xPos_, yPos_);
         }
         static void _cursorEnterCallback(GLFWwindow* window_, int value_)
         {
-            _windows[window_]->cursorEnterEvent(static_cast<bool>(value_));
+            _getPointerFromHandle(window_)->cursorEnterEvent(static_cast<bool>(value_));
         }
         static void _scrollCallback(GLFWwindow* window_, double xOffset_, double yOffset_)
         {
-            _windows[window_]->scrollEvent(xOffset_, yOffset_);
+            _getPointerFromHandle(window_)->scrollEvent(xOffset_, yOffset_);
         }
         static void _dropCallback(GLFWwindow* window_, int count_, const char** pPaths_)
         {
@@ -499,7 +509,7 @@ namespace glfw
                 paths.emplace_back(pPaths_[i]);
             }
 
-            _windows[window_]->dropEvent(paths);
+            _getPointerFromHandle(window_)->dropEvent(paths);
         }
 
     public:
@@ -515,7 +525,7 @@ namespace glfw
                     monitor_ ? monitor_->_handle : nullptr,
                     share_ ? share_->_handle : nullptr)}
         {
-            _windows[_handle] = this;
+            _setPointerFromHandle(_handle, this);
 
             glfwSetWindowPosCallback(_handle, _posCallback);
             glfwSetWindowSizeCallback(_handle, _sizeCallback);
@@ -541,7 +551,6 @@ namespace glfw
         ~Window()
         {
             glfwDestroyWindow(_handle);
-            _windows.erase(_handle);
         }
 
         [[nodiscard]] bool shouldClose() const
@@ -797,12 +806,12 @@ namespace glfw
 
         void setUserPointer(void* ptr_)
         {
-            glfwSetWindowUserPointer(_handle, ptr_);
+            _userPtr = ptr_;
         }
 
         [[nodiscard]] void* getUserPointer() const
         {
-            return glfwGetWindowUserPointer(_handle);
+            return _userPtr;
         }
 
         void swapBuffers()
@@ -817,7 +826,7 @@ namespace glfw
         }
         [[nodiscard]] friend Window& getCurrentContext()
         {
-            return *_windows[glfwGetCurrentContext()];
+            return *_getPointerFromHandle(glfwGetCurrentContext());
         }
 
     public:

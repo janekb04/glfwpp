@@ -9,11 +9,11 @@ I like C++ and OOP, so when I find a C library, I immediately look for a wrapper
 * Error handling using exceptions (defined in `error.h`).
 * Scoped enums for all GLFW constants
 * Everything wrapped in namespace `glfw`
-* RAII wrappers for windows (`glfw::Window`), cursors (`glfw::Cursor`), key codes (`glfw::KeyCode`), monitors (`glfw::Monitor`), joysticks (`glfw::Joystick`) and the entire library (`glfw::GLFWLibrary`).
+* RAII wrappers for windows (`glfw::Window`), cursors (`glfw::Cursor`), key codes (`glfw::KeyCode`), monitors (`glfw::Monitor`), joysticks (`glfw::Joystick`) and the entire library (`glfw::GlfwLibrary`).
 * Hints passed through stuctures (`glfw::InitHints` and `glfw::WindowHints`) instead of through functions with an enum constant.
 * `glfw::Event` class to allow for multiple subsribers to a single event
 * Mostly very thin wrapping matching nearly exactly the original GLFW naming which makes it both easier to port and allows to use the official GLFW documentation.
-* Performance overhead should be low, due to the thin nature of the wrapper, with an exception being the use of exceptions and the `glfw:Event` class.
+* Performance overhead should be low, due to the thin nature of the wrapper, with an exception being the use of exceptions and the `glfw::Event` class.
 * Now also compatible with [Vulkan-Hpp](https://github.com/KhronosGroup/Vulkan-Hpp)
 # Files
 
@@ -21,7 +21,7 @@ The functionality is split between files, as follows:
 * `error.h` - things related to error handling (exception types etc.). All GLFW errors are detected by the library and thrown as exceptions. The exception type matches [the respective GLFW error code](https://www.glfw.org/docs/latest/group__errors.html).
 * `glfwpp.h` - main header with, includes all other headers. Contains:
     
-    * [The `init` function](https://www.glfw.org/docs/latest/intro_guide.html#intro_init_init). [Initialization hints](https://www.glfw.org/docs/latest/intro_guide.html#init_hints) are passed with `glfw::InitHints`. The RAII wrapper `glfw::GLFWLibrary` takes care of calling [`glfwTerminate()`](https://www.glfw.org/docs/latest/intro_guide.html#intro_init_terminate).
+    * [The `init` function](https://www.glfw.org/docs/latest/intro_guide.html#intro_init_init). [Initialization hints](https://www.glfw.org/docs/latest/intro_guide.html#init_hints) are passed with `glfw::InitHints`. The RAII wrapper `glfw::GlfwLibrary` takes care of calling [`glfwTerminate()`](https://www.glfw.org/docs/latest/intro_guide.html#intro_init_terminate).
     * [Version management](https://www.glfw.org/docs/latest/intro_guide.html#intro_version).
     * namespace `glfw::timer` for [time input](https://www.glfw.org/docs/latest/input_guide.html#time).
     * [Clipboard input and output](https://www.glfw.org/docs/latest/input_guide.html#clipboard).
@@ -34,8 +34,8 @@ The functionality is split between files, as follows:
 
 # Interoperability
 GLFWPP code and GLFW can be mixed with no issues as long as you mind these rules:
-* If GLFW is initialized with `glfw::GLFWLibrary`, you must not call `glfwTerminate` yourself and depend on it being called by the destructor of `glfw::GLFWLibrary`. You may call `glfwInit` though, but it won't have any effect. Also you should not use `glfwSetErrorCallback`, `glfwSetMonitorCallback` nor `glfwSetJoystickCallback` and instead use the appropriate `glfw::XXXXevent`s to register your handlers.
-* If GLFW is initialized with `glfwInit`, you can initialize it again with `glfw::GLFWLibrary`. All the created GLFW objects will remain in a valid and all state will be preserved except that the handlers error callback, monitor callback and joystick callback handlers will be intercepted by GLFWPP and to register your own handlers you will have to use the appropriate `glfw::XXXXevent`.
+* If GLFW is initialized with `glfw::GlfwLibrary`, you must not call `glfwTerminate` yourself and depend on it being called by the destructor of `glfw::GlfwLibrary`. You may call `glfwInit` though, but it won't have any effect. Also you should not use `glfwSetErrorCallback`, `glfwSetMonitorCallback` nor `glfwSetJoystickCallback` and instead use the appropriate `glfw::XXXXevent`s to register your handlers.
+* If GLFW is initialized with `glfwInit`, you can initialize it again with `glfw::GlfwLibrary`. All the created GLFW objects will remain in a valid and all state will be preserved except that the handlers error callback, monitor callback and joystick callback handlers will be intercepted by GLFWPP and to register your own handlers you will have to use the appropriate `glfw::XXXXevent`.
 
 # Building
 The library is header only, so you only have to include `glfwpp.h`. No building required. To build the examples, use CMake. Just make sure that `GLFWPP_BUILD_EXAMPLES` is `ON` (it is by default).

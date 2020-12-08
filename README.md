@@ -1,6 +1,6 @@
 # glfwpp
 A thin modern C++17 header only wrapper for [GLFW 3.3](https://www.glfw.org/). To use, simply include `glfwpp.h`. From [the official GLFW website](https://www.glfw.org/):
->GLFW is an Open Source, multi-platform library for OpenGL, OpenGL ES and Vulkan development on the desktop. It provides a simple API for creating windows, contexts and >surfaces, receiving input and events.
+>GLFW is an Open Source, multi-platform library for OpenGl, OpenGl ES and Vulkan development on the desktop. It provides a simple API for creating windows, contexts and >surfaces, receiving input and events.
 >GLFW is written in C and supports Windows, macOS, X11 and Wayland.
 >GLFW is licensed under the zlib/libpng license.
 
@@ -9,7 +9,7 @@ I like C++ and OOP, so when I find a C library, I immediately look for a wrapper
 * Error handling using exceptions (defined in `error.h`).
 * Scoped enums for all GLFW constants
 * Everything wrapped in namespace `glfw`
-* RAII wrappers for windows (`glfw::Window`), cursors (`glfw::Cursor`), key codes (`glfw::KeyCode`), monitors (`glfw::Monitor`), joysticks (`glfw::Joystick`) and the entire library (`glfw::GLFWLibrary`).
+* RAII wrappers for windows (`glfw::Window`), cursors (`glfw::Cursor`), key codes (`glfw::KeyCode`), monitors (`glfw::Monitor`), joysticks (`glfw::Joystick`) and the entire library (`glfw::GlfwLibrary`).
 * Hints passed through stuctures (`glfw::InitHints` and `glfw::WindowHints`) instead of through functions with an enum constant.
 * `glfw::Event` class to allow for multiple subsribers to a single event
 * Mostly very thin wrapping matching nearly exactly the original GLFW naming which makes it both easier to port and allows to use the official GLFW documentation.
@@ -20,7 +20,7 @@ The functionality is split between files, as follows:
 * `error.h` - things related to error handling (exception types etc.). All GLFW errors are detected by the library and thrown as exceptions. The exception type matches [the respective GLFW error code](https://www.glfw.org/docs/latest/group__errors.html).
 * `glfwpp.h` - main header with, includes all other headers. Contains:
     
-    * [The `init` function](https://www.glfw.org/docs/latest/intro_guide.html#intro_init_init). [Initialization hints](https://www.glfw.org/docs/latest/intro_guide.html#init_hints) are passed with `glfw::InitHints`. The RAII wrapper `glfw::GLFWLibrary` takes care of calling [`glfwTerminate()`](https://www.glfw.org/docs/latest/intro_guide.html#intro_init_terminate).
+    * [The `init` function](https://www.glfw.org/docs/latest/intro_guide.html#intro_init_init). [Initialization hints](https://www.glfw.org/docs/latest/intro_guide.html#init_hints) are passed with `glfw::InitHints`. The RAII wrapper `glfw::GlfwLibrary` takes care of calling [`glfwTerminate()`](https://www.glfw.org/docs/latest/intro_guide.html#intro_init_terminate).
     * [Version management](https://www.glfw.org/docs/latest/intro_guide.html#intro_version).
     * namespace `glfw::timer` for [time input](https://www.glfw.org/docs/latest/input_guide.html#time).
     * [Clipboard input and output](https://www.glfw.org/docs/latest/input_guide.html#clipboard).

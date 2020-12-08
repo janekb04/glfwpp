@@ -15,10 +15,10 @@ void frame(glfw::Window& wnd)
 
 int main()
 {
-    glfw::GLFWLibrary library = glfw::init();
+    glfw::GlfwLibrary library = glfw::init();
 
     glfw::WindowHints{
-            .clientAPI = glfw::ClientAPI::OpenGL,
+            .clientApi = glfw::ClientApi::OpenGl,
             .contextVersionMajor = 4,
             .contextVersionMinor = 6
     }.apply();

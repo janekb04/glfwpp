@@ -10,27 +10,27 @@ namespace glfw
     class Event
     {
     public:
-        using handler_type = std::function<void(Args...)>;  // TODO: use shallow wrapper for better perf
-        using iterator = typename std::list<handler_type>::iterator;
+        using HandlerType = std::function<void(Args...)>;  // TODO: use shallow wrapper for better perf
+        using Iterator = typename std::list<HandlerType>::iterator;
 
     private:
-        std::list<handler_type> _handlers;
+        std::list<HandlerType> _handlers;
 
     public:
-        iterator operator+=(const handler_type& handler)
+        Iterator operator+=(const HandlerType& handler_)
         {
-            _handlers.push_back(handler);
+            _handlers.push_back(handler_);
             return std::prev(_handlers.end());
         }
-        void operator-=(iterator iter)
+        void operator-=(Iterator iter_)
         {
-            _handlers.erase(iter);
+            _handlers.erase(iter_);
         }
-        void operator()(Args... args) const
+        void operator()(Args... args_) const
         {
             for(auto&& handler : _handlers)
             {
-                handler(std::forward<Args>(args)...);
+                handler(std::forward<Args>(args_)...);
             }
         }
     };
@@ -44,9 +44,9 @@ namespace glfw
     {
         glfwWaitEvents();
     }
-    void waitEvents(double timeout)
+    void waitEvents(double timeout_)
     {
-        glfwWaitEventsTimeout(timeout);
+        glfwWaitEventsTimeout(timeout_);
     }
 
     void postEmptyEvent()

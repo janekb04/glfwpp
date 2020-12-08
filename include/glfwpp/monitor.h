@@ -17,8 +17,8 @@ namespace glfw
         GLFWmonitor* _handle;
 
     public:
-        explicit Monitor(GLFWmonitor* handle) :
-            _handle{handle}
+        explicit Monitor(GLFWmonitor* handle_) :
+            _handle{handle_}
         {
         }
 
@@ -75,9 +75,9 @@ namespace glfw
             return glfwGetMonitorName(_handle);
         }
 
-        void setUserPointer(void* ptr)
+        void setUserPointer(void* ptr_)
         {
-            glfwSetMonitorUserPointer(_handle, ptr);
+            glfwSetMonitorUserPointer(_handle, ptr_);
         }
 
         [[nodiscard]] void* getUserPointer() const
@@ -104,9 +104,9 @@ namespace glfw
             return *glfwGetVideoMode(_handle);
         }
 
-        void setGamma(float gamma)
+        void setGamma(float gamma_)
         {
-            glfwSetGamma(_handle, gamma);
+            glfwSetGamma(_handle, gamma_);
         }
 
         [[nodiscard]] GammaRamp getGammaRamp() const
@@ -114,9 +114,9 @@ namespace glfw
             return *glfwGetGammaRamp(_handle);
         }
 
-        void setGammaRamp(const GammaRamp& ramp)
+        void setGammaRamp(const GammaRamp& ramp_)
         {
-            glfwSetGammaRamp(_handle, &ramp);
+            glfwSetGammaRamp(_handle, &ramp_);
         }
     };
     [[nodiscard]] std::vector<Monitor> getMonitors();

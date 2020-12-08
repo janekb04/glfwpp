@@ -7,18 +7,18 @@
 
 namespace glfw
 {
-    constexpr int DontCare = GLFW_DONT_CARE;
-    enum class ClientAPI
+    constexpr int dontCare = GLFW_DONT_CARE;
+    enum class ClientApi
     {
-        OpenGL = GLFW_OPENGL_API,
-        OpenGLES = GLFW_OPENGL_ES_API,
+        OpenGl = GLFW_OPENGL_API,
+        OpenGles = GLFW_OPENGL_ES_API,
         None = GLFW_NO_API
     };
-    enum class ContextCreationAPI
+    enum class ContextCreationApi
     {
         Native = GLFW_NATIVE_CONTEXT_API,
-        EGL = GLFW_EGL_CONTEXT_API,
-        OSMesa = GLFW_OSMESA_CONTEXT_API
+        Egl = GLFW_EGL_CONTEXT_API,
+        OsMesa = GLFW_OSMESA_CONTEXT_API
     };
     enum class ContextRobustness
     {
@@ -32,7 +32,7 @@ namespace glfw
         Flush = GLFW_RELEASE_BEHAVIOR_FLUSH,
         None = GLFW_RELEASE_BEHAVIOR_NONE
     };
-    enum class OpenGLProfile
+    enum class OpenGlProfile
     {
         Any = GLFW_OPENGL_ANY_PROFILE,
         Compat = GLFW_OPENGL_COMPAT_PROFILE,
@@ -65,20 +65,20 @@ namespace glfw
 
         int auxBuffers = 0;
         int samples = 0;
-        int refreshRate = DontCare;
+        int refreshRate = dontCare;
         bool stereo = false;
         bool srgbCapable = false;
         bool doubleBuffer = true;
 
-        ClientAPI clientAPI = ClientAPI::OpenGL;
-        ContextCreationAPI contextCreationAPI = ContextCreationAPI::Native;
+        ClientApi clientApi = ClientApi::OpenGl;
+        ContextCreationApi contextCreationApi = ContextCreationApi::Native;
         int contextVersionMajor = 1;
         int contextVersionMinor = 0;
         ContextRobustness contextRobustness = ContextRobustness::NoRobustness;
         ContextReleaseBehavior contextReleaseBehavior = ContextReleaseBehavior::Any;
         bool openglForwardCompat = false;
         bool openglDebugContext = false;
-        OpenGLProfile openglProfile = OpenGLProfile::Any;
+        OpenGlProfile openglProfile = OpenGlProfile::Any;
 
         bool cocoaRetinaFramebuffer = true;
         const char* cocoaFrameName = "";
@@ -119,8 +119,8 @@ namespace glfw
             glfwWindowHint(GLFW_SRGB_CAPABLE, srgbCapable);
             glfwWindowHint(GLFW_DOUBLEBUFFER, doubleBuffer);
 
-            glfwWindowHint(GLFW_CLIENT_API, (int)clientAPI);
-            glfwWindowHint(GLFW_CONTEXT_CREATION_API, (int)contextCreationAPI);
+            glfwWindowHint(GLFW_CLIENT_API, (int)clientApi);
+            glfwWindowHint(GLFW_CONTEXT_CREATION_API, (int)contextCreationApi);
             glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, contextVersionMajor);
             glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, contextVersionMinor);
             glfwWindowHint(GLFW_CONTEXT_ROBUSTNESS, (int)contextRobustness);
@@ -150,17 +150,17 @@ namespace glfw
     private:
         GLFWcursor* _handle;
 
-        explicit Cursor(GLFWcursor* handle) :
-            _handle{handle}
+        explicit Cursor(GLFWcursor* handle_) :
+            _handle{handle_}
         {
         }
 
         friend class Window;
 
     public:
-        [[nodiscard]] static Cursor createCursor(const Image& image, int xHot, int yHot)
+        [[nodiscard]] static Cursor createCursor(const Image& image_, int xHot_, int yHot_)
         {
-            return Cursor{glfwCreateCursor(&image, xHot, yHot)};
+            return Cursor{glfwCreateCursor(&image_, xHot_, yHot_)};
         }
         [[nodiscard]] static Cursor createStandardCursorArrow()
         {
@@ -328,26 +328,26 @@ namespace glfw
         };
 
     private:
-        using enum_type = decltype(Unknown);
-        enum_type _value;
+        using EnumType = decltype(Unknown);
+        EnumType _value;
         friend class Window;
 
     public:
         KeyCode() = default;
-        constexpr KeyCode(enum_type value) :
-            _value{value}
+        constexpr KeyCode(EnumType value_) :
+            _value{value_}
         {
         }
-        operator enum_type() const
+        operator EnumType() const
         {
             return _value;
         }
         explicit operator bool() = delete;
 
     public:
-        [[nodiscard]] friend const char* getKeyName(enum_type key)
+        [[nodiscard]] friend const char* getKeyName(EnumType key_)
         {
-            return glfwGetKeyName(key, 0);
+            return glfwGetKeyName(key_, 0);
         }
 
         [[nodiscard]] const char* getName() const
@@ -359,10 +359,10 @@ namespace glfw
             return glfwGetKeyScancode(_value);
         }
     };
-    [[nodiscard]] const char* getKeyName(KeyCode::enum_type);
-    [[nodiscard]] const char* getKeyName(int scanCode)
+    [[nodiscard]] const char* getKeyName(KeyCode::EnumType);
+    [[nodiscard]] const char* getKeyName(int scanCode_)
     {
-        return glfwGetKeyName(KeyCode::Unknown, scanCode);
+        return glfwGetKeyName(KeyCode::Unknown, scanCode_);
     }
     enum class ModifierKeyBit
     {
@@ -418,41 +418,41 @@ namespace glfw
         Event<float, float> contentScaleEvent;
 
     private:
-        static void _posCallback(GLFWwindow* window, int xPos, int yPos)
+        static void _posCallback(GLFWwindow* window_, int xPos_, int yPos_)
         {
-            _windows[window]->posEvent(xPos, yPos);
+            _windows[window_]->posEvent(xPos_, yPos_);
         }
-        static void _sizeCallback(GLFWwindow* window, int width, int height)
+        static void _sizeCallback(GLFWwindow* window_, int width_, int height_)
         {
-            _windows[window]->sizeEvent(width, height);
+            _windows[window_]->sizeEvent(width_, height_);
         }
-        static void _closeCallback(GLFWwindow* window)
+        static void _closeCallback(GLFWwindow* window_)
         {
-            _windows[window]->closeEvent();
+            _windows[window_]->closeEvent();
         }
-        static void _refreshCallback(GLFWwindow* window)
+        static void _refreshCallback(GLFWwindow* window_)
         {
-            _windows[window]->refreshEvent();
+            _windows[window_]->refreshEvent();
         }
-        static void _focusCallback(GLFWwindow* window, int value)
+        static void _focusCallback(GLFWwindow* window_, int value_)
         {
-            _windows[window]->focusEvent(value);
+            _windows[window_]->focusEvent(value_);
         }
-        static void _iconifyCallback(GLFWwindow* window, int value)
+        static void _iconifyCallback(GLFWwindow* window_, int value_)
         {
-            _windows[window]->iconifyEvent(value);
+            _windows[window_]->iconifyEvent(value_);
         }
-        static void _maximizeCallback(GLFWwindow* window, int value)
+        static void _maximizeCallback(GLFWwindow* window_, int value_)
         {
-            _windows[window]->maximizeEvent(value);
+            _windows[window_]->maximizeEvent(value_);
         }
-        static void _framebufferSizeCallback(GLFWwindow* window, int width, int height)
+        static void _framebufferSizeCallback(GLFWwindow* window_, int width_, int height_)
         {
-            _windows[window]->framebufferSizeEvent(width, height);
+            _windows[window_]->framebufferSizeEvent(width_, height_);
         }
-        static void _contentScaleCallback(GLFWwindow* window, float xScale, float yScale)
+        static void _contentScaleCallback(GLFWwindow* window_, float xScale_, float yScale_)
         {
-            _windows[window]->contentScaleEvent(xScale, yScale);
+            _windows[window_]->contentScaleEvent(xScale_, yScale_);
         }
 
     public:
@@ -465,55 +465,55 @@ namespace glfw
         Event<std::vector<std::string_view>> dropEvent;
 
     private:
-        static void _keyCallback(GLFWwindow* window, int key, int scanCode, int state, int mods)
+        static void _keyCallback(GLFWwindow* window_, int key_, int scanCode_, int state_, int mods_)
         {
-            _windows[window]->keyEvent((KeyCode::enum_type)key, scanCode, (KeyState)state, (ModifierKeyBit)mods);
+            _windows[window_]->keyEvent((KeyCode::EnumType)key_, scanCode_, (KeyState)state_, (ModifierKeyBit)mods_);
         }
-        static void _charCallback(GLFWwindow* window, unsigned int codePoint)
+        static void _charCallback(GLFWwindow* window_, unsigned int codePoint_)
         {
-            _windows[window]->charEvent(codePoint);
+            _windows[window_]->charEvent(codePoint_);
         }
-        static void _mouseButtonCallback(GLFWwindow* window, int button, int state, int mods)
+        static void _mouseButtonCallback(GLFWwindow* window_, int button_, int state_, int mods_)
         {
-            _windows[window]->mouseButtonEvent((MouseButton)button, (MouseButtonState)state, (ModifierKeyBit)mods);
+            _windows[window_]->mouseButtonEvent((MouseButton)button_, (MouseButtonState)state_, (ModifierKeyBit)mods_);
         }
-        static void _cursorPosCallback(GLFWwindow* window, double xPos, double yPos)
+        static void _cursorPosCallback(GLFWwindow* window_, double xPos_, double yPos_)
         {
-            _windows[window]->cursorPosEvent(xPos, yPos);
+            _windows[window_]->cursorPosEvent(xPos_, yPos_);
         }
-        static void _cursorEnterCallback(GLFWwindow* window, int value)
+        static void _cursorEnterCallback(GLFWwindow* window_, int value_)
         {
-            _windows[window]->cursorEnterEvent((bool)value);
+            _windows[window_]->cursorEnterEvent((bool)value_);
         }
-        static void _scrollCallback(GLFWwindow* window, double xOffset, double yOffset)
+        static void _scrollCallback(GLFWwindow* window_, double xOffset_, double yOffset_)
         {
-            _windows[window]->scrollEvent(xOffset, yOffset);
+            _windows[window_]->scrollEvent(xOffset_, yOffset_);
         }
-        static void _dropCallback(GLFWwindow* window, int count, const char** pPaths)
+        static void _dropCallback(GLFWwindow* window_, int count_, const char** pPaths_)
         {
             std::vector<std::string_view> paths;
-            paths.reserve(count);
+            paths.reserve(count_);
 
-            for(int i = 0; i < count; ++i)
+            for(int i = 0; i < count_; ++i)
             {
-                paths.emplace_back(pPaths[i]);
+                paths.emplace_back(pPaths_[i]);
             }
 
-            _windows[window]->dropEvent(paths);
+            _windows[window_]->dropEvent(paths);
         }
 
     public:
-        Window(int width,
-                int height,
-                const char* title,
-                const Monitor* monitor = nullptr,
-                const Window* share = nullptr) :
+        Window(int width_,
+                int height_,
+                const char* title_,
+                const Monitor* monitor_ = nullptr,
+                const Window* share_ = nullptr) :
             _handle{glfwCreateWindow(
-                    width,
-                    height,
-                    title,
-                    monitor ? monitor->_handle : nullptr,
-                    share ? share->_handle : nullptr)}
+                    width_,
+                    height_,
+                    title_,
+                    monitor_ ? monitor_->_handle : nullptr,
+                    share_ ? share_->_handle : nullptr)}
         {
             _windows[_handle] = this;
 
@@ -549,19 +549,19 @@ namespace glfw
             return glfwWindowShouldClose(_handle);
         }
 
-        void setShouldClose(bool value)
+        void setShouldClose(bool value_)
         {
-            glfwSetWindowShouldClose(_handle, true);
+            glfwSetWindowShouldClose(_handle, value_);
         }
 
-        void setTitle(const char* title)
+        void setTitle(const char* title_)
         {
-            glfwSetWindowTitle(_handle, title);
+            glfwSetWindowTitle(_handle, title_);
         }
 
-        void setIcon(const std::vector<Image>& iconCandidates)
+        void setIcon(const std::vector<Image>& iconCandidates_)
         {
-            glfwSetWindowIcon(_handle, iconCandidates.size(), iconCandidates.data());
+            glfwSetWindowIcon(_handle, iconCandidates_.size(), iconCandidates_.data());
         }
 
         [[nodiscard]] std::tuple<int, int> getPos() const
@@ -571,9 +571,9 @@ namespace glfw
             return {xPos, yPos};
         }
 
-        void setPos(int xPos, int yPos)
+        void setPos(int xPos_, int yPos_)
         {
-            glfwSetWindowPos(_handle, xPos, yPos);
+            glfwSetWindowPos(_handle, xPos_, yPos_);
         }
 
         [[nodiscard]] std::tuple<int, int> getSize() const
@@ -583,19 +583,19 @@ namespace glfw
             return {width, height};
         }
 
-        void setSizeLimits(int minWidth, int minHeight, int maxWidth, int maxHeight)
+        void setSizeLimits(int minWidth_, int minHeight_, int maxWidth_, int maxHeight_)
         {
-            glfwSetWindowSizeLimits(_handle, minWidth, minHeight, maxWidth, maxHeight);
+            glfwSetWindowSizeLimits(_handle, minWidth_, minHeight_, maxWidth_, maxHeight_);
         }
 
-        void setAspectRation(int numerator, int denominator)
+        void setAspectRation(int numerator_, int denominator_)
         {
-            glfwSetWindowAspectRatio(_handle, numerator, denominator);
+            glfwSetWindowAspectRatio(_handle, numerator_, denominator_);
         }
 
-        void setSize(int width, int height)
+        void setSize(int width_, int height_)
         {
-            glfwSetWindowSize(_handle, width, height);
+            glfwSetWindowSize(_handle, width_, height_);
         }
 
         [[nodiscard]] std::tuple<int, int> getFramebufferSize() const
@@ -617,9 +617,9 @@ namespace glfw
             return glfwGetWindowOpacity(_handle);
         }
 
-        void setOpacity(float opacity)
+        void setOpacity(float opacity_)
         {
-            glfwSetWindowOpacity(_handle, opacity);
+            glfwSetWindowOpacity(_handle, opacity_);
         }
 
         void iconify()
@@ -662,9 +662,9 @@ namespace glfw
             return Monitor{glfwGetWindowMonitor(_handle)};
         }
 
-        void setMonitor(Monitor monitor, int xPos, int yPos, int width, int height, int refreshRate)
+        void setMonitor(Monitor monitor_, int xPos_, int yPos_, int width_, int height_, int refreshRate_)
         {
-            glfwSetWindowMonitor(_handle, monitor._handle, xPos, yPos, width, height, refreshRate);
+            glfwSetWindowMonitor(_handle, monitor_._handle, xPos_, yPos_, width_, height_, refreshRate_);
         }
 
         [[nodiscard]] bool getAttribFocused() const
@@ -722,14 +722,14 @@ namespace glfw
             return glfwGetWindowAttrib(_handle, GLFW_FOCUS_ON_SHOW);
         }
 
-        [[nodiscard]] ClientAPI getAttribClientAPI() const
+        [[nodiscard]] ClientApi getAttribClientApi() const
         {
-            return (ClientAPI)glfwGetWindowAttrib(_handle, GLFW_CLIENT_API);
+            return (ClientApi)glfwGetWindowAttrib(_handle, GLFW_CLIENT_API);
         }
 
-        [[nodiscard]] ContextCreationAPI getAttribContextCreationAPI() const
+        [[nodiscard]] ContextCreationApi getAttribContextCreationApi() const
         {
-            return (ContextCreationAPI)glfwGetWindowAttrib(_handle, GLFW_CONTEXT_CREATION_API);
+            return (ContextCreationApi)glfwGetWindowAttrib(_handle, GLFW_CONTEXT_CREATION_API);
         }
 
         [[nodiscard]] Version getAttribContextVersion() const
@@ -740,19 +740,19 @@ namespace glfw
                     glfwGetWindowAttrib(_handle, GLFW_CONTEXT_REVISION)};
         }
 
-        [[nodiscard]] bool getAttribOpenGLForwardCompat() const
+        [[nodiscard]] bool getAttribOpenGlForwardCompat() const
         {
             return glfwGetWindowAttrib(_handle, GLFW_OPENGL_FORWARD_COMPAT);
         }
 
-        [[nodiscard]] bool getAttribOpenGLDebugContext() const
+        [[nodiscard]] bool getAttribOpenGlDebugContext() const
         {
             return glfwGetWindowAttrib(_handle, GLFW_OPENGL_DEBUG_CONTEXT);
         }
 
-        [[nodiscard]] OpenGLProfile getAttribOpenGLProfile() const
+        [[nodiscard]] OpenGlProfile getAttribOpenGlProfile() const
         {
-            return (OpenGLProfile)glfwGetWindowAttrib(_handle, GLFW_OPENGL_PROFILE);
+            return (OpenGlProfile)glfwGetWindowAttrib(_handle, GLFW_OPENGL_PROFILE);
         }
 
         [[nodiscard]] ContextReleaseBehavior getAttribContextReleaseBehavior() const
@@ -770,34 +770,34 @@ namespace glfw
             return (ContextRobustness)glfwGetWindowAttrib(_handle, GLFW_CONTEXT_ROBUSTNESS);
         }
 
-        void setAttribDecorated(bool value)
+        void setAttribDecorated(bool value_)
         {
-            glfwSetWindowAttrib(_handle, GLFW_DECORATED, value);
+            glfwSetWindowAttrib(_handle, GLFW_DECORATED, value_);
         }
 
-        void setAttribResizable(bool value)
+        void setAttribResizable(bool value_)
         {
-            glfwSetWindowAttrib(_handle, GLFW_RESIZABLE, value);
+            glfwSetWindowAttrib(_handle, GLFW_RESIZABLE, value_);
         }
 
-        void setAttribFloating(bool value)
+        void setAttribFloating(bool value_)
         {
-            glfwSetWindowAttrib(_handle, GLFW_FLOATING, value);
+            glfwSetWindowAttrib(_handle, GLFW_FLOATING, value_);
         }
 
-        void setAttribAutoIconify(bool value)
+        void setAttribAutoIconify(bool value_)
         {
-            glfwSetWindowAttrib(_handle, GLFW_AUTO_ICONIFY, value);
+            glfwSetWindowAttrib(_handle, GLFW_AUTO_ICONIFY, value_);
         }
 
-        void setAttribFocusOnShow(bool value)
+        void setAttribFocusOnShow(bool value_)
         {
-            glfwSetWindowAttrib(_handle, GLFW_FOCUS_ON_SHOW, value);
+            glfwSetWindowAttrib(_handle, GLFW_FOCUS_ON_SHOW, value_);
         }
 
-        void setUserPointer(void* ptr)
+        void setUserPointer(void* ptr_)
         {
-            glfwSetWindowUserPointer(_handle, ptr);
+            glfwSetWindowUserPointer(_handle, ptr_);
         }
 
         [[nodiscard]] void* getUserPointer() const
@@ -811,9 +811,9 @@ namespace glfw
         }
 
     public:
-        friend void makeContextCurrent(const Window& window)
+        friend void makeContextCurrent(const Window& window_)
         {
-            glfwMakeContextCurrent(window._handle);
+            glfwMakeContextCurrent(window_._handle);
         }
         [[nodiscard]] friend Window& getCurrentContext()
         {
@@ -842,34 +842,34 @@ namespace glfw
             return glfwGetInputMode(_handle, GLFW_RAW_MOUSE_MOTION);
         }
 
-        void setInputModeCursor(CursorMode mode)
+        void setInputModeCursor(CursorMode mode_)
         {
-            return glfwSetInputMode(_handle, GLFW_CURSOR, (int)mode);
+            return glfwSetInputMode(_handle, GLFW_CURSOR, static_cast<int>(mode_));
         }
-        void setInputModeStickyKeys(bool value)
+        void setInputModeStickyKeys(bool value_)
         {
-            return glfwSetInputMode(_handle, GLFW_STICKY_KEYS, value);
+            return glfwSetInputMode(_handle, GLFW_STICKY_KEYS, value_);
         }
-        void setInputModeStickyMouseButtons(bool value)
+        void setInputModeStickyMouseButtons(bool value_)
         {
-            return glfwSetInputMode(_handle, GLFW_STICKY_MOUSE_BUTTONS, value);
+            return glfwSetInputMode(_handle, GLFW_STICKY_MOUSE_BUTTONS, value_);
         }
-        void setInputModeLockKeyMods(bool value)
+        void setInputModeLockKeyMods(bool value_)
         {
-            return glfwSetInputMode(_handle, GLFW_LOCK_KEY_MODS, value);
+            return glfwSetInputMode(_handle, GLFW_LOCK_KEY_MODS, value_);
         }
-        void setInputModeRawMouseMotion(bool value)
+        void setInputModeRawMouseMotion(bool value_)
         {
-            return glfwSetInputMode(_handle, GLFW_RAW_MOUSE_MOTION, value);
+            return glfwSetInputMode(_handle, GLFW_RAW_MOUSE_MOTION, value_);
         }
 
-        [[nodiscard]] bool getKey(KeyCode key) const
+        [[nodiscard]] bool getKey(KeyCode key_) const
         {
-            return glfwGetKey(_handle, key) != GLFW_RELEASE;
+            return glfwGetKey(_handle, key_) != GLFW_RELEASE;
         }
-        [[nodiscard]] bool getMouseButton(MouseButton button) const
+        [[nodiscard]] bool getMouseButton(MouseButton button_) const
         {
-            return glfwGetMouseButton(_handle, (int)button) != GLFW_RELEASE;
+            return glfwGetMouseButton(_handle, static_cast<int>(button_)) != GLFW_RELEASE;
         }
 
         [[nodiscard]] std::tuple<double, double> getCursorPos() const
@@ -878,14 +878,14 @@ namespace glfw
             glfwGetCursorPos(_handle, &xPos, &yPos);
             return {xPos, yPos};
         }
-        void setCursorPos(double xPos, double yPos)
+        void setCursorPos(double xPos_, double yPos_)
         {
-            glfwSetCursorPos(_handle, xPos, yPos);
+            glfwSetCursorPos(_handle, xPos_, yPos_);
         }
 
-        void setCursor(const Cursor& cursor)
+        void setCursor(const Cursor& cursor_)
         {
-            glfwSetCursor(_handle, cursor._handle);
+            glfwSetCursor(_handle, cursor_._handle);
         }
 
 #if defined(VK_VERSION_1_0)
@@ -912,12 +912,12 @@ namespace glfw
         }
 #endif  // VULKAN_HPP
     };
-    void makeContextCurrent(const Window& window);
+    void makeContextCurrent(const Window& window_);
     [[nodiscard]] Window& getCurrentContext();
 
-    void swapInterval(int interval)
+    void swapInterval(int interval_)
     {
-        glfwSwapInterval(interval);
+        glfwSwapInterval(interval_);
     }
 }  // namespace glfw
 

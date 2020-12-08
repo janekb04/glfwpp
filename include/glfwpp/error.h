@@ -3,7 +3,7 @@
 
 #include <stdexcept>
 
-#define GLFWPP_ERROR_CLASS(NAME, BASE)               \
+#define GLFWPP_ERROR_CLASS(NAME, BASE)                \
     class NAME : public BASE                          \
     {                                                 \
     public:                                           \

@@ -86,16 +86,16 @@ namespace glfw
         };
 
     private:
-        using enum_type = decltype(Joystick1);
-        enum_type _id;
+        using EnumType = decltype(Joystick1);
+        EnumType _id;
 
     public:
         Joystick() = default;
-        constexpr Joystick(enum_type jid) :
-            _id{jid}
+        constexpr Joystick(EnumType jid_) :
+            _id{jid_}
         {
         }
-        operator enum_type() const
+        operator EnumType() const
         {
             return _id;
         }
@@ -148,7 +148,7 @@ namespace glfw
             return glfwGetJoystickName(_id);
         }
 
-        [[nodiscard]] const char* getGUID() const
+        [[nodiscard]] const char* getGuid() const
         {
             return glfwGetJoystickGUID(_id);
         }
@@ -168,7 +168,7 @@ namespace glfw
             GLFWgamepadstate state;
             glfwGetGamepadState(_id, &state);
 
-            GamepadState result;
+            GamepadState result{};
             {
                 int i = 0;
                 for(auto&& button : result.buttons)
@@ -189,9 +189,9 @@ namespace glfw
 
     Event<Joystick, JoystickEvent> joystickEvent;
 
-    [[nodiscard]] bool updateGamepadMappings(const char* string)
+    [[nodiscard]] bool updateGamepadMappings(const char* string_)
     {
-        return glfwUpdateGamepadMappings(string);
+        return glfwUpdateGamepadMappings(string_);
     }
 }  // namespace glfw
 

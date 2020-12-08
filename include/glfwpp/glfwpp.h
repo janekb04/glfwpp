@@ -16,48 +16,48 @@ namespace glfw
 {
     namespace impl
     {
-        void errorCallback(int errorCode, const char* what)
+        void errorCallback(int errorCode_, const char* what_)
         {
             // Application programmer errors. See the GLFW docs and fix the code.
-            assert(errorCode != GLFW_NOT_INITIALIZED);
-            assert(errorCode != GLFW_NO_CURRENT_CONTEXT);
-            assert(errorCode != GLFW_NO_WINDOW_CONTEXT);
+            assert(errorCode_ != GLFW_NOT_INITIALIZED);
+            assert(errorCode_ != GLFW_NO_CURRENT_CONTEXT);
+            assert(errorCode_ != GLFW_NO_WINDOW_CONTEXT);
 
             // These errors should never occur
-            assert(errorCode != GLFW_NO_ERROR);
-            assert(errorCode != GLFW_INVALID_ENUM);
-            assert(errorCode != GLFW_INVALID_VALUE);
+            assert(errorCode_ != GLFW_NO_ERROR);
+            assert(errorCode_ != GLFW_INVALID_ENUM);
+            assert(errorCode_ != GLFW_INVALID_VALUE);
 
             // Allocation failure must be treated separately
-            if (errorCode == GLFW_OUT_OF_MEMORY)
+            if(errorCode_ == GLFW_OUT_OF_MEMORY)
             {
                 throw std::bad_alloc();
             }
 
-            switch(errorCode)
+            switch(errorCode_)
             {
                 case GLFW_API_UNAVAILABLE:
-                    throw APIUnavailableError(what);
+                    throw APIUnavailableError(what_);
                 case GLFW_VERSION_UNAVAILABLE:
-                    throw VersionUnavailableError(what);
+                    throw VersionUnavailableError(what_);
                 case GLFW_PLATFORM_ERROR:
-                    throw PlatformError(what);
+                    throw PlatformError(what_);
                 case GLFW_FORMAT_UNAVAILABLE:
-                    throw FormatUnavailableError(what);
+                    throw FormatUnavailableError(what_);
                 default:
                     // There should be no other error possible
                     assert(false);
             }
         }
 
-        void monitorCallback(GLFWmonitor* monitor, int eventType)
+        void monitorCallback(GLFWmonitor* monitor_, int eventType_)
         {
-            monitorEvent(Monitor{monitor}, MonitorEventType{eventType});
+            monitorEvent(Monitor{monitor_}, MonitorEventType{eventType_});
         }
 
-        void joystickCallback(int jid, int eventType)
+        void joystickCallback(int jid_, int eventType_)
         {
-            joystickEvent(Joystick{(decltype(Joystick::Joystick1))jid}, (JoystickEvent)eventType);
+            joystickEvent(Joystick{(decltype(Joystick::Joystick1))jid_}, (JoystickEvent)eventType_);
         }
     }  // namespace impl
 
@@ -73,18 +73,18 @@ namespace glfw
         }
     };
 
-    struct GLFWLibrary
+    struct GlfwLibrary
     {
     private:
-        GLFWLibrary() = default;
+        GlfwLibrary() = default;
 
     public:
-        ~GLFWLibrary()
+        ~GlfwLibrary()
         {
             glfwTerminate();
         }
 
-        [[nodiscard]] friend GLFWLibrary init()
+        [[nodiscard]] friend GlfwLibrary init()
         {
             glfwSetErrorCallback(impl::errorCallback);
 
@@ -101,11 +101,11 @@ namespace glfw
         }
     };
 
-    [[nodiscard]] GLFWLibrary init();
+    [[nodiscard]] GlfwLibrary init();
 
     [[nodiscard]] Version getVersion()
     {
-        Version version;
+        Version version{};
         glfwGetVersion(&version.major, &version.minor, &version.revision);
         return version;
     }
@@ -120,9 +120,9 @@ namespace glfw
         return glfwRawMouseMotionSupported();
     }
 
-    void setClipboardString(const char* content)
+    void setClipboardString(const char* content_)
     {
-        glfwSetClipboardString(nullptr, content);
+        glfwSetClipboardString(nullptr, content_);
     }
 
     [[nodiscard]] const char* getClipboardString()
@@ -130,15 +130,15 @@ namespace glfw
         return glfwGetClipboardString(nullptr);
     }
 
-    [[nodiscard]] bool extensionSupported(const char* extensionName)
+    [[nodiscard]] bool extensionSupported(const char* extensionName_)
     {
-        return glfwExtensionSupported(extensionName);
+        return glfwExtensionSupported(extensionName_);
     }
 
-    using GLProc = GLFWglproc;
-    [[nodiscard]] GLProc getProcAddress(const char* procName)
+    using GlProc = GLFWglproc;
+    [[nodiscard]] GlProc getProcAddress(const char* procName_)
     {
-        return glfwGetProcAddress(procName);
+        return glfwGetProcAddress(procName_);
     }
 
     namespace vulkan
@@ -199,9 +199,9 @@ namespace glfw
             return glfwGetTime();
         }
 
-        void setTime(double time)
+        void setTime(double time_)
         {
-            glfwSetTime(time);
+            glfwSetTime(time_);
         }
 
         [[nodiscard]] uint64_t getValue()

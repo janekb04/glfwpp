@@ -9,7 +9,6 @@
 #include "event.h"
 #include "joystick.h"
 #include "monitor.h"
-#include "native.h"
 #include "window.h"
 
 namespace glfw
@@ -141,29 +140,27 @@ namespace glfw
         return glfwGetProcAddress(procName_);
     }
 
-    namespace vulkan
+    [[nodiscard]] bool vulkanSupported()
     {
-        [[nodiscard]] bool supported()
-        {
-            return glfwVulkanSupported();
-        }
+        return glfwVulkanSupported();
+    }
 
-        [[nodiscard]] std::vector<const char*> getRequiredInstanceExtensions()
-        {
-            unsigned count;
-            auto pExtensionNames = glfwGetRequiredInstanceExtensions(&count);
+    [[nodiscard]] std::vector<const char*> getRequiredInstanceExtensions()
+    {
+        unsigned count;
+        auto pExtensionNames = glfwGetRequiredInstanceExtensions(&count);
 
-            std::vector<const char*> extensionNames;
-            extensionNames.reserve(count);
-            for(int i = 0; i < count; ++i)
-            {
-                extensionNames.push_back(pExtensionNames[i]);
-            }
-            return extensionNames;
+        std::vector<const char*> extensionNames;
+        extensionNames.reserve(count);
+        for(int i = 0; i < count; ++i)
+        {
+            extensionNames.push_back(pExtensionNames[i]);
         }
-        using VkProc = GLFWvkproc;
+        return extensionNames;
+    }
+    using VkProc = GLFWvkproc;
 #if defined(VK_VERSION_1_0)
-        [[nodiscard]] VkProc getInstanceProcAddress(VkInstance instance, const char* procName)
+    [[nodiscard]] VkProc getInstanceProcAddress(VkInstance instance, const char* procName)
         {
             return glfwGetInstanceProcAddress(instance, procName);
         }
@@ -178,7 +175,7 @@ namespace glfw
 #endif  // VK_VERSION_1_0
 
 #ifdef VULKAN_HPP
-        [[nodiscard]] VkProc getInstanceProcAddress(const vk::Instance& instance, const char* procName)
+    [[nodiscard]] VkProc getInstanceProcAddress(const vk::Instance& instance, const char* procName)
         {
             return getInstanceProcAddress(static_cast<VkInstance>(instance), procName);
         }
@@ -190,30 +187,26 @@ namespace glfw
             return getPhysicalDevicePresentationSupport(static_cast<VkInstance>(instance), static_cast<VkPhysicalDevice>(device), queueFamily);
         }
 #endif  // VULKAN_HPP
-    }  // namespace vulkan
 
-    namespace timer
+    [[nodiscard]] double getTime()
     {
-        [[nodiscard]] double getTime()
-        {
-            return glfwGetTime();
-        }
+        return glfwGetTime();
+    }
 
-        void setTime(double time_)
-        {
-            glfwSetTime(time_);
-        }
+    void setTime(double time_)
+    {
+        glfwSetTime(time_);
+    }
 
-        [[nodiscard]] uint64_t getValue()
-        {
-            return glfwGetTimerValue();
-        }
+    [[nodiscard]] uint64_t getTimerValue()
+    {
+        return glfwGetTimerValue();
+    }
 
-        [[nodiscard]] uint64_t getFrequency()
-        {
-            return glfwGetTimerFrequency();
-        }
-    }  // namespace timer
+    [[nodiscard]] uint64_t getTimerFrequency()
+    {
+        return glfwGetTimerFrequency();
+    }
 }  // namespace glfw
 
 #endif  // GLFWPP_GLFWPP_H

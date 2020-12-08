@@ -5,6 +5,8 @@ A thin modern C++17 header only wrapper for [GLFW 3.3.2](https://www.glfw.org/).
 >GLFW is licensed under the zlib/libpng license.
 
 I like C++ and OOP, so when I find a C library, I immediately look for a wrapper which offers classes with RAII instead of free `create` and `destroy` functions, identifiers wrapped in `namespace`s, methods instead of free functions, scoped `enum`s instead of macros and exceptions instead of error codes. As I didn't really find a low-level thin and header-only wrapper, so I made one myself.
+
+`glfw3native.h` is not yet implemented.
 # Main features
 * Error handling using exceptions (defined in `error.h`).
 * Scoped enums for all GLFW constants
@@ -23,13 +25,12 @@ The functionality is split between files, as follows:
     
     * [The `init` function](https://www.glfw.org/docs/latest/intro_guide.html#intro_init_init). [Initialization hints](https://www.glfw.org/docs/latest/intro_guide.html#init_hints) are passed with `glfw::InitHints`. The RAII wrapper `glfw::GlfwLibrary` takes care of calling [`glfwTerminate()`](https://www.glfw.org/docs/latest/intro_guide.html#intro_init_terminate).
     * [Version management](https://www.glfw.org/docs/latest/intro_guide.html#intro_version).
-    * namespace `glfw::timer` for [time input](https://www.glfw.org/docs/latest/input_guide.html#time).
+    * [Time input](https://www.glfw.org/docs/latest/input_guide.html#time).
     * [Clipboard input and output](https://www.glfw.org/docs/latest/input_guide.html#clipboard).
-    * namespace `glfw::vulkan` for [Vulkan specific functionality](https://www.glfw.org/docs/latest/vulkan_guide.html). Compatible with both `vulkan.h` and [Vulkan-Hpp](https://github.com/KhronosGroup/Vulkan-Hpp).
+    * [Vulkan specific functionality](https://www.glfw.org/docs/latest/vulkan_guide.html). Compatible with both `vulkan.h` and [Vulkan-Hpp](https://github.com/KhronosGroup/Vulkan-Hpp).
 * `event.h` - `glfw::Event` class used for specifying all user callbacks as well as event management functions.
 * `joystick.h` - `glfw::Joystick` class and [functionality related to joystick input](https://www.glfw.org/docs/latest/input_guide.html#joystick)
 * `monitor.h` - `glfw::Monitor` and other functionality related to [monitor management](https://www.glfw.org/docs/latest/monitor_guide.html).
-* `native.h` - [platform specific functionality](https://www.glfw.org/docs/latest/group__native.html). **Not Yet Implemented**.
 * `window.h` - `glfw::Window` class, `glfw::Cursor` class, `glfw::KeyCode` class and other functionality related to managing [windows](https://www.glfw.org/docs/latest/window_guide.html), [window contexts](https://www.glfw.org/docs/latest/context_guide.html) and [window input](https://www.glfw.org/docs/latest/input_guide.html) (clipboard and time IO in `glfwpp.h`). [Window hints](https://www.glfw.org/docs/latest/window_guide.html#window_hints) are specified using `glfw::WindowHints`.
 
 # Interoperability

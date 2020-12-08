@@ -138,7 +138,7 @@ namespace glfw
             hats.reserve(count);
             for(int i = 0; i < count; ++i)
             {
-                hats.push_back((JoystickHatStateBit)pHats[i]);
+                hats.push_back(static_cast<JoystickHatStateBit>(pHats[i]));
             }
             return hats;
         }

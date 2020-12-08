@@ -119,15 +119,15 @@ namespace glfw
             glfwWindowHint(GLFW_SRGB_CAPABLE, srgbCapable);
             glfwWindowHint(GLFW_DOUBLEBUFFER, doubleBuffer);
 
-            glfwWindowHint(GLFW_CLIENT_API, (int)clientApi);
-            glfwWindowHint(GLFW_CONTEXT_CREATION_API, (int)contextCreationApi);
+            glfwWindowHint(GLFW_CLIENT_API, static_cast<int>(clientApi));
+            glfwWindowHint(GLFW_CONTEXT_CREATION_API, static_cast<int>(contextCreationApi));
             glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, contextVersionMajor);
             glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, contextVersionMinor);
-            glfwWindowHint(GLFW_CONTEXT_ROBUSTNESS, (int)contextRobustness);
-            glfwWindowHint(GLFW_CONTEXT_RELEASE_BEHAVIOR, (int)contextReleaseBehavior);
+            glfwWindowHint(GLFW_CONTEXT_ROBUSTNESS, static_cast<int>(contextRobustness));
+            glfwWindowHint(GLFW_CONTEXT_RELEASE_BEHAVIOR, static_cast<int>(contextReleaseBehavior));
             glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, openglForwardCompat);
             glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, openglDebugContext);
-            glfwWindowHint(GLFW_OPENGL_PROFILE, (int)openglProfile);
+            glfwWindowHint(GLFW_OPENGL_PROFILE, static_cast<int>(openglProfile));
 
             glfwWindowHint(GLFW_COCOA_RETINA_FRAMEBUFFER, cocoaRetinaFramebuffer);
             glfwWindowHintString(GLFW_COCOA_FRAME_NAME, cocoaFrameName);
@@ -467,7 +467,7 @@ namespace glfw
     private:
         static void _keyCallback(GLFWwindow* window_, int key_, int scanCode_, int state_, int mods_)
         {
-            _windows[window_]->keyEvent((KeyCode::EnumType)key_, scanCode_, (KeyState)state_, (ModifierKeyBit)mods_);
+            _windows[window_]->keyEvent(static_cast<KeyCode::EnumType>(key_), scanCode_, static_cast<KeyState>(state_), static_cast<ModifierKeyBit>(mods_));
         }
         static void _charCallback(GLFWwindow* window_, unsigned int codePoint_)
         {
@@ -475,7 +475,7 @@ namespace glfw
         }
         static void _mouseButtonCallback(GLFWwindow* window_, int button_, int state_, int mods_)
         {
-            _windows[window_]->mouseButtonEvent((MouseButton)button_, (MouseButtonState)state_, (ModifierKeyBit)mods_);
+            _windows[window_]->mouseButtonEvent(static_cast<MouseButton>(button_), static_cast<MouseButtonState>(state_), static_cast<ModifierKeyBit>(mods_));
         }
         static void _cursorPosCallback(GLFWwindow* window_, double xPos_, double yPos_)
         {
@@ -483,7 +483,7 @@ namespace glfw
         }
         static void _cursorEnterCallback(GLFWwindow* window_, int value_)
         {
-            _windows[window_]->cursorEnterEvent((bool)value_);
+            _windows[window_]->cursorEnterEvent(static_cast<bool>(value_));
         }
         static void _scrollCallback(GLFWwindow* window_, double xOffset_, double yOffset_)
         {
@@ -724,12 +724,12 @@ namespace glfw
 
         [[nodiscard]] ClientApi getAttribClientApi() const
         {
-            return (ClientApi)glfwGetWindowAttrib(_handle, GLFW_CLIENT_API);
+            return static_cast<ClientApi>(glfwGetWindowAttrib(_handle, GLFW_CLIENT_API));
         }
 
         [[nodiscard]] ContextCreationApi getAttribContextCreationApi() const
         {
-            return (ContextCreationApi)glfwGetWindowAttrib(_handle, GLFW_CONTEXT_CREATION_API);
+            return static_cast<ContextCreationApi>(glfwGetWindowAttrib(_handle, GLFW_CONTEXT_CREATION_API));
         }
 
         [[nodiscard]] Version getAttribContextVersion() const
@@ -752,12 +752,12 @@ namespace glfw
 
         [[nodiscard]] OpenGlProfile getAttribOpenGlProfile() const
         {
-            return (OpenGlProfile)glfwGetWindowAttrib(_handle, GLFW_OPENGL_PROFILE);
+            return static_cast<OpenGlProfile>(glfwGetWindowAttrib(_handle, GLFW_OPENGL_PROFILE));
         }
 
         [[nodiscard]] ContextReleaseBehavior getAttribContextReleaseBehavior() const
         {
-            return (ContextReleaseBehavior)glfwGetWindowAttrib(_handle, GLFW_CONTEXT_RELEASE_BEHAVIOR);
+            return static_cast<ContextReleaseBehavior>(glfwGetWindowAttrib(_handle, GLFW_CONTEXT_RELEASE_BEHAVIOR));
         }
 
         [[nodiscard]] bool getAttribContextNoError() const
@@ -767,7 +767,7 @@ namespace glfw
 
         [[nodiscard]] ContextRobustness getAttribContextRobustness() const
         {
-            return (ContextRobustness)glfwGetWindowAttrib(_handle, GLFW_CONTEXT_ROBUSTNESS);
+            return static_cast<ContextRobustness>(glfwGetWindowAttrib(_handle, GLFW_CONTEXT_ROBUSTNESS));
         }
 
         void setAttribDecorated(bool value_)
@@ -823,7 +823,7 @@ namespace glfw
     public:
         [[nodiscard]] CursorMode getInputModeCursor() const
         {
-            return (CursorMode)glfwGetInputMode(_handle, GLFW_CURSOR);
+            return static_cast<CursorMode>(glfwGetInputMode(_handle, GLFW_CURSOR));
         }
         [[nodiscard]] bool getInputModeStickyKeys() const
         {

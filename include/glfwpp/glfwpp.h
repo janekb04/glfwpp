@@ -57,7 +57,7 @@ namespace glfw
 
         void joystickCallback(int jid_, int eventType_)
         {
-            joystickEvent(Joystick{(decltype(Joystick::Joystick1))jid_}, (JoystickEvent)eventType_);
+            joystickEvent(Joystick{static_cast<decltype(Joystick::Joystick1)>(jid_)}, static_cast<JoystickEvent>(eventType_));
         }
     }  // namespace impl
 

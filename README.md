@@ -1,5 +1,5 @@
 # glfwpp
-A thin modern C++17 header only wrapper for [GLFW 3.3](https://www.glfw.org/). To use, simply include `glfwpp.h`. From [the official GLFW website](https://www.glfw.org/):
+A thin modern C++17 header only wrapper for [GLFW 3.3.2](https://www.glfw.org/). To use, simply include `glfwpp.h`. From [the official GLFW website](https://www.glfw.org/):
 >GLFW is an Open Source, multi-platform library for OpenGL, OpenGL ES and Vulkan development on the desktop. It provides a simple API for creating windows, contexts and >surfaces, receiving input and events.
 >GLFW is written in C and supports Windows, macOS, X11 and Wayland.
 >GLFW is licensed under the zlib/libpng license.

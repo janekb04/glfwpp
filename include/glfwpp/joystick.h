@@ -153,6 +153,16 @@ namespace glfw
             return glfwGetJoystickGUID(_id);
         }
 
+        void setUserPointer(void* ptr_)
+        {
+            glfwSetJoystickUserPointer(_id, ptr_);
+        }
+
+        [[nodiscard]] void* getUserPointer() const
+        {
+            return glfwGetJoystickUserPointer(_id);
+        }
+
         [[nodiscard]] bool isGamepad() const
         {
             return glfwJoystickIsGamepad(_id);

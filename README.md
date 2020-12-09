@@ -7,6 +7,8 @@ A thin modern C++17 header only wrapper for [GLFW 3.3.2](https://www.glfw.org/).
 I like C++ and OOP, so when I find a C library, I immediately look for a wrapper which offers classes with RAII instead of free `create` and `destroy` functions, identifiers wrapped in `namespace`s, methods instead of free functions, scoped `enum`s instead of macros and exceptions instead of error codes. As I didn't really find a low-level thin and header-only wrapper, so I made one myself.
 
 `glfw3native.h` is not yet implemented.
+
+Event handling and `glfw::Event` is currently being reworked. There could be breaking changes coming.
 # Main features
 * Error handling using exceptions (defined in `error.h`).
 * Scoped enums for all GLFW constants

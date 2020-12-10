@@ -2,17 +2,6 @@
 #include <glfwpp/glfwpp.h>
 #include <cmath>
 
-void frame(glfw::Window& wnd)
-{
-    double time = glfw::timer::getTime();
-    glClearColor((sin(time) + 1.0) / 2.0, (cos(time) + 1.0) / 2.0, (-sin(time) + 1.0) / 2.0, 0.0);
-    glClear(GL_COLOR_BUFFER_BIT);
-
-    // Rendering code here
-    glfw::pollEvents();
-    wnd.swapBuffers();
-}
-
 int main()
 {
     glfw::GlfwLibrary library = glfw::init();
@@ -32,6 +21,11 @@ int main()
 
     while (!wnd.shouldClose())
     {
-        frame(wnd);
+        double time = glfw::getTime();
+        glClearColor((sin(time) + 1.0) / 2.0, (cos(time) + 1.0) / 2.0, (-sin(time) + 1.0) / 2.0, 0.0);
+        glClear(GL_COLOR_BUFFER_BIT);
+
+        glfw::pollEvents();
+        wnd.swapBuffers();
     }
 }

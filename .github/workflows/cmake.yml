@@ -15,6 +15,9 @@ jobs:
     - name: Checkout submodules
       run: git submodule update --init --recursive
 
+    - name: Install GLFW dependencies
+      run: sudo apt-get install xorg-dev
+
     - name: Create Build Environment
       run: mkdir ${{runner.workspace}}/build
 

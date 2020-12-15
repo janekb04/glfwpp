@@ -11,6 +11,9 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+    
+    - name: Checkout submodules
+      run: git submodule update --init --recursive
 
     - name: Create Build Environment
       run: mkdir ${{runner.workspace}}/build

@@ -6,12 +6,12 @@ int main()
 {
     glfw::GlfwLibrary library = glfw::init();
 
-    glfw::WindowHints{
-            .clientApi = glfw::ClientApi::OpenGl,
-            .contextVersionMajor = 4,
-            .contextVersionMinor = 6}
-            .apply();
-    glfw::Window wnd(800, 600, "GLFWPP basic example");
+    glfw::WindowHints hints;
+    hints.clientApi = glfw::ClientApi::OpenGl;
+    hints.contextVersionMajor = 4;
+    hints.contextVersionMinor = 6;
+    hints.apply();
+    glfw::Window wnd(800, 600, "GLFWPP events example");
 
     if(!glewInit())
     {

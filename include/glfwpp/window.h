@@ -373,6 +373,7 @@ namespace glfw
         CapsLock = GLFW_MOD_CAPS_LOCK,
         NumLock = GLFW_MOD_NUM_LOCK
     };
+    GLFWPP_ENUM_FLAGS_OPERATORS(ModifierKeyBit)
     enum class MouseButton
     {
         One = GLFW_MOUSE_BUTTON_1,

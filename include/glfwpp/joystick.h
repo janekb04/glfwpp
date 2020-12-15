@@ -3,6 +3,7 @@
 
 #include <GLFW/glfw3.h>
 #include <vector>
+#include "helper.h"
 
 namespace glfw
 {
@@ -56,6 +57,7 @@ namespace glfw
         LeftUp = GLFW_HAT_LEFT_UP,
         LeftDown = GLFW_HAT_LEFT_DOWN
     };
+    GLFWPP_ENUM_FLAGS_OPERATORS(JoystickHatStateBit)
     enum class JoystickEvent
     {
         Connected = GLFW_CONNECTED,

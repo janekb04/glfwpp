@@ -15,6 +15,7 @@ Note: `glfw3native.h` is not yet implemented.
 * Scoped enums for all GLFW constants
 * Everything wrapped in namespace `glfw`
 * RAII wrappers for windows (`glfw::Window`), cursors (`glfw::Cursor`), key codes (`glfw::KeyCode`), monitors (`glfw::Monitor`), joysticks (`glfw::Joystick`) and the entire library (`glfw::GlfwLibrary`).
+* `glfw::Event` class to allow to specify any invocable (function, method, lambda, functor, etc.) as a callback. Uses `std::function`.
 * Hints passed through stuctures (`glfw::InitHints` and `glfw::WindowHints`) instead of through functions with an enum constant.
 * Mostly very thin wrapping matching nearly exactly the original GLFW naming which makes it both easier to port and allows to use the official GLFW documentation.
 * Performance overhead should be low, due to the thin nature of the wrapper, with an exception being the use of exceptions and the `glfw::Event` class.

@@ -6,7 +6,7 @@ A thin modern C++17 header only wrapper for [GLFW 3.3.2](https://www.glfw.org/).
 
 I like C++ and OOP, so when I find a C library, I immediately look for a wrapper which offers classes with RAII instead of free `create` and `destroy` functions, identifiers wrapped in `namespace`s, methods instead of free functions, scoped `enum`s instead of macros and exceptions instead of error codes. As I didn't really find a low-level thin and header-only wrapper, so I made one myself.
 
-To use, just clone the repo (recursively) and link against the target `GLFWPP` using CMake. Alternatively, just copy-paste the headers and include `glfwpp.h` (not recommended). Make sure to disable building the examples by setting the option `GLFWPP_BUILD_EXAMPLES` to `OFF`, if you don't want them built, as they are built by default.
+To use, just clone the repo (recursively) and link against the target `GLFWPP` using CMake. Alternatively, just copy-paste the headers and include `glfwpp.h` (not recommended). Make sure to disable building the examples by setting the option `GLFWPP_BUILD_EXAMPLES` to `OFF`, if you don't want them built, as they are built by default. Also remeber to install [the necessary GLFW dependencies](https://www.glfw.org/docs/latest/compile.html).
 
 Note: `glfw3native.h` is not yet implemented.
 
@@ -40,6 +40,3 @@ The functionality is split between files, as follows:
 GLFWPP code and GLFW can be mixed with no issues as long as you mind these rules:
 * If GLFW is initialized with `glfw::GlfwLibrary`, you must not call `glfwTerminate` yourself and depend on it being called by the destructor of `glfw::GlfwLibrary`. You may call `glfwInit` though, but it won't have any effect. Also you should not use `glfwSetErrorCallback`, `glfwSetMonitorCallback` nor `glfwSetJoystickCallback` and instead use the appropriate `glfw::XXXXevent`s to register your handlers.
 * If GLFW is initialized with `glfwInit`, you can initialize it again with `glfw::GlfwLibrary`. All the created GLFW objects will remain in a valid and all state will be preserved except that the handlers error callback, monitor callback and joystick callback handlers will be intercepted by GLFWPP and to register your own handlers you will have to use the appropriate `glfw::XXXXevent`.
-
-# Building
-The library is header only, so you only have to include `glfwpp.h`. No building required. To build the examples, use CMake. Just make sure that `GLFWPP_BUILD_EXAMPLES` is `ON` (it is by default).

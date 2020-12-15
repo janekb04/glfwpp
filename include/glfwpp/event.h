@@ -9,28 +9,20 @@ namespace glfw
     template<typename... Args>
     class Event
     {
-    public:
-        using HandlerType = std::function<void(Args...)>;  // TODO: use shallow wrapper for better perf
-        using Iterator = typename std::list<HandlerType>::iterator;
-
     private:
-        std::list<HandlerType> _handlers;
+        std::function<void(Args...)> _handler;
 
     public:
-        Iterator operator+=(const HandlerType& handler_)
+        template <typename CallbackT>
+        void setCallback(CallbackT&& callback_)
         {
-            _handlers.push_back(handler_);
-            return std::prev(_handlers.end());
+            _handler = std::forward<CallbackT>(callback_);
         }
-        void operator-=(Iterator iter_)
+        void operator()(Args... args_)
         {
-            _handlers.erase(iter_);
-        }
-        void operator()(Args... args_) const
-        {
-            for(auto&& handler : _handlers)
+            if(_handler)
             {
-                handler(std::forward<Args>(args_)...);
+                _handler(args_...);
             }
         }
     };

@@ -6,7 +6,7 @@ A thin modern C++17 header only wrapper for [GLFW 3.3.2](https://www.glfw.org/).
 
 I like C++ and OOP, so when I find a C library, I immediately look for a wrapper which offers classes with RAII instead of free `create` and `destroy` functions, identifiers wrapped in `namespace`s, methods instead of free functions, scoped `enum`s instead of macros and exceptions instead of error codes. As I didn't really find a low-level thin and header-only wrapper, so I made one myself.
 
-To use, just clone the repo (recursively) and link against the target `GLFWPP` using CMake. Alternatively, just copy-paste the headers and include `glfwpp.h` (not recommended). Make sure to disable building the examples by setting the option `GLFWPP_BUILD_EXAMPLES` to `OFF`, if you don't want them built, as they are built by default. Also remeber to install [the necessary GLFW dependencies](https://www.glfw.org/docs/latest/compile.html).
+To use, just clone the repo (recursively) and link against the target `GLFWPP` using CMake. Alternatively, just copy-paste the headers and include `glfwpp.h` (not recommended). Make sure to disable building the examples by setting the option `GLFWPP_BUILD_EXAMPLES` to `OFF`, if you don't want them built, as they are built by default. Also remeber to install [the necessary GLFW dependencies](https://www.glfw.org/docs/latest/compile.html). You can also consult `cmake.yml` to see the complete installation and building process of GLFWPP, its dependecies and the examples on Linux.
 
 Note: `glfw3native.h` is not yet implemented.
 

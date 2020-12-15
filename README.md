@@ -1,6 +1,6 @@
 # glfwpp
 A thin modern C++17 header only wrapper for [GLFW 3.3.2](https://www.glfw.org/). From [the official GLFW website](https://www.glfw.org/):
->GLFW is an Open Source, multi-platform library for OpenGL, OpenGL ES and Vulkan development on the desktop. It provides a simple API for creating windows, contexts and >surfaces, receiving input and events.
+>GLFW is an Open Source, multi-platform library for OpenGL, OpenGL ES and Vulkan development on the desktop. It provides a simple API for creating windows, contexts and surfaces, receiving input and events.
 >GLFW is written in C and supports Windows, macOS, X11 and Wayland.
 >GLFW is licensed under the zlib/libpng license.
 
@@ -8,9 +8,8 @@ I like C++ and OOP, so when I find a C library, I immediately look for a wrapper
 
 To use, just clone the repo (recursively) and link against the target `GLFWPP` using CMake. Alternatively, just copy-paste the headers and include `glfwpp.h` (not recommended). Make sure to disable building the examples by setting the option `GLFWPP_BUILD_EXAMPLES` to `OFF`, if you don't want them built, as they are built by default.
 
-`glfw3native.h` is not yet implemented.
+Note: `glfw3native.h` is not yet implemented.
 
-Event handling and `glfw::Event` is currently being reworked. There could be breaking changes coming.
 # Main features
 * Error handling using exceptions (defined in `error.h`).
 * Scoped enums for all GLFW constants

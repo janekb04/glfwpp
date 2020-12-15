@@ -16,7 +16,6 @@ Note: `glfw3native.h` is not yet implemented.
 * Everything wrapped in namespace `glfw`
 * RAII wrappers for windows (`glfw::Window`), cursors (`glfw::Cursor`), key codes (`glfw::KeyCode`), monitors (`glfw::Monitor`), joysticks (`glfw::Joystick`) and the entire library (`glfw::GlfwLibrary`).
 * Hints passed through stuctures (`glfw::InitHints` and `glfw::WindowHints`) instead of through functions with an enum constant.
-* `glfw::Event` class to allow for multiple subsribers to a single event
 * Mostly very thin wrapping matching nearly exactly the original GLFW naming which makes it both easier to port and allows to use the official GLFW documentation.
 * Performance overhead should be low, due to the thin nature of the wrapper, with an exception being the use of exceptions and the `glfw::Event` class.
 * Now also compatible with [Vulkan-Hpp](https://github.com/KhronosGroup/Vulkan-Hpp)

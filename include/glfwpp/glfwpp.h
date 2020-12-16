@@ -87,7 +87,7 @@ namespace glfw
         {
             glfwSetErrorCallback(impl::errorCallback);
 
-            glfwInitHint(GLFW_JOYSTICK_HAT_BUTTONS, false);
+            glfwInitHint(GLFW_JOYSTICK_HAT_BUTTONS, false);  // disable deprecated behavior
             if(!glfwInit())
             {
                 throw glfw::Error("Could not initialize GLFW");
@@ -161,31 +161,31 @@ namespace glfw
     using VkProc = GLFWvkproc;
 #if defined(VK_VERSION_1_0)
     [[nodiscard]] VkProc getInstanceProcAddress(VkInstance instance, const char* procName)
-        {
-            return glfwGetInstanceProcAddress(instance, procName);
-        }
+    {
+        return glfwGetInstanceProcAddress(instance, procName);
+    }
 
-        [[nodiscard]] bool getPhysicalDevicePresentationSupport(
-                VkInstance instance,
-                VkPhysicalDevice device,
-                uint32_t queueFamily)
-        {
-            return glfwGetPhysicalDevicePresentationSupport(instance, device, queueFamily);
-        }
+    [[nodiscard]] bool getPhysicalDevicePresentationSupport(
+            VkInstance instance,
+            VkPhysicalDevice device,
+            uint32_t queueFamily)
+    {
+        return glfwGetPhysicalDevicePresentationSupport(instance, device, queueFamily);
+    }
 #endif  // VK_VERSION_1_0
 
 #ifdef VULKAN_HPP
     [[nodiscard]] VkProc getInstanceProcAddress(const vk::Instance& instance, const char* procName)
-        {
-            return getInstanceProcAddress(static_cast<VkInstance>(instance), procName);
-        }
-        [[nodiscard]] bool getPhysicalDevicePresentationSupport(
-                const vk::Instance& instance,
-                const vk::PhysicalDevice& device,
-                uint32_t queueFamily)
-        {
-            return getPhysicalDevicePresentationSupport(static_cast<VkInstance>(instance), static_cast<VkPhysicalDevice>(device), queueFamily);
-        }
+    {
+        return getInstanceProcAddress(static_cast<VkInstance>(instance), procName);
+    }
+    [[nodiscard]] bool getPhysicalDevicePresentationSupport(
+            const vk::Instance& instance,
+            const vk::PhysicalDevice& device,
+            uint32_t queueFamily)
+    {
+        return getPhysicalDevicePresentationSupport(static_cast<VkInstance>(instance), static_cast<VkPhysicalDevice>(device), queueFamily);
+    }
 #endif  // VULKAN_HPP
 
     [[nodiscard]] double getTime()

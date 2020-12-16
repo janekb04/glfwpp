@@ -13,7 +13,7 @@ namespace glfw
         std::function<void(Args...)> _handler;
 
     public:
-        template <typename CallbackT>
+        template<typename CallbackT>
         void setCallback(CallbackT&& callback_)
         {
             _handler = std::forward<CallbackT>(callback_);

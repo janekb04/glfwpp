@@ -1,9 +1,9 @@
 #ifndef GLFWPP_JOYSTICK_H
 #define GLFWPP_JOYSTICK_H
 
+#include "helper.h"
 #include <GLFW/glfw3.h>
 #include <vector>
-#include "helper.h"
 
 namespace glfw
 {

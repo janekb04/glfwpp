@@ -26,5 +26,5 @@ jobs:
         excludedirs: 'external'
         extensions: 'c,h,C,H,cpp,hpp,cc,hh,c++,h++,cxx,hxx'
         cmakeoptions: '-DCMAKE_BUILD_TYPE=$BUILD_TYPE'
-        scandir: '$GITHUB_WORKSPACE'
-        builddir: '${{runner.workspace}}/build'
+        scandir: '.'
+        builddir: 'build'

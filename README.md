@@ -1,4 +1,8 @@
-# glfwpp ![CMake](https://github.com/janekb04/glfwpp/workflows/CMake/badge.svg) ![clang-format](https://github.com/janekb04/glfwpp/workflows/clang-format/badge.svg) [![Language grade: C/C++](https://img.shields.io/lgtm/grade/cpp/g/janekb04/glfwpp.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/janekb04/glfwpp/context:cpp)
+# glfwpp 
+[![CMake](https://github.com/janekb04/glfwpp/workflows/CMake/badge.svg)](https://github.com/janekb04/glfwpp/actions?query=workflow%3ACMake)
+[![clang-format](https://github.com/janekb04/glfwpp/workflows/clang-format/badge.svg)](https://github.com/janekb04/glfwpp/actions?query=workflow%3Aclang-format)
+[![Language grade: C/C++](https://img.shields.io/lgtm/grade/cpp/g/janekb04/glfwpp.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/janekb04/glfwpp/context:cpp)
+[![Codacy grade](https://img.shields.io/codacy/grade/9d410fecf6c74175871ac50ee9f7dc36)](https://app.codacy.com/gh/janekb04/glfwpp/dashboard)
 
 A thin modern C++17 header only wrapper for [GLFW 3.3.2](https://www.glfw.org/). From [the official GLFW website](https://www.glfw.org/):
 >GLFW is an Open Source, multi-platform library for OpenGL, OpenGL ES and Vulkan development on the desktop. It provides a simple API for creating windows, contexts and surfaces, receiving input and events.

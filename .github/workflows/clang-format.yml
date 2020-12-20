@@ -9,6 +9,7 @@ jobs:
       - uses: actions/checkout@v2
       - uses: HorstBaerbel/action-clang-format@1.4
         with:
+          scandir: ''
           excludedirs: 'external'
           extensions: 'c,h,C,H,cpp,hpp,cc,hh,c++,h++,cxx,hxx'
           style: 'file'

@@ -18,7 +18,7 @@ namespace glfw
         void errorCallback(int errorCode_, const char* what_)
         {
             // Application programmer errors. See the GLFW docs and fix the code.
-            assert(errorCode_ != GLFW_NOT_INITIALIZED);
+          assert(errorCode_ != GLFW_NOT_INITIALIZED);
             assert(errorCode_ != GLFW_NO_CURRENT_CONTEXT);
             assert(errorCode_ != GLFW_NO_WINDOW_CONTEXT);
 
@@ -58,7 +58,7 @@ namespace glfw
         {
             joystickEvent(Joystick{static_cast<decltype(Joystick::Joystick1)>(jid_)}, static_cast<JoystickEvent>(eventType_));
         }
-    }  // namespace impl
+    } 
 
     struct InitHints
     {
@@ -78,8 +78,7 @@ namespace glfw
         GlfwLibrary() = default;
 
     public:
-        ~GlfwLibrary()
-        {
+        ~GlfwLibrary() {
             glfwTerminate();
         }
 

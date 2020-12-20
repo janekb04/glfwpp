@@ -4,8 +4,11 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 #Build Examples
 add_executable(glfwpp_example_basic basic.cpp)
 target_link_libraries(glfwpp_example_basic PRIVATE libglew_static GLFWPP)
+target_compile_definitions(glfwpp_example_basic PRIVATE GLEW_STATIC)
+
 add_executable(glfwpp_example_events events.cpp)
 target_link_libraries(glfwpp_example_events PRIVATE libglew_static GLFWPP)
+target_compile_definitions(glfwpp_example_events PRIVATE GLEW_STATIC)
 
 #Target to build all examples at once
 add_custom_target(glfwpp_all_examples)

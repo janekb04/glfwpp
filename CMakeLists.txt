@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.11)
+cmake_minimum_required(VERSION 3.1)
 project(GLFWPP CXX)
 
 #Options
@@ -23,7 +23,6 @@ endif()
 
 #Build examples
 if (GLFWPP_BUILD_EXAMPLES)
-    add_compile_definitions(GLEW_STATIC)
     if (POLICY CMP0072)
         set(CMAKE_POLICY_DEFAULT_CMP0072 NEW)
     endif()

@@ -9,4 +9,3 @@ jobs:
         with:
           excludedirs: 'external'
           extensions: 'c,h,C,H,cpp,hpp,cc,hh,c++,h++,cxx,hxx'
-          style: 'file'

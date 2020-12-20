@@ -4,6 +4,8 @@ jobs:
   clang-format-checking:
     runs-on: ubuntu-latest
     steps:
+      - name: Install clang-format
+        run: sudo apt-get install clang-format
       - uses: actions/checkout@v2
       - uses: HorstBaerbel/action-clang-format@1.4
         with:

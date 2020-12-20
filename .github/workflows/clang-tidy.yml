@@ -1,0 +1,13 @@
+  
+name: clang-format
+on: [push]
+jobs:
+  clang-format-checking:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: HorstBaerbel/action-clang-tidy@1.0
+        with:
+          excludedirs: 'external'
+          extensions: 'c,h,C,H,cpp,hpp,cc,hh,c++,h++,cxx,hxx'
+          style: 'file'

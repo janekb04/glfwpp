@@ -1,18 +1,30 @@
 name: clang-tidy
-on: [push]
-jobs:
-  clang-tidy-checking:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-        
-      - name: Checkout submodules
-        run: git submodule update --init --recursive
 
-      - name: Install GLFW dependencies
-        run: sudo apt-get -m install libx11-dev libxrandr-dev libxinerama-dev libx11-dev libxcursor-dev libxi-dev libxext-dev libegl1-mesa-dev
-        
-      - uses: HorstBaerbel/action-clang-tidy@1.0
-        with:
-          excludedirs: 'external'
-          extensions: 'c,h,C,H,cpp,hpp,cc,hh,c++,h++,cxx,hxx'
+on: [push]
+
+env:
+  BUILD_TYPE: Release
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    
+    - name: Checkout submodules
+      run: git submodule update --init --recursive
+
+    - name: Install GLFW dependencies
+      run: sudo apt-get -m install libxrandr-dev libxinerama-dev libx11-dev libxcursor-dev libxi-dev libxext-dev libegl1-mesa-dev
+
+    - name: Create Build Environment
+      run: mkdir ${{runner.workspace}}/build
+    
+    - uses: HorstBaerbel/action-clang-tidy@1.0
+      with:
+        excludedirs: 'external'
+        extensions: 'c,h,C,H,cpp,hpp,cc,hh,c++,h++,cxx,hxx'
+        cmakeoptions: '-DCMAKE_BUILD_TYPE=$BUILD_TYPE'
+        scandir: '$GITHUB_WORKSPACE'
+        builddir: '${{runner.workspace}}/build'

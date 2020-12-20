@@ -16,7 +16,7 @@ To use, just clone the repo (recursively) and link against the target `GLFWPP` u
 
 Note: `glfw3native.h` is not yet implemented.
 
-# Main features
+## Main features
 
 -   Error handling using exceptions (defined in `error.h`).
 -   Scoped enums for all GLFW constants
@@ -28,7 +28,7 @@ Note: `glfw3native.h` is not yet implemented.
 -   Performance overhead should be low, due to the thin nature of the wrapper, with an exception being the use of exceptions and the `glfw::Event` class.
 -   Now also compatible with [Vulkan-Hpp](https://github.com/KhronosGroup/Vulkan-Hpp)
 
-# Files
+## Files
 
 The functionality is split between files, as follows:
 
@@ -44,7 +44,7 @@ The functionality is split between files, as follows:
 -   `monitor.h` - `glfw::Monitor` and other functionality related to [monitor management](https://www.glfw.org/docs/latest/monitor_guide.html).
 -   `window.h` - `glfw::Window` class, `glfw::Cursor` class, `glfw::KeyCode` class and other functionality related to managing [windows](https://www.glfw.org/docs/latest/window_guide.html), [window contexts](https://www.glfw.org/docs/latest/context_guide.html) and [window input](https://www.glfw.org/docs/latest/input_guide.html) (clipboard and time IO in `glfwpp.h`). [Window hints](https://www.glfw.org/docs/latest/window_guide.html#window_hints) are specified using `glfw::WindowHints`.
 
-# Interoperability
+## Interoperability
 
 GLFWPP code and GLFW can be mixed with no issues as long as you mind these rules:
 

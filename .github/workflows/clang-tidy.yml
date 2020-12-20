@@ -5,6 +5,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+        
+      - name: Checkout submodules
+        run: git submodule update --init --recursive
+
+      - name: Install GLFW dependencies
+        run: sudo apt-get -m install libxrandr-dev libxinerama-dev libx11-dev libxcursor-dev libxi-dev libxext-dev libegl1-mesa-dev
+        
       - uses: HorstBaerbel/action-clang-tidy@1.0
         with:
           excludedirs: 'external'

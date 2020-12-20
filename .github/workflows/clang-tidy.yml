@@ -10,7 +10,7 @@ jobs:
         run: git submodule update --init --recursive
 
       - name: Install GLFW dependencies
-        run: sudo apt-get -m install libx11-dev
+        run: sudo apt-get -m install libx11-dev libxrandr-dev libxinerama-dev libx11-dev libxcursor-dev libxi-dev libxext-dev libegl1-mesa-dev
         
       - uses: HorstBaerbel/action-clang-tidy@1.0
         with:

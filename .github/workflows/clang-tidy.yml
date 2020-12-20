@@ -1,8 +1,7 @@
-  
-name: clang-format
+name: clang-tidy
 on: [push]
 jobs:
-  clang-format-checking:
+  clang-tidy-checking:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2

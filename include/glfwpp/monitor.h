@@ -17,7 +17,6 @@ namespace glfw
         GLFWmonitor* _handle;
 
     public:
-
         explicit Monitor(GLFWmonitor* handle_) :
             _handle{handle_}
         {

@@ -52,7 +52,7 @@ int main()
         wnd.setOpacity((sin(glfw::getTime()) + 1.0) / 2.0);
         wnd.setTitle(std::to_string(glfw::getTime()).c_str());
 
-        if (!wnd.getAttribFocused())
+        if(!wnd.getAttribFocused())
         {
             wnd.requestAttention();
         }

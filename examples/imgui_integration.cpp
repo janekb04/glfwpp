@@ -5,7 +5,7 @@
 #include <imgui_impl_glfw.h>
 #include <imgui_impl_opengl3.h>
 
-template <typename Func>
+template<typename Func>
 void renderImgui(Func&& guiRenderFunc_)
 {
     ImGui_ImplOpenGL3_NewFrame();
@@ -17,7 +17,7 @@ void renderImgui(Func&& guiRenderFunc_)
     ImGui::Render();
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
-    if (ImGui::GetIO().ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
+    if(ImGui::GetIO().ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
     {
         glfw::Window& backupCurrentContext = glfw::getCurrentContext();
         ImGui::UpdatePlatformWindows();
@@ -67,8 +67,8 @@ int main()
     {
         glClear(GL_COLOR_BUFFER_BIT);
 
-        renderImgui([](){
-           ImGui::ShowDemoWindow();
+        renderImgui([]() {
+            ImGui::ShowDemoWindow();
         });
 
         glfw::pollEvents();

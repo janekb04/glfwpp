@@ -14,6 +14,9 @@ add_executable(glfwpp_example_window_attributes window_attributes.cpp)
 target_link_libraries(glfwpp_example_window_attributes PRIVATE libglew_static GLFWPP)
 target_compile_definitions(glfwpp_example_window_attributes PRIVATE GLEW_STATIC)
 
+add_executable(glfwpp_example_imgui_integration imgui_integration.cpp)
+target_link_libraries(glfwpp_example_imgui_integration PRIVATE libglew_static GLFWPP Imgui)
+target_compile_definitions(glfwpp_example_imgui_integration PRIVATE GLEW_STATIC)
 
 #Target to build all examples at once
 add_custom_target(glfwpp_all_examples)

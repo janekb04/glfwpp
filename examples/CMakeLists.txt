@@ -10,6 +10,11 @@ add_executable(glfwpp_example_events events.cpp)
 target_link_libraries(glfwpp_example_events PRIVATE libglew_static GLFWPP)
 target_compile_definitions(glfwpp_example_events PRIVATE GLEW_STATIC)
 
+add_executable(glfwpp_example_window_attributes window_attributes.cpp)
+target_link_libraries(glfwpp_example_window_attributes PRIVATE libglew_static GLFWPP)
+target_compile_definitions(glfwpp_example_window_attributes PRIVATE GLEW_STATIC)
+
+
 #Target to build all examples at once
 add_custom_target(glfwpp_all_examples)
 add_dependencies(glfwpp_all_examples glfwpp_example_basic glfwpp_example_events)

@@ -17,10 +17,18 @@ namespace glfw
         GLFWmonitor* _handle;
 
     public:
+
         explicit Monitor(GLFWmonitor* handle_) :
             _handle{handle_}
         {
         }
+
+        operator GLFWmonitor*() const
+        {
+            return _handle;
+        }
+
+        explicit operator bool() const = delete;
 
         [[nodiscard]] friend std::vector<Monitor> getMonitors()
         {

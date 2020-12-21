@@ -150,12 +150,22 @@ namespace glfw
     private:
         GLFWcursor* _handle;
 
+        friend class Window;
+
+    public:
+        // Takes ownership
         explicit Cursor(GLFWcursor* handle_) :
             _handle{handle_}
         {
         }
 
-        friend class Window;
+        // Retains ownership
+        explicit operator GLFWcursor*() const
+        {
+            return _handle;
+        }
+
+        explicit operator bool() const = delete;
 
     public:
         [[nodiscard]] static Cursor createCursor(const Image& image_, int xHot_, int yHot_)
@@ -514,17 +524,9 @@ namespace glfw
         }
 
     public:
-        Window(int width_,
-                int height_,
-                const char* title_,
-                const Monitor* monitor_ = nullptr,
-                const Window* share_ = nullptr) :
-            _handle{glfwCreateWindow(
-                    width_,
-                    height_,
-                    title_,
-                    monitor_ ? monitor_->_handle : nullptr,
-                    share_ ? share_->_handle : nullptr)},
+        //Takes ownership
+        explicit Window(GLFWwindow* handle_) :
+            _handle{handle_},
             _userPtr{nullptr}
         {
             _setPointerFromHandle(_handle, this);
@@ -547,6 +549,28 @@ namespace glfw
             glfwSetScrollCallback(_handle, _scrollCallback);
             glfwSetDropCallback(_handle, _dropCallback);
         }
+
+        Window(int width_,
+                int height_,
+                const char* title_,
+                const Monitor* monitor_ = nullptr,
+                const Window* share_ = nullptr) :
+            Window{glfwCreateWindow(
+                    width_,
+                    height_,
+                    title_,
+                    monitor_ ? monitor_->_handle : nullptr,
+                    share_ ? share_->_handle : nullptr)}
+        {
+        }
+
+        //Retains ownership
+        operator GLFWwindow*() const
+        {
+            return _handle;
+        }
+
+        explicit operator bool() const = delete;
 
         Window(const Window&) = delete;
 

@@ -19,11 +19,11 @@ int main()
     //        .apply();
     glfw::Window wnd(800, 600, "GLFWPP basic example");
 
-    if(!glewInit())
+    glfw::makeContextCurrent(wnd);
+    if(glewInit() != GLEW_OK)
     {
         throw std::runtime_error("Could not initialize GLEW");
     }
-    glfw::makeContextCurrent(wnd);
 
     while(!wnd.shouldClose())
     {

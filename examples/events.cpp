@@ -13,11 +13,11 @@ int main()
     hints.apply();
     glfw::Window wnd(800, 600, "GLFWPP events example");
 
-    if(!glewInit())
+    glfw::makeContextCurrent(wnd);
+    if(glewInit() != GLEW_OK)
     {
         throw std::runtime_error("Could not initialize GLEW");
     }
-    glfw::makeContextCurrent(wnd);
 
     wnd.framebufferSizeEvent.setCallback([](int width, int height) {
         glViewport(0, 0, width, height);

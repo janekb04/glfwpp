@@ -1,9 +1,15 @@
 #include <GL/glew.h>
-#include <cmath>
 #include <glfwpp/glfwpp.h>
 #include <imgui.h>
 #include <imgui_impl_glfw.h>
 #include <imgui_impl_opengl3.h>
+
+void cleanupImgui()
+{
+    ImGui_ImplGlfw_Shutdown();
+    ImGui_ImplOpenGL3_Shutdown();
+    ImGui::DestroyContext();
+}
 
 template<typename Func>
 void renderImgui(Func&& guiRenderFunc_)
@@ -74,4 +80,6 @@ int main()
         glfw::pollEvents();
         wnd.swapBuffers();
     }
+
+    cleanupImgui();
 }

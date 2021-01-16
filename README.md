@@ -13,21 +13,26 @@ A thin modern C++17 header only wrapper for [GLFW 3.3.2](https://www.glfw.org/).
 
 I like C++ and OOP, so when I find a C library, I immediately look for a wrapper which offers classes with RAII instead of free `create` and `destroy` functions, identifiers wrapped in `namespace`s, methods instead of free functions, scoped `enum`s instead of macros and exceptions instead of error codes. As I didn't really find a low-level thin and header-only wrapper, so I made one myself.
 
-To use, just clone the repo (recursively) and link against the target `GLFWPP` using CMake. Alternatively, just copy-paste the headers and include `glfwpp.h` (not recommended). Make sure to disable building the examples by setting the option `GLFWPP_BUILD_EXAMPLES` to `OFF`, if you don't want them built, as they are built by default. Also remeber to install [the necessary GLFW dependencies](https://www.glfw.org/docs/latest/compile.html). You can also consult `cmake.yml` to see the complete installation and building process of GLFWPP, its dependecies and the examples on Linux. Examples may be found in the `/examples` directory.
+To use, just clone the repo (recursively) and link against the target `GLFWPP` using CMake:
+```cmke
+add_executable(myExecutable mySource1.cpp mySource2.cpp mySource3.cpp)
+target_link_libraries(myExecutable PRIVATE GLFWPP)
+```
+Make sure to disable building the examples by setting the option `GLFWPP_BUILD_EXAMPLES` to `OFF`, if you don't want them built, as they are built by default. Also remeber to install [the necessary GLFW dependencies](https://www.glfw.org/docs/latest/compile.html). You can also consult [`cmake.yml`](https://github.com/janekb04/glfwpp/blob/main/.github/workflows/cmake.yml) to see the complete installation and building process of GLFWPP, its dependecies and the examples on Linux. Examples may be found in the `/examples` directory. Alternatively, just copy-paste the headers and include `glfwpp.h` (not recommended). 
 
 Note: `glfw3native.h` is not yet implemented.
 
 ## Main features
 
 -   Error handling using exceptions (defined in `error.h`).
--   Scoped enums for all GLFW constants
--   Everything wrapped in namespace `glfw`
--   RAII wrappers for windows (`glfw::Window`), cursors (`glfw::Cursor`), key codes (`glfw::KeyCode`), monitors (`glfw::Monitor`), joysticks (`glfw::Joystick`) and the entire library (`glfw::GlfwLibrary`).
--   `glfw::Event` class to allow to specify any invocable (function, method, lambda, functor, etc.) as a callback. Uses `std::function`.
+-   Strongly typed scoped enums for all GLFW constants that catch all `GLFW_INVALID_ENUM` errors at compile time.
+-   Everything wrapped in namespace `glfw` to avoid name clashing
+-   RAII wrappers for windows (`glfw::Window`), cursors (`glfw::Cursor`), key codes (`glfw::KeyCode`), monitors (`glfw::Monitor`), joysticks (`glfw::Joystick`) and the entire library (`glfw::GlfwLibrary`) for automatic resource management.
+-   `glfw::Event` class to allow to specify any invocable (function, method, lambda, functor, etc.) as a callback. Note: it uses `std::function` which is infamous for its poor performance. However, events occur relatively rarely (probably generally no more than a dozen a frame) and as such I wouldn't expect this to be a performance issue. At the same time `std::function` has much greater flexibility than raw function pointers.
 -   Hints passed through stuctures (`glfw::InitHints` and `glfw::WindowHints`) instead of through functions with an enum constant.
 -   Mostly very thin wrapping matching nearly exactly the original GLFW naming which makes it both easier to port and allows to use the official GLFW documentation.
--   Performance overhead should be low, due to the thin nature of the wrapper, with an exception being the use of exceptions and the `glfw::Event` class.
--   Now also compatible with [Vulkan-Hpp](https://github.com/KhronosGroup/Vulkan-Hpp)
+-   Performance overhead should be low, due to the thin nature of the wrapper. Note: The `glfw::Event` as mentioned above could have a little performance overhead, but it shouldn't be an issue. Another factor is the use of exceptions for error handling. However, most exception implementations have performance penealties only in the exceptional path, which, by assumption, happens rarely.
+-   Now also compatible with [Vulkan-Hpp](https://github.com/KhronosGroup/Vulkan-Hpp).
 
 ## Files
 

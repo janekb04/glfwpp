@@ -17,15 +17,17 @@ namespace glfw
     {
         void errorCallback(int errorCode_, const char* what_)
         {
+            // Error handling philosophy as per http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2019/p0709r4.pdf (section 1.1)
+            
             // Application programmer errors. See the GLFW docs and fix the code.
             assert(errorCode_ != GLFW_NOT_INITIALIZED);
             assert(errorCode_ != GLFW_NO_CURRENT_CONTEXT);
             assert(errorCode_ != GLFW_NO_WINDOW_CONTEXT);
+            assert(errorCode_ != GLFW_INVALID_VALUE);
 
             // These errors should never occur
             assert(errorCode_ != GLFW_NO_ERROR);
             assert(errorCode_ != GLFW_INVALID_ENUM);
-            assert(errorCode_ != GLFW_INVALID_VALUE);
 
             // Allocation failure must be treated separately
             if(errorCode_ == GLFW_OUT_OF_MEMORY)

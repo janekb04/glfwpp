@@ -70,7 +70,7 @@ int main()
 
     initImgui(wnd);
 
-    wnd.keyEvent.setCallback([](glfw::KeyCode, int, glfw::KeyState, glfw::ModifierKeyBit){
+    wnd.keyEvent.setCallback([](glfw::KeyCode, int, glfw::KeyState, glfw::ModifierKeyBit) {
         std::cout << "hi";
     });
 

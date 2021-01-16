@@ -18,7 +18,7 @@ namespace glfw
         void errorCallback(int errorCode_, const char* what_)
         {
             // Error handling philosophy as per http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2019/p0709r4.pdf (section 1.1)
-            
+
             // Application programmer errors. See the GLFW docs and fix the code.
             assert(errorCode_ != GLFW_NOT_INITIALIZED);
             assert(errorCode_ != GLFW_NO_CURRENT_CONTEXT);

@@ -3,6 +3,7 @@
 #include <imgui.h>
 #include <imgui_impl_glfw.h>
 #include <imgui_impl_opengl3.h>
+#include <iostream>
 
 void cleanupImgui()
 {
@@ -68,6 +69,10 @@ int main()
     }
 
     initImgui(wnd);
+
+    wnd.keyEvent.setCallback([](glfw::KeyCode, int, glfw::KeyState, glfw::ModifierKeyBit){
+        std::cout << "hi";
+    });
 
     while(!wnd.shouldClose())
     {

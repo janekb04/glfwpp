@@ -2,7 +2,6 @@
 #define GLFWPP_MONITOR_H
 
 #include "event.h"
-#include <string_view>
 #include <tuple>
 #include <vector>
 

@@ -20,7 +20,7 @@ target_link_libraries(myExecutable PRIVATE GLFWPP)
 ```
 Make sure to disable building the examples by setting the option `GLFWPP_BUILD_EXAMPLES` to `OFF`, if you don't want them built, as they are built by default. Also remeber to install [the necessary GLFW dependencies](https://www.glfw.org/docs/latest/compile.html). You can also consult [`cmake.yml`](https://github.com/janekb04/glfwpp/blob/main/.github/workflows/cmake.yml) to see the complete installation and building process of GLFWPP, its dependecies and the examples on Linux. Examples may be found in the `/examples` directory. Alternatively, just copy-paste the headers and include `glfwpp.h` (not recommended). 
 
-Note: `glfw3native.h` is not yet implemented.
+Note: To use functionality from `glfw3native.h`, `native.h` has to be included separately.
 
 ## Main features
 
@@ -49,6 +49,7 @@ The functionality is split between files, as follows:
 -   `joystick.h` - `glfw::Joystick` class and [functionality related to joystick input](https://www.glfw.org/docs/latest/input_guide.html#joystick)
 -   `monitor.h` - `glfw::Monitor` and other functionality related to [monitor management](https://www.glfw.org/docs/latest/monitor_guide.html).
 -   `window.h` - `glfw::Window` class, `glfw::Cursor` class, `glfw::KeyCode` class and other functionality related to managing [windows](https://www.glfw.org/docs/latest/window_guide.html), [window contexts](https://www.glfw.org/docs/latest/context_guide.html) and [window input](https://www.glfw.org/docs/latest/input_guide.html) (clipboard and time IO in `glfwpp.h`). [Window hints](https://www.glfw.org/docs/latest/window_guide.html#window_hints) are specified using `glfw::WindowHints`.
+-   `native.h` - functions for [native access](https://www.glfw.org/docs/latest/group__native.html) wrapping around `glfw3native.h`.
 
 ## Interoperability
 

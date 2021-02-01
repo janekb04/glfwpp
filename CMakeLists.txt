@@ -34,9 +34,6 @@ endif ()
 
 #Build examples
 if (GLFWPP_BUILD_EXAMPLES)
-    if (POLICY CMP0072)
-        set(CMAKE_POLICY_DEFAULT_CMP0072 NEW)
-    endif ()
     verify_subdirectory_presence("${CMAKE_CURRENT_SOURCE_DIR}/external/glew-cmake")
     add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/external/glew-cmake)
     verify_subdirectory_presence("${CMAKE_CURRENT_SOURCE_DIR}/external/imgui")

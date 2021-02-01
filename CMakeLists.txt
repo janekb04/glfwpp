@@ -4,6 +4,13 @@ project(GLFWPP CXX)
 #Options
 option(GLFWPP_BUILD_EXAMPLES "Should examples be built" ON)
 
+if(NOT IS_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/external/glfw/include")
+    message(FATAL_ERROR "GLFW dependency not found in ./external/glfw... !!"
+        "\nYou may not have cloned the submodules recursively with --recursive "
+        "\n\`git submodule update --init --recursive\` will get the required dependencies"
+    )
+endif()
+
 #Add GFLW
 set(GLFW_BUILD_DOCS OFF CACHE BOOL "" FORCE)
 set(GLFW_BUILD_TESTS OFF CACHE BOOL "" FORCE)

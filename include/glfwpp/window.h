@@ -483,7 +483,7 @@ namespace glfw
         Event<double, double> cursorPosEvent;
         Event<bool> cursorEnterEvent;
         Event<double, double> scrollEvent;
-        Event<std::vector<std::string_view>> dropEvent;
+        Event<std::vector<std::string_view>> dropEvent; // TODO: use const char* for consistency
 
     private:
         static void _keyCallback(GLFWwindow* window_, int key_, int scanCode_, int state_, int mods_)

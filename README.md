@@ -4,6 +4,8 @@
 [![Total alerts](https://img.shields.io/lgtm/alerts/g/janekb04/glfwpp.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/janekb04/glfwpp/alerts/)
 [![Language grade: C/C++](https://img.shields.io/lgtm/grade/cpp/g/janekb04/glfwpp.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/janekb04/glfwpp/context:cpp)
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/69102e4c9b3744eea1fdd3a5758aee91)](https://www.codacy.com/gh/janekb04/glfwpp/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=janekb04/glfwpp&amp;utm_campaign=Badge_Grade)
+[![CodeFactor](https://www.codefactor.io/repository/github/janekb04/glfwpp/badge/main)](https://www.codefactor.io/repository/github/janekb04/glfwpp/overview/main)
+[![deepcode](https://www.deepcode.ai/api/gh/badge?key=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwbGF0Zm9ybTEiOiJnaCIsIm93bmVyMSI6ImphbmVrYjA0IiwicmVwbzEiOiJnbGZ3cHAiLCJpbmNsdWRlTGludCI6ZmFsc2UsImF1dGhvcklkIjoyNzA5NCwiaWF0IjoxNjEyMjE5ODQwfQ.SScQLlZrMd5_4-Qv-vjD58EGzKLo06aIjKIpce5-tPM)](https://www.deepcode.ai/app/gh/janekb04/glfwpp/_/dashboard?utm_content=gh%2Fjanekb04%2Fglfwpp)
 
 A thin modern C++17 header only wrapper for [GLFW 3.3.2](https://www.glfw.org/). From [the official GLFW website](https://www.glfw.org/):
 
@@ -20,7 +22,7 @@ target_link_libraries(myExecutable PRIVATE GLFWPP)
 ```
 Make sure to disable building the examples by setting the option `GLFWPP_BUILD_EXAMPLES` to `OFF`, if you don't want them built, as they are built by default. Also remeber to install [the necessary GLFW dependencies](https://www.glfw.org/docs/latest/compile.html). You can also consult [`cmake.yml`](https://github.com/janekb04/glfwpp/blob/main/.github/workflows/cmake.yml) to see the complete installation and building process of GLFWPP, its dependecies and the examples on Linux. Examples may be found in the `/examples` directory. Alternatively, just copy-paste the headers and include `glfwpp.h` (not recommended). 
 
-Note: `glfw3native.h` is not yet implemented.
+Note: To use functionality from `glfw3native.h`, `native.h` has to be included separately.
 
 ## Main features
 
@@ -49,6 +51,7 @@ The functionality is split between files, as follows:
 -   `joystick.h` - `glfw::Joystick` class and [functionality related to joystick input](https://www.glfw.org/docs/latest/input_guide.html#joystick)
 -   `monitor.h` - `glfw::Monitor` and other functionality related to [monitor management](https://www.glfw.org/docs/latest/monitor_guide.html).
 -   `window.h` - `glfw::Window` class, `glfw::Cursor` class, `glfw::KeyCode` class and other functionality related to managing [windows](https://www.glfw.org/docs/latest/window_guide.html), [window contexts](https://www.glfw.org/docs/latest/context_guide.html) and [window input](https://www.glfw.org/docs/latest/input_guide.html) (clipboard and time IO in `glfwpp.h`). [Window hints](https://www.glfw.org/docs/latest/window_guide.html#window_hints) are specified using `glfw::WindowHints`.
+-   `native.h` - functions for [native access](https://www.glfw.org/docs/latest/group__native.html) wrapping around `glfw3native.h`.
 
 ## Interoperability
 

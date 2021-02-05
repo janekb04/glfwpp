@@ -1,4 +1,4 @@
-# glfwpp 
+# glfwpp ![logo](logo.png)
 [![CMake](https://github.com/janekb04/glfwpp/workflows/CMake/badge.svg)](https://github.com/janekb04/glfwpp/actions?query=workflow%3ACMake)
 [![clang-format](https://github.com/janekb04/glfwpp/workflows/clang-format/badge.svg)](https://github.com/janekb04/glfwpp/actions?query=workflow%3Aclang-format)
 [![Total alerts](https://img.shields.io/lgtm/alerts/g/janekb04/glfwpp.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/janekb04/glfwpp/alerts/)

@@ -16,7 +16,7 @@ A thin modern C++17 header only wrapper for [GLFW 3.3.2](https://www.glfw.org/).
 I like C++ and OOP, so when I find a C library, I immediately look for a wrapper which offers classes with RAII instead of free `create` and `destroy` functions, identifiers wrapped in `namespace`s, methods instead of free functions, scoped `enum`s instead of macros and exceptions instead of error codes. As I didn't really find a low-level thin and header-only wrapper, so I made one myself.
 
 To use, just clone the repo (recursively) and link against the target `GLFWPP` using CMake:
-```cmke
+```cmake
 add_executable(myExecutable mySource1.cpp mySource2.cpp mySource3.cpp)
 target_link_libraries(myExecutable PRIVATE GLFWPP)
 ```
@@ -35,6 +35,81 @@ Note: To use functionality from `glfw3native.h`, `native.h` has to be included s
 -   Mostly very thin wrapping matching nearly exactly the original GLFW naming which makes it both easier to port and allows to use the official GLFW documentation.
 -   Performance overhead should be low, due to the thin nature of the wrapper. Note: The `glfw::Event` as mentioned above could have a little performance overhead, but it shouldn't be an issue. Another factor is the use of exceptions for error handling. However, most exception implementations have performance penealties only in the exceptional path, which, by assumption, happens rarely.
 -   Now also compatible with [Vulkan-Hpp](https://github.com/KhronosGroup/Vulkan-Hpp).
+
+## Example
+Here is a quick comparison of GLFW and GLFWPP. The following code creates a OpenGL 4.6 context and clears the screen.
+<table>
+  <tr>
+    <th>
+      GLFW
+    </th>
+    <th>
+      GLFWPP
+    </th>
+  </tr>
+<tr>
+<td>
+<pre style="background-color:#2b2b2b;color:#a9b7c6;font-family:'JetBrains Mono',monospace;font-size:9.8pt;"><span style="color:#bbb529;">#include </span><span style="color:#0cc21a;">&lt;GLFW/glfw3.h&gt;
+</span><span style="color:#0cc21a;">
+</span><span style="color:#ed3792;">int </span><span style="color:#ffc66d;font-weight:bold;">main</span><span style="color:#6989bb;">()
+</span><span style="color:#6897bb;">{
+</span><span style="color:#6897bb;">    </span><span style="color:#ed3792;">if </span><span style="color:#6989bb;">(</span><span style="color:#af3681;">!</span><span style="color:#e0ff76;">glfwInit</span><span style="color:#6989bb;">())
+</span><span style="color:#6989bb;">        </span><span style="color:#ed3792;">return </span><span style="color:#af3681;">-</span><span style="color:#0cc21a;">1</span><span style="color:#af3681;">;
+</span><span style="color:#af3681;">
+</span><span style="color:#af3681;">    </span><span style="color:#e0ff76;">glfwWindowHint</span><span style="color:#6989bb;">(</span><span style="color:#58a517;">GLFW_CONTEXT_VERSION_MAJOR</span><span style="color:#af3681;">, </span><span style="color:#0cc21a;">4</span><span style="color:#6989bb;">)</span><span style="color:#af3681;">;
+</span><span style="color:#af3681;">    </span><span style="color:#e0ff76;">glfwWindowHint</span><span style="color:#6989bb;">(</span><span style="color:#58a517;">GLFW_CONTEXT_VERSION_MINOR</span><span style="color:#af3681;">, </span><span style="color:#0cc21a;">6</span><span style="color:#6989bb;">)</span><span style="color:#af3681;">;
+</span><span style="color:#af3681;">    </span><span style="color:#e0ff76;">glfwWindowHint</span><span style="color:#6989bb;">(</span><span style="color:#58a517;">GLFW_OPENGL_PROFILE</span><span style="color:#af3681;">, </span><span style="color:#58a517;">GLFW_OPENGL_CORE_PROFILE</span><span style="color:#6989bb;">)</span><span style="color:#af3681;">;
+</span><span style="color:#af3681;">    </span><span style="color:#836bc6;">GLFWwindow</span><span style="color:#af3681;">* </span><span style="color:#6dc68c;font-style:italic;">window </span><span style="color:#af3681;">= </span><span style="color:#e0ff76;">glfwCreateWindow</span><span style="color:#6989bb;">(</span><span style="color:#0cc21a;">640</span><span style="color:#af3681;">, </span><span style="color:#0cc21a;">480</span><span style="color:#af3681;">, </span><span style="color:#0cc21a;">&quot;Hello World&quot;</span><span style="color:#af3681;">, </span><span style="color:#ed3792;">nullptr</span><span style="color:#af3681;">, </span><span style="color:#ed3792;">nullptr</span><span style="color:#6989bb;">)</span><span style="color:#af3681;">;
+</span><span style="color:#af3681;">    </span><span style="color:#ed3792;">if </span><span style="color:#6989bb;">(</span><span style="color:#af3681;">!</span><span style="color:#6dc68c;font-style:italic;">window</span><span style="color:#6989bb;">) </span><span style="color:#6897bb;">{
+</span><span style="color:#6897bb;">        </span><span style="color:#e0ff76;">glfwTerminate</span><span style="color:#6989bb;">()</span><span style="color:#af3681;">;
+</span><span style="color:#af3681;">        </span><span style="color:#ed3792;">return </span><span style="color:#af3681;">-</span><span style="color:#0cc21a;">1</span><span style="color:#af3681;">;
+</span><span style="color:#af3681;">    </span><span style="color:#6897bb;">}
+</span><span style="color:#6897bb;">
+</span><span style="color:#6897bb;">    </span><span style="color:#e0ff76;">glfwMakeContextCurrent</span><span style="color:#6989bb;">(</span><span style="color:#6dc68c;font-style:italic;">window</span><span style="color:#6989bb;">)</span><span style="color:#af3681;">;
+</span><span style="color:#af3681;">
+</span><span style="color:#af3681;">    </span><span style="color:#ed3792;">while </span><span style="color:#6989bb;">(</span><span style="color:#af3681;">!</span><span style="color:#e0ff76;">glfwWindowShouldClose</span><span style="color:#6989bb;">(</span><span style="color:#6dc68c;font-style:italic;">window</span><span style="color:#6989bb;">))
+</span><span style="color:#6989bb;">    </span><span style="color:#6897bb;">{
+</span><span style="color:#6897bb;">        </span><span style="color:#e0ff76;">glClear</span><span style="color:#6989bb;">(</span><span style="color:#58a517;">GL_COLOR_BUFFER_BIT</span><span style="color:#6989bb;">)</span><span style="color:#af3681;">;
+</span><span style="color:#af3681;">
+</span><span style="color:#af3681;">        </span><span style="color:#e0ff76;">glfwSwapBuffers</span><span style="color:#6989bb;">(</span><span style="color:#6dc68c;font-style:italic;">window</span><span style="color:#6989bb;">)</span><span style="color:#af3681;">;
+</span><span style="color:#af3681;">        </span><span style="color:#e0ff76;">glfwPollEvents</span><span style="color:#6989bb;">()</span><span style="color:#af3681;">;
+</span><span style="color:#af3681;">    </span><span style="color:#6897bb;">}
+</span><span style="color:#6897bb;">
+</span><span style="color:#6897bb;">    </span><span style="color:#e0ff76;">glfwTerminate</span><span style="color:#6989bb;">()</span><span style="color:#af3681;">;
+</span><span style="color:#6897bb;">}</span></pre>
+</td>
+<td>
+<pre style="background-color:#2b2b2b;color:#a9b7c6;font-family:'JetBrains Mono',monospace;font-size:9.8pt;"><span style="color:#bbb529;">#include </span><span style="color:#0cc21a;">&lt;glfwpp/glfwpp.h&gt;
+</span><span style="color:#0cc21a;">
+</span><span style="color:#ed3792;">int </span><span style="color:#ffc66d;font-weight:bold;">main</span><span style="color:#6989bb;">()
+</span><span style="color:#6897bb;">{
+</span><span style="color:#6897bb;">    </span><span style="color:#ed3792;">auto </span><span style="color:#6dc68c;font-style:italic;">GLFW </span><span style="color:#af3681;">= </span><span style="color:#51bcff;">glfw</span><span style="color:#af3681;">::</span><span style="color:#e0ff76;">init</span><span style="color:#6989bb;">()</span><span style="color:#af3681;">;<br>
+</span><span style="color:#af3681;">
+</span><span style="color:#af3681;">    </span><span style="color:#51bcff;">glfw</span><span style="color:#af3681;">::</span><span style="color:#e0ff76;">WindowHints</span><span style="color:#6897bb;">{  </span><span style="color:#61c669;font-style:italic;">.contextVersionMajor </span><span style="color:#af3681;">= </span><span style="color:#0cc21a;">4</span><span style="color:#af3681;">,
+</span><span style="color:#af3681;">                        </span><span style="color:#61c669;font-style:italic;">.contextVersionMinor </span><span style="color:#af3681;">= </span><span style="color:#0cc21a;">6</span><span style="color:#af3681;">,
+</span><span style="color:#af3681;">                        </span><span style="color:#61c669;font-style:italic;">.openglProfile </span><span style="color:#af3681;">= </span><span style="color:#51bcff;">glfw</span><span style="color:#af3681;">::</span><span style="color:#5a60c6;">OpenGlProfile</span><span style="color:#af3681;">::</span><span style="color:#0aa516;font-style:italic;">Core </span><span style="color:#6897bb;">}</span><span style="color:#af3681;">.</span><span style="color:#e0ff76;">apply</span><span style="color:#6989bb;">()</span><span style="color:#af3681;">;
+</span><span style="color:#af3681;">    </span><span style="color:#51bcff;">glfw</span><span style="color:#af3681;">::</span><span style="color:#5a60c6;">Window </span><span style="color:#6dc68c;font-style:italic;">window</span><span style="color:#6897bb;">{</span><span style="color:#0cc21a;">640</span><span style="color:#af3681;">, </span><span style="color:#0cc21a;">480</span><span style="color:#af3681;">, </span><span style="color:#0cc21a;">&quot;Hello World&quot;</span><span style="color:#6897bb;">}</span><span style="color:#af3681;">;
+</span><span style="color:#af3681;">    </span><span style="color:#808080;">// If window creation fails, an exception is thrown
+</span><span style="color:#808080;">
+</span><span style="color:#808080;">
+</span><span style="color:#808080;">
+</span><span style="color:#808080;">
+</span><span style="color:#808080;">    </span><span style="color:#51bcff;">glfw</span><span style="color:#af3681;">::</span><span style="color:#e0ff76;">makeContextCurrent</span><span style="color:#6989bb;">(</span><span style="color:#6dc68c;font-style:italic;">window</span><span style="color:#6989bb;">)</span><span style="color:#af3681;">;
+</span><span style="color:#af3681;">
+</span><span style="color:#af3681;">    </span><span style="color:#ed3792;">while </span><span style="color:#6989bb;">(</span><span style="color:#af3681;">!</span><span style="color:#6dc68c;font-style:italic;">window</span><span style="color:#af3681;">.</span><span style="color:#e0ff76;">shouldClose</span><span style="color:#6989bb;">())
+</span><span style="color:#6989bb;">    </span><span style="color:#6897bb;">{
+</span><span style="color:#6897bb;">        </span><span style="color:#e0ff76;">glClear</span><span style="color:#6989bb;">(</span><span style="color:#58a517;">GL_COLOR_BUFFER_BIT</span><span style="color:#6989bb;">)</span><span style="color:#af3681;">;
+</span><span style="color:#af3681;">
+</span><span style="color:#af3681;">        </span><span style="color:#6dc68c;font-style:italic;">window</span><span style="color:#af3681;">.</span><span style="color:#e0ff76;">swapBuffers</span><span style="color:#6989bb;">()</span><span style="color:#af3681;">;
+</span><span style="color:#af3681;">        </span><span style="color:#51bcff;">glfw</span><span style="color:#af3681;">::</span><span style="color:#e0ff76;">pollEvents</span><span style="color:#6989bb;">()</span><span style="color:#af3681;">;
+</span><span style="color:#af3681;">    </span><span style="color:#6897bb;">}
+</span><span style="color:#6897bb;">
+</span><span style="color:#6897bb;">    </span><span style="color:#808080;">// GlfwLibrary destructor calls glfwTerminate automatically
+</span><span style="color:#6897bb;">}</span></pre>
+</td>
+
+</tr>
+</table>
 
 ## Files
 

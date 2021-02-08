@@ -1,6 +1,6 @@
 version: 2
 updates:
   - package-ecosystem: "gitsubmodule"
-    directory: "external"
+    directory: "/"
     schedule:
       interval: "daily"

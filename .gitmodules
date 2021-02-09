@@ -4,7 +4,6 @@
 [submodule "external/glew-cmake"]
 	path = external/glew-cmake
 	url = https://github.com/Perlmint/glew-cmake.git
-	branch = 7d525405e6abd0933f1a44c066645caea805f5d5
 [submodule "external/imgui/imgui"]
 	path = external/imgui/imgui
 	url = https://github.com/ocornut/imgui.git

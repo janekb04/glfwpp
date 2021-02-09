@@ -7,9 +7,10 @@ env:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ${{matrix.os}}
     strategy:
       matrix:
+        os: [ubuntu-latest, macos-latest]
         compiler: [g++, clang++]
 
     steps:
@@ -19,6 +20,7 @@ jobs:
       run: git submodule update --init --recursive
 
     - name: Install GLFW dependencies
+      if: ${{matrix.os == 'ubuntu-latest'}}
       run: sudo apt-get -m install libxrandr-dev libxinerama-dev libx11-dev libxcursor-dev libxi-dev libxext-dev libegl1-mesa-dev
 
     - name: Create Build Environment

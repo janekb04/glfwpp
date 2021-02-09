@@ -483,7 +483,7 @@ namespace glfw
         Event<double, double> cursorPosEvent;
         Event<bool> cursorEnterEvent;
         Event<double, double> scrollEvent;
-        Event<std::vector<std::string_view>> dropEvent;  // TODO: use const char* for consistency
+        Event<std::vector<const char*>> dropEvent;
 
     private:
         static void _keyCallback(GLFWwindow* window_, int key_, int scanCode_, int state_, int mods_)
@@ -512,7 +512,7 @@ namespace glfw
         }
         static void _dropCallback(GLFWwindow* window_, int count_, const char** pPaths_)
         {
-            std::vector<std::string_view> paths;
+            std::vector<const char*> paths;
             paths.reserve(count_);
 
             for(int i = 0; i < count_; ++i)

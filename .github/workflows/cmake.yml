@@ -10,8 +10,15 @@ jobs:
     runs-on: ${{matrix.os}}
     strategy:
       matrix:
-        os: [ubuntu-latest, macos-latest]
-        compiler: [g++, clang++]
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        include:
+        - os: macos-latest
+          compiler: clang++
+          
+        - os: ubuntu-latest
+          compiler: clang++
+        - os: ubuntu-latest
+          compiler: g++
 
     steps:
     - uses: actions/checkout@v2

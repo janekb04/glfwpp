@@ -22,7 +22,7 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    
+
     - name: Checkout submodules
       run: git submodule update --init --recursive
 
@@ -41,4 +41,4 @@ jobs:
     - name: Build
       working-directory: ${{runner.workspace}}/build
       shell: bash
-      run: cmake --build . --config $BUILD_TYPE --target glfwpp_all_examples 
+      run: cmake --build . --config $BUILD_TYPE --target glfwpp_all_examples

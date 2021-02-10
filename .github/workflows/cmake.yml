@@ -7,15 +7,27 @@ env:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ${{matrix.os}}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        include:
+        - os: macos-latest
+          compiler: clang++
+          
+        - os: ubuntu-latest
+          compiler: clang++
+        - os: ubuntu-latest
+          compiler: g++
 
     steps:
     - uses: actions/checkout@v2
-    
+
     - name: Checkout submodules
       run: git submodule update --init --recursive
 
     - name: Install GLFW dependencies
+      if: ${{matrix.os == 'ubuntu-latest'}}
       run: sudo apt-get -m install libxrandr-dev libxinerama-dev libx11-dev libxcursor-dev libxi-dev libxext-dev libegl1-mesa-dev
 
     - name: Create Build Environment
@@ -24,7 +36,7 @@ jobs:
     - name: Configure CMake
       shell: bash
       working-directory: ${{runner.workspace}}/build
-      run: cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=$BUILD_TYPE
+      run: cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DCMAKE_CXX_COMPILER=${{matrix.compiler}}
 
     - name: Build
       working-directory: ${{runner.workspace}}/build

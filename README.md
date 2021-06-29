@@ -7,6 +7,7 @@
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/69102e4c9b3744eea1fdd3a5758aee91)](https://www.codacy.com/gh/janekb04/glfwpp/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=janekb04/glfwpp&amp;utm_campaign=Badge_Grade)
 [![CodeFactor](https://www.codefactor.io/repository/github/janekb04/glfwpp/badge/main)](https://www.codefactor.io/repository/github/janekb04/glfwpp/overview/main)
 [![deepcode](https://www.deepcode.ai/api/gh/badge?key=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwbGF0Zm9ybTEiOiJnaCIsIm93bmVyMSI6ImphbmVrYjA0IiwicmVwbzEiOiJnbGZ3cHAiLCJpbmNsdWRlTGludCI6ZmFsc2UsImF1dGhvcklkIjoyNzA5NCwiaWF0IjoxNjEyMjE5ODQwfQ.SScQLlZrMd5_4-Qv-vjD58EGzKLo06aIjKIpce5-tPM)](https://www.deepcode.ai/app/gh/janekb04/glfwpp/_/dashboard?utm_content=gh%2Fjanekb04%2Fglfwpp)
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fjanekb04%2Fglfwpp.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fjanekb04%2Fglfwpp?ref=badge_shield)
 
 A thin modern C++17 header only wrapper for [GLFW 3.3.3](https://www.glfw.org/). From [the official GLFW website](https://www.glfw.org/):
 
@@ -136,3 +137,7 @@ GLFWPP code and GLFW can be mixed with no issues as long as you mind these rules
 -   If GLFW is initialized with `glfw::GlfwLibrary`, you must not call `glfwTerminate` yourself and depend on it being called by the destructor of `glfw::GlfwLibrary`. You may call `glfwInit` though, but it won't have any effect. Also you should not use `glfwSetErrorCallback`, `glfwSetMonitorCallback` nor `glfwSetJoystickCallback` and instead use the appropriate `glfw::XXXXevent`s to register your handlers.
 -   If GLFW is initialized with `glfwInit`, you can initialize it again with `glfw::GlfwLibrary`. All the created GLFW objects will remain in a valid and all state will be preserved except that the handlers error callback, monitor callback and joystick callback handlers will be intercepted by GLFWPP and to register your own handlers you will have to use the appropriate `glfw::XXXXevent`.
 -  Where applicable, `glfw::` objects provide conversion operation to and from the underlying `GLFWxxxx*` handles. However it must be noted that the conversion to the underlying handles retains the ownership of those handles. As such, for example, you must not `glfwDestroy` them. At the same time the constructors from handles take the ownership of the given handle and as such in this case you also must not `glfwDestroy` them yourself.
+
+
+## License
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fjanekb04%2Fglfwpp.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Fjanekb04%2Fglfwpp?ref=badge_large)

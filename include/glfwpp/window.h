@@ -370,7 +370,7 @@ namespace glfw
         }
     };
     [[nodiscard]] const char* getKeyName(KeyCode::EnumType);
-    [[nodiscard]] const char* getKeyName(int scanCode_)
+    [[nodiscard, gnu::always_inline]] inline const char* getKeyName(int scanCode_)
     {
         return glfwGetKeyName(KeyCode::Unknown, scanCode_);
     }
@@ -950,7 +950,7 @@ namespace glfw
     void makeContextCurrent(const Window& window_);
     [[nodiscard]] Window& getCurrentContext();
 
-    void swapInterval(int interval_)
+    [[gnu::always_inline]] inline void swapInterval(int interval_)
     {
         glfwSwapInterval(interval_);
     }

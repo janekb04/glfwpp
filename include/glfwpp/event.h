@@ -27,21 +27,47 @@ namespace glfw
         }
     };
 
-    void pollEvents()
+    template<typename... Args>
+    class StaticEvent
+    {
+    private:
+        static std::function<void(Args...)> _handler;
+
+    public:
+        template<typename CallbackT>
+        static void setCallback(CallbackT&& callback_)
+        {
+            _handler = std::forward<CallbackT>(callback_);
+        }
+        static void call(Args... args_)
+        {
+            if(_handler)
+            {
+                _handler(args_...);
+            }
+        }
+    };
+
+    // static
+    template<typename... Args>
+    std::function<void(Args...)> StaticEvent<Args...>::_handler;
+
+    [[gnu::always_inline]] inline void pollEvents()
     {
         glfwPollEvents();
     }
 
-    void waitEvents()
+    [[gnu::always_inline]] inline void waitEvents()
     {
         glfwWaitEvents();
     }
-    void waitEvents(double timeout_)
+
+    [[gnu::always_inline]] inline void waitEvents(double timeout_)
     {
         glfwWaitEventsTimeout(timeout_);
     }
 
-    void postEmptyEvent()
+    [[gnu::always_inline]] inline void postEmptyEvent()
     {
         glfwPostEmptyEvent();
     }

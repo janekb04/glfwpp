@@ -53,7 +53,7 @@ void initImgui(const glfw::Window& wnd)
 
 int main()
 {
-    glfw::GlfwLibrary library = glfw::init();
+    [[maybe_unused]] glfw::GlfwLibrary library = glfw::init();
 
     glfw::WindowHints hints;
     hints.clientApi = glfw::ClientApi::OpenGl;

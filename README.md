@@ -6,7 +6,6 @@
 [![Language grade: C/C++](https://img.shields.io/lgtm/grade/cpp/g/janekb04/glfwpp.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/janekb04/glfwpp/context:cpp)
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/69102e4c9b3744eea1fdd3a5758aee91)](https://www.codacy.com/gh/janekb04/glfwpp/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=janekb04/glfwpp&amp;utm_campaign=Badge_Grade)
 [![CodeFactor](https://www.codefactor.io/repository/github/janekb04/glfwpp/badge/main)](https://www.codefactor.io/repository/github/janekb04/glfwpp/overview/main)
-[![deepcode](https://www.deepcode.ai/api/gh/badge?key=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwbGF0Zm9ybTEiOiJnaCIsIm93bmVyMSI6ImphbmVrYjA0IiwicmVwbzEiOiJnbGZ3cHAiLCJpbmNsdWRlTGludCI6ZmFsc2UsImF1dGhvcklkIjoyNzA5NCwiaWF0IjoxNjI0OTc3NTMwfQ.mz-_sGYJHLGV5OI8AudUoF1f0b9el6VETdCtruzFRxU)](https://www.deepcode.ai/app/gh/janekb04/glfwpp/_/dashboard?utm_content=gh%2Fjanekb04%2Fglfwpp)
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fjanekb04%2Fglfwpp.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fjanekb04%2Fglfwpp?ref=badge_shield)
 
 A thin modern C++17 header only wrapper for [GLFW 3.3.3](https://www.glfw.org/). From [the official GLFW website](https://www.glfw.org/):

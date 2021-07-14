@@ -3,7 +3,7 @@
 
 #include "event.h"
 #include "monitor.h"
-#include <GLFW/glfw3.h>
+#include "helper.h"     // Needed for GLFWPP_ENUM_FLAGS_OPERATORS.
 
 namespace glfw
 {

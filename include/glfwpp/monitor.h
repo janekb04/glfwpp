@@ -133,7 +133,7 @@ namespace glfw
         Connected = GLFW_CONNECTED,
         Disconnected = GLFW_DISCONNECTED
     };
-    Event<Monitor, MonitorEventType> monitorEvent;
+    using monitorEvent = StaticEvent<Monitor, MonitorEventType>;
 }  // namespace glfw
 
 #endif  //GLFWPP_MONITOR_H

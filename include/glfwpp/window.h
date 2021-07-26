@@ -4,6 +4,9 @@
 #include "event.h"
 #include "monitor.h"
 #include "helper.h"     // Needed for GLFWPP_ENUM_FLAGS_OPERATORS.
+#ifdef VULKAN_HPP
+#include "error.h"
+#endif
 
 namespace glfw
 {
@@ -935,14 +938,22 @@ namespace glfw
 #ifdef VULKAN_HPP
         [[nodiscard]] vk::SurfaceKHR createSurface(
                 const vk::Instance& instance,
-                const vk::AllocationCallbacks* allocator)
+                const vk::AllocationCallbacks& allocator)
         {
             VkSurfaceKHR surface;
-            VkResult result = createSurface(instance, allocator, &surface);
+            VkAllocationCallbacks allocator_tmp = allocator;
+            VkResult result = createSurface(instance, &allocator_tmp, &surface);
             if(result < 0)
-            {
                 throw Error("Could not create window surface");
-            }
+            return surface;
+        }
+        [[nodiscard]] vk::SurfaceKHR createSurface(
+                const vk::Instance& instance)
+        {
+            VkSurfaceKHR surface;
+            VkResult result = createSurface(instance, nullptr, &surface);
+            if(result < 0)
+                throw Error("Could not create window surface");
             return surface;
         }
 #endif  // VULKAN_HPP

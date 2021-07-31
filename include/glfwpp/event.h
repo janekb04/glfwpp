@@ -27,21 +27,21 @@ namespace glfw
         }
     };
 
-    void pollEvents()
+    inline void pollEvents()
     {
         glfwPollEvents();
     }
 
-    void waitEvents()
+    inline void waitEvents()
     {
         glfwWaitEvents();
     }
-    void waitEvents(double timeout_)
+    inline void waitEvents(double timeout_)
     {
         glfwWaitEventsTimeout(timeout_);
     }
 
-    void postEmptyEvent()
+    inline void postEmptyEvent()
     {
         glfwPostEmptyEvent();
     }

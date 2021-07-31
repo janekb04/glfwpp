@@ -7,7 +7,7 @@
 
 namespace glfw
 {
-    constexpr int dontCare = GLFW_DONT_CARE;
+    inline constexpr int dontCare = GLFW_DONT_CARE;
     enum class ClientApi
     {
         OpenGl = GLFW_OPENGL_API,
@@ -369,8 +369,8 @@ namespace glfw
             return glfwGetKeyScancode(_value);
         }
     };
-    [[nodiscard]] const char* getKeyName(KeyCode::EnumType);
-    [[nodiscard]] const char* getKeyName(int scanCode_)
+    [[nodiscard]] inline const char* getKeyName(KeyCode::EnumType);
+    [[nodiscard]] inline const char* getKeyName(int scanCode_)
     {
         return glfwGetKeyName(KeyCode::Unknown, scanCode_);
     }
@@ -947,10 +947,10 @@ namespace glfw
         }
 #endif  // VULKAN_HPP
     };
-    void makeContextCurrent(const Window& window_);
-    [[nodiscard]] Window& getCurrentContext();
+    inline void makeContextCurrent(const Window& window_);
+    [[nodiscard]] inline Window& getCurrentContext();
 
-    void swapInterval(int interval_)
+    inline void swapInterval(int interval_)
     {
         glfwSwapInterval(interval_);
     }

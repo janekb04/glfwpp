@@ -125,15 +125,15 @@ namespace glfw
             glfwSetGammaRamp(_handle, &ramp_);
         }
     };
-    [[nodiscard]] std::vector<Monitor> getMonitors();
-    [[nodiscard]] Monitor getPrimaryMonitor();
+    [[nodiscard]] inline std::vector<Monitor> getMonitors();
+    [[nodiscard]] inline Monitor getPrimaryMonitor();
 
     enum class MonitorEventType : int
     {
         Connected = GLFW_CONNECTED,
         Disconnected = GLFW_DISCONNECTED
     };
-    Event<Monitor, MonitorEventType> monitorEvent;
+    inline Event<Monitor, MonitorEventType> monitorEvent;
 }  // namespace glfw
 
 #endif  //GLFWPP_MONITOR_H

@@ -199,9 +199,9 @@ namespace glfw
         }
     };
 
-    Event<Joystick, JoystickEvent> joystickEvent;
+    inline Event<Joystick, JoystickEvent> joystickEvent;
 
-    [[nodiscard]] bool updateGamepadMappings(const char* string_)
+    [[nodiscard]] inline bool updateGamepadMappings(const char* string_)
     {
         return glfwUpdateGamepadMappings(string_);
     }

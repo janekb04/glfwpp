@@ -15,7 +15,7 @@ namespace glfw
 {
     namespace impl
     {
-        void errorCallback(int errorCode_, const char* what_)
+        inline void errorCallback(int errorCode_, const char* what_)
         {
             // Error handling philosophy as per http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2019/p0709r4.pdf (section 1.1)
 
@@ -51,12 +51,12 @@ namespace glfw
             }
         }
 
-        void monitorCallback(GLFWmonitor* monitor_, int eventType_)
+        inline void monitorCallback(GLFWmonitor* monitor_, int eventType_)
         {
             monitorEvent(Monitor{monitor_}, MonitorEventType{eventType_});
         }
 
-        void joystickCallback(int jid_, int eventType_)
+        inline void joystickCallback(int jid_, int eventType_)
         {
             joystickEvent(Joystick{static_cast<decltype(Joystick::Joystick1)>(jid_)}, static_cast<JoystickEvent>(eventType_));
         }
@@ -102,52 +102,52 @@ namespace glfw
         }
     };
 
-    [[nodiscard]] GlfwLibrary init();
+    [[nodiscard]] inline GlfwLibrary init();
 
-    [[nodiscard]] Version getVersion()
+    [[nodiscard]] inline Version getVersion()
     {
         Version version{};
         glfwGetVersion(&version.major, &version.minor, &version.revision);
         return version;
     }
 
-    [[nodiscard]] const char* getVersionString()
+    [[nodiscard]] inline const char* getVersionString()
     {
         return glfwGetVersionString();
     }
 
-    [[nodiscard]] bool rawMouseMotionSupported()
+    [[nodiscard]] inline bool rawMouseMotionSupported()
     {
         return glfwRawMouseMotionSupported();
     }
 
-    void setClipboardString(const char* content_)
+    inline void setClipboardString(const char* content_)
     {
         glfwSetClipboardString(nullptr, content_);
     }
 
-    [[nodiscard]] const char* getClipboardString()
+    [[nodiscard]] inline const char* getClipboardString()
     {
         return glfwGetClipboardString(nullptr);
     }
 
-    [[nodiscard]] bool extensionSupported(const char* extensionName_)
+    [[nodiscard]] inline bool extensionSupported(const char* extensionName_)
     {
         return glfwExtensionSupported(extensionName_);
     }
 
     using GlProc = GLFWglproc;
-    [[nodiscard]] GlProc getProcAddress(const char* procName_)
+    [[nodiscard]] inline GlProc getProcAddress(const char* procName_)
     {
         return glfwGetProcAddress(procName_);
     }
 
-    [[nodiscard]] bool vulkanSupported()
+    [[nodiscard]] inline bool vulkanSupported()
     {
         return glfwVulkanSupported();
     }
 
-    [[nodiscard]] std::vector<const char*> getRequiredInstanceExtensions()
+    [[nodiscard]] inline std::vector<const char*> getRequiredInstanceExtensions()
     {
         unsigned count;
         auto pExtensionNames = glfwGetRequiredInstanceExtensions(&count);
@@ -162,12 +162,12 @@ namespace glfw
     }
     using VkProc = GLFWvkproc;
 #if defined(VK_VERSION_1_0)
-    [[nodiscard]] VkProc getInstanceProcAddress(VkInstance instance, const char* procName)
+    [[nodiscard]] inline VkProc getInstanceProcAddress(VkInstance instance, const char* procName)
     {
         return glfwGetInstanceProcAddress(instance, procName);
     }
 
-    [[nodiscard]] bool getPhysicalDevicePresentationSupport(
+    [[nodiscard]] inline bool getPhysicalDevicePresentationSupport(
             VkInstance instance,
             VkPhysicalDevice device,
             uint32_t queueFamily)
@@ -177,11 +177,11 @@ namespace glfw
 #endif  // VK_VERSION_1_0
 
 #ifdef VULKAN_HPP
-    [[nodiscard]] VkProc getInstanceProcAddress(const vk::Instance& instance, const char* procName)
+    [[nodiscard]] inline VkProc getInstanceProcAddress(const vk::Instance& instance, const char* procName)
     {
         return getInstanceProcAddress(static_cast<VkInstance>(instance), procName);
     }
-    [[nodiscard]] bool getPhysicalDevicePresentationSupport(
+    [[nodiscard]] inline bool getPhysicalDevicePresentationSupport(
             const vk::Instance& instance,
             const vk::PhysicalDevice& device,
             uint32_t queueFamily)
@@ -190,22 +190,22 @@ namespace glfw
     }
 #endif  // VULKAN_HPP
 
-    [[nodiscard]] double getTime()
+    [[nodiscard]] inline double getTime()
     {
         return glfwGetTime();
     }
 
-    void setTime(double time_)
+    inline void setTime(double time_)
     {
         glfwSetTime(time_);
     }
 
-    [[nodiscard]] uint64_t getTimerValue()
+    [[nodiscard]] inline uint64_t getTimerValue()
     {
         return glfwGetTimerValue();
     }
 
-    [[nodiscard]] uint64_t getTimerFrequency()
+    [[nodiscard]] inline uint64_t getTimerFrequency()
     {
         return glfwGetTimerFrequency();
     }

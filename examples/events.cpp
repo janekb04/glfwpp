@@ -19,10 +19,10 @@ int main()
         throw std::runtime_error("Could not initialize GLEW");
     }
 
-    wnd.framebufferSizeEvent.setCallback([](int width, int height) {
+    wnd.framebufferSizeEvent.setCallback([](glfw::Window&, int width, int height) {
         glViewport(0, 0, width, height);
     });
-    wnd.keyEvent.setCallback([](glfw::KeyCode keyCode_, int scanCode_, glfw::KeyState state_, glfw::ModifierKeyBit modifiers_) {
+    wnd.keyEvent.setCallback([](glfw::Window&, glfw::KeyCode keyCode_, int scanCode_, glfw::KeyState state_, glfw::ModifierKeyBit modifiers_) {
         float val = 0.5;
         if(modifiers_ & glfw::ModifierKeyBit::Control)
         {

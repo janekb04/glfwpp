@@ -420,20 +420,20 @@ namespace glfw
         void* _userPtr;
 
     public:
-        Event<int, int> posEvent;
-        Event<int, int> sizeEvent;
-        Event<> closeEvent;
-        Event<> refreshEvent;
-        Event<bool> focusEvent;
-        Event<bool> iconifyEvent;
-        Event<bool> maximizeEvent;
-        Event<int, int> framebufferSizeEvent;
-        Event<float, float> contentScaleEvent;
+        Event<Window&, int, int> posEvent;
+        Event<Window&, int, int> sizeEvent;
+        Event<Window&> closeEvent;
+        Event<Window&> refreshEvent;
+        Event<Window&, bool> focusEvent;
+        Event<Window&, bool> iconifyEvent;
+        Event<Window&, bool> maximizeEvent;
+        Event<Window&, int, int> framebufferSizeEvent;
+        Event<Window&, float, float> contentScaleEvent;
 
     private:
-        static Window* _getPointerFromHandle(GLFWwindow* handle_)
+        static Window& _getWrapperFromHandle(GLFWwindow* handle_)
         {
-            return static_cast<Window*>(glfwGetWindowUserPointer(handle_));
+            return *static_cast<Window*>(glfwGetWindowUserPointer(handle_));
         }
         static void _setPointerFromHandle(GLFWwindow* handle_, Window* ptr_)
         {
@@ -443,74 +443,89 @@ namespace glfw
     private:
         static void _posCallback(GLFWwindow* window_, int xPos_, int yPos_)
         {
-            _getPointerFromHandle(window_)->posEvent(xPos_, yPos_);
+            Window& wrapper = _getWrapperFromHandle(window_);
+            wrapper.posEvent(wrapper, xPos_, yPos_);
         }
         static void _sizeCallback(GLFWwindow* window_, int width_, int height_)
         {
-            _getPointerFromHandle(window_)->sizeEvent(width_, height_);
+            Window& wrapper = _getWrapperFromHandle(window_);
+            wrapper.sizeEvent(wrapper, width_, height_);
         }
         static void _closeCallback(GLFWwindow* window_)
         {
-            _getPointerFromHandle(window_)->closeEvent();
+            Window& wrapper = _getWrapperFromHandle(window_);
+            wrapper.closeEvent(wrapper);
         }
         static void _refreshCallback(GLFWwindow* window_)
         {
-            _getPointerFromHandle(window_)->refreshEvent();
+            Window& wrapper = _getWrapperFromHandle(window_);
+            wrapper.refreshEvent(wrapper);
         }
         static void _focusCallback(GLFWwindow* window_, int value_)
         {
-            _getPointerFromHandle(window_)->focusEvent(value_);
+            Window& wrapper = _getWrapperFromHandle(window_);
+            wrapper.focusEvent(wrapper, value_);
         }
         static void _iconifyCallback(GLFWwindow* window_, int value_)
         {
-            _getPointerFromHandle(window_)->iconifyEvent(value_);
+            Window& wrapper = _getWrapperFromHandle(window_);
+            wrapper.iconifyEvent(wrapper, value_);
         }
         static void _maximizeCallback(GLFWwindow* window_, int value_)
         {
-            _getPointerFromHandle(window_)->maximizeEvent(value_);
+            Window& wrapper = _getWrapperFromHandle(window_);
+            wrapper.maximizeEvent(wrapper, value_);
         }
         static void _framebufferSizeCallback(GLFWwindow* window_, int width_, int height_)
         {
-            _getPointerFromHandle(window_)->framebufferSizeEvent(width_, height_);
+            Window& wrapper = _getWrapperFromHandle(window_);
+            wrapper.framebufferSizeEvent(wrapper, width_, height_);
         }
         static void _contentScaleCallback(GLFWwindow* window_, float xScale_, float yScale_)
         {
-            _getPointerFromHandle(window_)->contentScaleEvent(xScale_, yScale_);
+            Window& wrapper = _getWrapperFromHandle(window_);
+            wrapper.contentScaleEvent(wrapper, xScale_, yScale_);
         }
 
     public:
-        Event<KeyCode, int, KeyState, ModifierKeyBit> keyEvent;
-        Event<unsigned int> charEvent;
-        Event<MouseButton, MouseButtonState, ModifierKeyBit> mouseButtonEvent;
-        Event<double, double> cursorPosEvent;
-        Event<bool> cursorEnterEvent;
-        Event<double, double> scrollEvent;
-        Event<std::vector<const char*>> dropEvent;
+        Event<Window&, KeyCode, int, KeyState, ModifierKeyBit> keyEvent;
+        Event<Window&, unsigned int> charEvent;
+        Event<Window&, MouseButton, MouseButtonState, ModifierKeyBit> mouseButtonEvent;
+        Event<Window&, double, double> cursorPosEvent;
+        Event<Window&, bool> cursorEnterEvent;
+        Event<Window&, double, double> scrollEvent;
+        Event<Window&, std::vector<const char*>> dropEvent;
 
     private:
         static void _keyCallback(GLFWwindow* window_, int key_, int scanCode_, int state_, int mods_)
         {
-            _getPointerFromHandle(window_)->keyEvent(static_cast<KeyCode::EnumType>(key_), scanCode_, static_cast<KeyState>(state_), static_cast<ModifierKeyBit>(mods_));
+            Window& wrapper = _getWrapperFromHandle(window_);
+            wrapper.keyEvent(wrapper, static_cast<KeyCode::EnumType>(key_), scanCode_, static_cast<KeyState>(state_), static_cast<ModifierKeyBit>(mods_));
         }
         static void _charCallback(GLFWwindow* window_, unsigned int codePoint_)
         {
-            _getPointerFromHandle(window_)->charEvent(codePoint_);
+            Window& wrapper = _getWrapperFromHandle(window_);
+            wrapper.charEvent(wrapper, codePoint_);
         }
         static void _mouseButtonCallback(GLFWwindow* window_, int button_, int state_, int mods_)
         {
-            _getPointerFromHandle(window_)->mouseButtonEvent(static_cast<MouseButton>(button_), static_cast<MouseButtonState>(state_), static_cast<ModifierKeyBit>(mods_));
+            Window& wrapper = _getWrapperFromHandle(window_);
+            wrapper.mouseButtonEvent(wrapper, static_cast<MouseButton>(button_), static_cast<MouseButtonState>(state_), static_cast<ModifierKeyBit>(mods_));
         }
         static void _cursorPosCallback(GLFWwindow* window_, double xPos_, double yPos_)
         {
-            _getPointerFromHandle(window_)->cursorPosEvent(xPos_, yPos_);
+            Window& wrapper = _getWrapperFromHandle(window_);
+            wrapper.cursorPosEvent(wrapper, xPos_, yPos_);
         }
         static void _cursorEnterCallback(GLFWwindow* window_, int value_)
         {
-            _getPointerFromHandle(window_)->cursorEnterEvent(static_cast<bool>(value_));
+            Window& wrapper = _getWrapperFromHandle(window_);
+            wrapper.cursorEnterEvent(wrapper, static_cast<bool>(value_));
         }
         static void _scrollCallback(GLFWwindow* window_, double xOffset_, double yOffset_)
         {
-            _getPointerFromHandle(window_)->scrollEvent(xOffset_, yOffset_);
+            Window& wrapper = _getWrapperFromHandle(window_);
+            wrapper.scrollEvent(wrapper, xOffset_, yOffset_);
         }
         static void _dropCallback(GLFWwindow* window_, int count_, const char** pPaths_)
         {
@@ -522,7 +537,8 @@ namespace glfw
                 paths.emplace_back(pPaths_[i]);
             }
 
-            _getPointerFromHandle(window_)->dropEvent(paths);
+            Window& wrapper = _getWrapperFromHandle(window_);
+            wrapper.dropEvent(wrapper, paths);
         }
 
     public:
@@ -854,7 +870,7 @@ namespace glfw
         }
         [[nodiscard]] friend Window& getCurrentContext()
         {
-            return *_getPointerFromHandle(glfwGetCurrentContext());
+            return _getWrapperFromHandle(glfwGetCurrentContext());
         }
 
     public:

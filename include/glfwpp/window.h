@@ -1,9 +1,11 @@
 #ifndef GLFWPP_WINDOW_H
 #define GLFWPP_WINDOW_H
 
+#include "error.h"
 #include "event.h"
 #include "monitor.h"
 #include <GLFW/glfw3.h>
+#include <optional>
 
 namespace glfw
 {
@@ -935,10 +937,20 @@ namespace glfw
 #ifdef VULKAN_HPP
         [[nodiscard]] vk::SurfaceKHR createSurface(
                 const vk::Instance& instance,
-                const vk::AllocationCallbacks* allocator)
+                const std::optional<vk::AllocationCallbacks>& allocator = std::nullopt)
         {
             VkSurfaceKHR surface;
-            VkResult result = createSurface(instance, allocator, &surface);
+            VkResult result;
+            if(allocator)
+            {
+                VkAllocationCallbacks allocator_tmp = *allocator;
+                result = createSurface(instance, &allocator_tmp, &surface);
+            }
+            else
+            {
+                result = createSurface(instance, nullptr, &surface);
+            }
+
             if(result < 0)
             {
                 throw Error("Could not create window surface");

@@ -155,10 +155,35 @@ namespace glfw
         friend class Window;
 
     public:
+        Cursor() :
+            Cursor{nullptr}
+        {
+        }
+
         // Takes ownership
         explicit Cursor(GLFWcursor* handle_) :
             _handle{handle_}
         {
+        }
+
+        Cursor(const Cursor&) = delete;
+
+        Cursor& operator=(const Cursor&) = delete;
+
+        Cursor(Cursor&& other) noexcept :
+            _handle{std::exchange(other._handle, nullptr)}
+        {
+        }
+
+        Cursor& operator=(Cursor&& other) noexcept
+        {
+            _handle = std::exchange(other._handle, nullptr);
+            return *this;
+        }
+
+        ~Cursor()
+        {
+            glfwDestroyCursor(_handle);
         }
 
         // Retains ownership
@@ -197,11 +222,6 @@ namespace glfw
         [[nodiscard]] static Cursor createStandardCursorVerticalResize()
         {
             return Cursor{glfwCreateStandardCursor(GLFW_VRESIZE_CURSOR)};
-        }
-
-        ~Cursor()
-        {
-            glfwDestroyCursor(_handle);
         }
     };
     enum class CursorMode
@@ -350,6 +370,8 @@ namespace glfw
             _value{value_}
         {
         }
+        KeyCode(const KeyCode&) = default;
+        KeyCode& operator=(const KeyCode&) = default;
         operator EnumType() const
         {
             return _value;
@@ -542,30 +564,39 @@ namespace glfw
         }
 
     public:
+        explicit Window(nullptr_t = nullptr) :
+            _handle{nullptr},
+            _userPtr{nullptr}
+        {
+        }
+
         //Takes ownership
         explicit Window(GLFWwindow* handle_) :
             _handle{handle_},
             _userPtr{nullptr}
         {
-            _setPointerFromHandle(_handle, this);
+            if(_handle)
+            {
+                _setPointerFromHandle(_handle, this);
 
-            glfwSetWindowPosCallback(_handle, _posCallback);
-            glfwSetWindowSizeCallback(_handle, _sizeCallback);
-            glfwSetWindowCloseCallback(_handle, _closeCallback);
-            glfwSetWindowRefreshCallback(_handle, _refreshCallback);
-            glfwSetWindowFocusCallback(_handle, _focusCallback);
-            glfwSetWindowIconifyCallback(_handle, _iconifyCallback);
-            glfwSetWindowMaximizeCallback(_handle, _maximizeCallback);
-            glfwSetFramebufferSizeCallback(_handle, _framebufferSizeCallback);
-            glfwSetWindowContentScaleCallback(_handle, _contentScaleCallback);
+                glfwSetWindowPosCallback(_handle, _posCallback);
+                glfwSetWindowSizeCallback(_handle, _sizeCallback);
+                glfwSetWindowCloseCallback(_handle, _closeCallback);
+                glfwSetWindowRefreshCallback(_handle, _refreshCallback);
+                glfwSetWindowFocusCallback(_handle, _focusCallback);
+                glfwSetWindowIconifyCallback(_handle, _iconifyCallback);
+                glfwSetWindowMaximizeCallback(_handle, _maximizeCallback);
+                glfwSetFramebufferSizeCallback(_handle, _framebufferSizeCallback);
+                glfwSetWindowContentScaleCallback(_handle, _contentScaleCallback);
 
-            glfwSetKeyCallback(_handle, _keyCallback);
-            glfwSetCharCallback(_handle, _charCallback);
-            glfwSetMouseButtonCallback(_handle, _mouseButtonCallback);
-            glfwSetCursorPosCallback(_handle, _cursorPosCallback);
-            glfwSetCursorEnterCallback(_handle, _cursorEnterCallback);
-            glfwSetScrollCallback(_handle, _scrollCallback);
-            glfwSetDropCallback(_handle, _dropCallback);
+                glfwSetKeyCallback(_handle, _keyCallback);
+                glfwSetCharCallback(_handle, _charCallback);
+                glfwSetMouseButtonCallback(_handle, _mouseButtonCallback);
+                glfwSetCursorPosCallback(_handle, _cursorPosCallback);
+                glfwSetCursorEnterCallback(_handle, _cursorEnterCallback);
+                glfwSetScrollCallback(_handle, _scrollCallback);
+                glfwSetDropCallback(_handle, _dropCallback);
+            }
         }
 
         Window(int width_,
@@ -582,6 +613,38 @@ namespace glfw
         {
         }
 
+        Window(const Window&) = delete;
+
+        Window& operator=(const Window&) = delete;
+
+        Window(Window&& other) noexcept :
+            _handle{std::exchange(other._handle, nullptr)},
+            _userPtr{std::exchange(other._userPtr, nullptr)}
+        {
+            if(_handle)
+            {
+                _setPointerFromHandle(_handle, this);       
+            }
+        }
+
+        Window& operator=(Window&& other) noexcept
+        {
+            _handle = std::exchange(other._handle, nullptr);
+            _userPtr = std::exchange(other._userPtr, nullptr);
+
+            if(other._handle)
+            {
+                _setPointerFromHandle(_handle, this);
+            }
+
+            return *this;
+        }
+
+        ~Window()
+        {
+            glfwDestroyWindow(_handle);
+        }
+
         //Retains ownership
         operator GLFWwindow*() const
         {
@@ -589,13 +652,6 @@ namespace glfw
         }
 
         explicit operator bool() const = delete;
-
-        Window(const Window&) = delete;
-
-        ~Window()
-        {
-            glfwDestroyWindow(_handle);
-        }
 
         [[nodiscard]] bool shouldClose() const
         {

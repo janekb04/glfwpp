@@ -16,10 +16,19 @@ namespace glfw
         GLFWmonitor* _handle;
 
     public:
+        Monitor() :
+            Monitor{nullptr}
+        {
+        }
+
         explicit Monitor(GLFWmonitor* handle_) :
             _handle{handle_}
         {
         }
+
+        Monitor(const Monitor&) = default;
+
+        Monitor& operator=(const Monitor&) = default;
 
         operator GLFWmonitor*() const
         {

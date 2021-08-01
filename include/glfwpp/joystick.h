@@ -97,6 +97,8 @@ namespace glfw
             _id{jid_}
         {
         }
+        Joystick(const Joystick&) = default;
+        Joystick& operator=(const Joystick&) = default;
         operator EnumType() const
         {
             return _id;

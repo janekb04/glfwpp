@@ -1,6 +1,6 @@
 #include <glfwpp/glfwpp.h>
 
-template <typename T>
+template<typename T>
 void test_moveable() noexcept
 {
     // test default construction

@@ -623,7 +623,7 @@ namespace glfw
         {
             if(_handle)
             {
-                _setPointerFromHandle(_handle, this);       
+                _setPointerFromHandle(_handle, this);
             }
         }
 

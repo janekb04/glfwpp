@@ -564,7 +564,7 @@ namespace glfw
         }
 
     public:
-        explicit Window(nullptr_t = nullptr) :
+        explicit Window(std::nullptr_t = nullptr) :
             _handle{nullptr},
             _userPtr{nullptr}
         {

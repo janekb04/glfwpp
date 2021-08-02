@@ -8,7 +8,7 @@
 [![CodeFactor](https://www.codefactor.io/repository/github/janekb04/glfwpp/badge/main)](https://www.codefactor.io/repository/github/janekb04/glfwpp/overview/main)
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fjanekb04%2Fglfwpp.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fjanekb04%2Fglfwpp?ref=badge_shield)
 
-A thin modern C++17 header only wrapper for [GLFW 3.3.3](https://www.glfw.org/). From [the official GLFW website](https://www.glfw.org/):
+A thin modern C++17 header only wrapper for [GLFW 3.3.4](https://www.glfw.org/). From [the official GLFW website](https://www.glfw.org/):
 
 > GLFW is an Open Source, multi-platform library for OpenGL, OpenGL ES and Vulkan development on the desktop. It provides a simple API for creating windows, contexts and surfaces, receiving input and events.
 > GLFW is written in C and supports Windows, macOS, X11 and Wayland.

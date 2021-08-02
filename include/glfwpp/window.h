@@ -4,6 +4,7 @@
 #include "error.h"
 #include "event.h"
 #include "monitor.h"
+#include "helper.h"     // Needed for GLFWPP_ENUM_FLAGS_OPERATORS.
 #include <GLFW/glfw3.h>
 #include <optional>
 
@@ -564,7 +565,7 @@ namespace glfw
         }
 
     public:
-        explicit Window(nullptr_t = nullptr) :
+        explicit Window(std::nullptr_t = nullptr) :
             _handle{nullptr},
             _userPtr{nullptr}
         {

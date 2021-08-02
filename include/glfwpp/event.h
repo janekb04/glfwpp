@@ -1,6 +1,7 @@
 #ifndef GLFWPP_EVENT_H
 #define GLFWPP_EVENT_H
 
+#include <GLFW/glfw3.h>
 #include <functional>
 #include <list>
 

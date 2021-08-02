@@ -1,13 +1,16 @@
 #ifndef GLFWPP_WINDOW_H
 #define GLFWPP_WINDOW_H
 
+#include "error.h"
 #include "event.h"
+#include "helper.h"
 #include "monitor.h"
 #include <GLFW/glfw3.h>
+#include <optional>
 
 namespace glfw
 {
-    constexpr int dontCare = GLFW_DONT_CARE;
+    inline constexpr int dontCare = GLFW_DONT_CARE;
     enum class ClientApi
     {
         OpenGl = GLFW_OPENGL_API,
@@ -153,10 +156,35 @@ namespace glfw
         friend class Window;
 
     public:
+        Cursor() :
+            Cursor{nullptr}
+        {
+        }
+
         // Takes ownership
         explicit Cursor(GLFWcursor* handle_) :
             _handle{handle_}
         {
+        }
+
+        Cursor(const Cursor&) = delete;
+
+        Cursor& operator=(const Cursor&) = delete;
+
+        Cursor(Cursor&& other) noexcept :
+            _handle{std::exchange(other._handle, nullptr)}
+        {
+        }
+
+        Cursor& operator=(Cursor&& other) noexcept
+        {
+            _handle = std::exchange(other._handle, nullptr);
+            return *this;
+        }
+
+        ~Cursor()
+        {
+            glfwDestroyCursor(_handle);
         }
 
         // Retains ownership
@@ -195,11 +223,6 @@ namespace glfw
         [[nodiscard]] static Cursor createStandardCursorVerticalResize()
         {
             return Cursor{glfwCreateStandardCursor(GLFW_VRESIZE_CURSOR)};
-        }
-
-        ~Cursor()
-        {
-            glfwDestroyCursor(_handle);
         }
     };
     enum class CursorMode
@@ -348,6 +371,8 @@ namespace glfw
             _value{value_}
         {
         }
+        KeyCode(const KeyCode&) = default;
+        KeyCode& operator=(const KeyCode&) = default;
         operator EnumType() const
         {
             return _value;
@@ -369,8 +394,8 @@ namespace glfw
             return glfwGetKeyScancode(_value);
         }
     };
-    [[nodiscard]] const char* getKeyName(KeyCode::EnumType);
-    [[nodiscard]] const char* getKeyName(int scanCode_)
+    [[nodiscard]] inline const char* getKeyName(KeyCode::EnumType);
+    [[nodiscard]] inline const char* getKeyName(int scanCode_)
     {
         return glfwGetKeyName(KeyCode::Unknown, scanCode_);
     }
@@ -418,20 +443,20 @@ namespace glfw
         void* _userPtr;
 
     public:
-        Event<int, int> posEvent;
-        Event<int, int> sizeEvent;
-        Event<> closeEvent;
-        Event<> refreshEvent;
-        Event<bool> focusEvent;
-        Event<bool> iconifyEvent;
-        Event<bool> maximizeEvent;
-        Event<int, int> framebufferSizeEvent;
-        Event<float, float> contentScaleEvent;
+        Event<Window&, int, int> posEvent;
+        Event<Window&, int, int> sizeEvent;
+        Event<Window&> closeEvent;
+        Event<Window&> refreshEvent;
+        Event<Window&, bool> focusEvent;
+        Event<Window&, bool> iconifyEvent;
+        Event<Window&, bool> maximizeEvent;
+        Event<Window&, int, int> framebufferSizeEvent;
+        Event<Window&, float, float> contentScaleEvent;
 
     private:
-        static Window* _getPointerFromHandle(GLFWwindow* handle_)
+        static Window& _getWrapperFromHandle(GLFWwindow* handle_)
         {
-            return static_cast<Window*>(glfwGetWindowUserPointer(handle_));
+            return *static_cast<Window*>(glfwGetWindowUserPointer(handle_));
         }
         static void _setPointerFromHandle(GLFWwindow* handle_, Window* ptr_)
         {
@@ -441,74 +466,89 @@ namespace glfw
     private:
         static void _posCallback(GLFWwindow* window_, int xPos_, int yPos_)
         {
-            _getPointerFromHandle(window_)->posEvent(xPos_, yPos_);
+            Window& wrapper = _getWrapperFromHandle(window_);
+            wrapper.posEvent(wrapper, xPos_, yPos_);
         }
         static void _sizeCallback(GLFWwindow* window_, int width_, int height_)
         {
-            _getPointerFromHandle(window_)->sizeEvent(width_, height_);
+            Window& wrapper = _getWrapperFromHandle(window_);
+            wrapper.sizeEvent(wrapper, width_, height_);
         }
         static void _closeCallback(GLFWwindow* window_)
         {
-            _getPointerFromHandle(window_)->closeEvent();
+            Window& wrapper = _getWrapperFromHandle(window_);
+            wrapper.closeEvent(wrapper);
         }
         static void _refreshCallback(GLFWwindow* window_)
         {
-            _getPointerFromHandle(window_)->refreshEvent();
+            Window& wrapper = _getWrapperFromHandle(window_);
+            wrapper.refreshEvent(wrapper);
         }
         static void _focusCallback(GLFWwindow* window_, int value_)
         {
-            _getPointerFromHandle(window_)->focusEvent(value_);
+            Window& wrapper = _getWrapperFromHandle(window_);
+            wrapper.focusEvent(wrapper, value_);
         }
         static void _iconifyCallback(GLFWwindow* window_, int value_)
         {
-            _getPointerFromHandle(window_)->iconifyEvent(value_);
+            Window& wrapper = _getWrapperFromHandle(window_);
+            wrapper.iconifyEvent(wrapper, value_);
         }
         static void _maximizeCallback(GLFWwindow* window_, int value_)
         {
-            _getPointerFromHandle(window_)->maximizeEvent(value_);
+            Window& wrapper = _getWrapperFromHandle(window_);
+            wrapper.maximizeEvent(wrapper, value_);
         }
         static void _framebufferSizeCallback(GLFWwindow* window_, int width_, int height_)
         {
-            _getPointerFromHandle(window_)->framebufferSizeEvent(width_, height_);
+            Window& wrapper = _getWrapperFromHandle(window_);
+            wrapper.framebufferSizeEvent(wrapper, width_, height_);
         }
         static void _contentScaleCallback(GLFWwindow* window_, float xScale_, float yScale_)
         {
-            _getPointerFromHandle(window_)->contentScaleEvent(xScale_, yScale_);
+            Window& wrapper = _getWrapperFromHandle(window_);
+            wrapper.contentScaleEvent(wrapper, xScale_, yScale_);
         }
 
     public:
-        Event<KeyCode, int, KeyState, ModifierKeyBit> keyEvent;
-        Event<unsigned int> charEvent;
-        Event<MouseButton, MouseButtonState, ModifierKeyBit> mouseButtonEvent;
-        Event<double, double> cursorPosEvent;
-        Event<bool> cursorEnterEvent;
-        Event<double, double> scrollEvent;
-        Event<std::vector<const char*>> dropEvent;
+        Event<Window&, KeyCode, int, KeyState, ModifierKeyBit> keyEvent;
+        Event<Window&, unsigned int> charEvent;
+        Event<Window&, MouseButton, MouseButtonState, ModifierKeyBit> mouseButtonEvent;
+        Event<Window&, double, double> cursorPosEvent;
+        Event<Window&, bool> cursorEnterEvent;
+        Event<Window&, double, double> scrollEvent;
+        Event<Window&, std::vector<const char*>> dropEvent;
 
     private:
         static void _keyCallback(GLFWwindow* window_, int key_, int scanCode_, int state_, int mods_)
         {
-            _getPointerFromHandle(window_)->keyEvent(static_cast<KeyCode::EnumType>(key_), scanCode_, static_cast<KeyState>(state_), static_cast<ModifierKeyBit>(mods_));
+            Window& wrapper = _getWrapperFromHandle(window_);
+            wrapper.keyEvent(wrapper, static_cast<KeyCode::EnumType>(key_), scanCode_, static_cast<KeyState>(state_), static_cast<ModifierKeyBit>(mods_));
         }
         static void _charCallback(GLFWwindow* window_, unsigned int codePoint_)
         {
-            _getPointerFromHandle(window_)->charEvent(codePoint_);
+            Window& wrapper = _getWrapperFromHandle(window_);
+            wrapper.charEvent(wrapper, codePoint_);
         }
         static void _mouseButtonCallback(GLFWwindow* window_, int button_, int state_, int mods_)
         {
-            _getPointerFromHandle(window_)->mouseButtonEvent(static_cast<MouseButton>(button_), static_cast<MouseButtonState>(state_), static_cast<ModifierKeyBit>(mods_));
+            Window& wrapper = _getWrapperFromHandle(window_);
+            wrapper.mouseButtonEvent(wrapper, static_cast<MouseButton>(button_), static_cast<MouseButtonState>(state_), static_cast<ModifierKeyBit>(mods_));
         }
         static void _cursorPosCallback(GLFWwindow* window_, double xPos_, double yPos_)
         {
-            _getPointerFromHandle(window_)->cursorPosEvent(xPos_, yPos_);
+            Window& wrapper = _getWrapperFromHandle(window_);
+            wrapper.cursorPosEvent(wrapper, xPos_, yPos_);
         }
         static void _cursorEnterCallback(GLFWwindow* window_, int value_)
         {
-            _getPointerFromHandle(window_)->cursorEnterEvent(static_cast<bool>(value_));
+            Window& wrapper = _getWrapperFromHandle(window_);
+            wrapper.cursorEnterEvent(wrapper, static_cast<bool>(value_));
         }
         static void _scrollCallback(GLFWwindow* window_, double xOffset_, double yOffset_)
         {
-            _getPointerFromHandle(window_)->scrollEvent(xOffset_, yOffset_);
+            Window& wrapper = _getWrapperFromHandle(window_);
+            wrapper.scrollEvent(wrapper, xOffset_, yOffset_);
         }
         static void _dropCallback(GLFWwindow* window_, int count_, const char** pPaths_)
         {
@@ -520,34 +560,44 @@ namespace glfw
                 paths.emplace_back(pPaths_[i]);
             }
 
-            _getPointerFromHandle(window_)->dropEvent(paths);
+            Window& wrapper = _getWrapperFromHandle(window_);
+            wrapper.dropEvent(wrapper, paths);
         }
 
     public:
+        explicit Window(std::nullptr_t = nullptr) :
+            _handle{nullptr},
+            _userPtr{nullptr}
+        {
+        }
+
         //Takes ownership
         explicit Window(GLFWwindow* handle_) :
             _handle{handle_},
             _userPtr{nullptr}
         {
-            _setPointerFromHandle(_handle, this);
+            if(_handle)
+            {
+                _setPointerFromHandle(_handle, this);
 
-            glfwSetWindowPosCallback(_handle, _posCallback);
-            glfwSetWindowSizeCallback(_handle, _sizeCallback);
-            glfwSetWindowCloseCallback(_handle, _closeCallback);
-            glfwSetWindowRefreshCallback(_handle, _refreshCallback);
-            glfwSetWindowFocusCallback(_handle, _focusCallback);
-            glfwSetWindowIconifyCallback(_handle, _iconifyCallback);
-            glfwSetWindowMaximizeCallback(_handle, _maximizeCallback);
-            glfwSetFramebufferSizeCallback(_handle, _framebufferSizeCallback);
-            glfwSetWindowContentScaleCallback(_handle, _contentScaleCallback);
+                glfwSetWindowPosCallback(_handle, _posCallback);
+                glfwSetWindowSizeCallback(_handle, _sizeCallback);
+                glfwSetWindowCloseCallback(_handle, _closeCallback);
+                glfwSetWindowRefreshCallback(_handle, _refreshCallback);
+                glfwSetWindowFocusCallback(_handle, _focusCallback);
+                glfwSetWindowIconifyCallback(_handle, _iconifyCallback);
+                glfwSetWindowMaximizeCallback(_handle, _maximizeCallback);
+                glfwSetFramebufferSizeCallback(_handle, _framebufferSizeCallback);
+                glfwSetWindowContentScaleCallback(_handle, _contentScaleCallback);
 
-            glfwSetKeyCallback(_handle, _keyCallback);
-            glfwSetCharCallback(_handle, _charCallback);
-            glfwSetMouseButtonCallback(_handle, _mouseButtonCallback);
-            glfwSetCursorPosCallback(_handle, _cursorPosCallback);
-            glfwSetCursorEnterCallback(_handle, _cursorEnterCallback);
-            glfwSetScrollCallback(_handle, _scrollCallback);
-            glfwSetDropCallback(_handle, _dropCallback);
+                glfwSetKeyCallback(_handle, _keyCallback);
+                glfwSetCharCallback(_handle, _charCallback);
+                glfwSetMouseButtonCallback(_handle, _mouseButtonCallback);
+                glfwSetCursorPosCallback(_handle, _cursorPosCallback);
+                glfwSetCursorEnterCallback(_handle, _cursorEnterCallback);
+                glfwSetScrollCallback(_handle, _scrollCallback);
+                glfwSetDropCallback(_handle, _dropCallback);
+            }
         }
 
         Window(int width_,
@@ -564,6 +614,38 @@ namespace glfw
         {
         }
 
+        Window(const Window&) = delete;
+
+        Window& operator=(const Window&) = delete;
+
+        Window(Window&& other) noexcept :
+            _handle{std::exchange(other._handle, nullptr)},
+            _userPtr{std::exchange(other._userPtr, nullptr)}
+        {
+            if(_handle)
+            {
+                _setPointerFromHandle(_handle, this);
+            }
+        }
+
+        Window& operator=(Window&& other) noexcept
+        {
+            _handle = std::exchange(other._handle, nullptr);
+            _userPtr = std::exchange(other._userPtr, nullptr);
+
+            if(other._handle)
+            {
+                _setPointerFromHandle(_handle, this);
+            }
+
+            return *this;
+        }
+
+        ~Window()
+        {
+            glfwDestroyWindow(_handle);
+        }
+
         //Retains ownership
         operator GLFWwindow*() const
         {
@@ -571,13 +653,6 @@ namespace glfw
         }
 
         explicit operator bool() const = delete;
-
-        Window(const Window&) = delete;
-
-        ~Window()
-        {
-            glfwDestroyWindow(_handle);
-        }
 
         [[nodiscard]] bool shouldClose() const
         {
@@ -852,7 +927,7 @@ namespace glfw
         }
         [[nodiscard]] friend Window& getCurrentContext()
         {
-            return *_getPointerFromHandle(glfwGetCurrentContext());
+            return _getWrapperFromHandle(glfwGetCurrentContext());
         }
 
     public:
@@ -935,10 +1010,20 @@ namespace glfw
 #ifdef VULKAN_HPP
         [[nodiscard]] vk::SurfaceKHR createSurface(
                 const vk::Instance& instance,
-                const vk::AllocationCallbacks* allocator)
+                const std::optional<vk::AllocationCallbacks>& allocator = std::nullopt)
         {
             VkSurfaceKHR surface;
-            VkResult result = createSurface(instance, allocator, &surface);
+            VkResult result;
+            if(allocator)
+            {
+                VkAllocationCallbacks allocator_tmp = *allocator;
+                result = createSurface(instance, &allocator_tmp, &surface);
+            }
+            else
+            {
+                result = createSurface(instance, nullptr, &surface);
+            }
+
             if(result < 0)
             {
                 throw Error("Could not create window surface");
@@ -947,10 +1032,10 @@ namespace glfw
         }
 #endif  // VULKAN_HPP
     };
-    void makeContextCurrent(const Window& window_);
-    [[nodiscard]] Window& getCurrentContext();
+    inline void makeContextCurrent(const Window& window_);
+    [[nodiscard]] inline Window& getCurrentContext();
 
-    void swapInterval(int interval_)
+    inline void swapInterval(int interval_)
     {
         glfwSwapInterval(interval_);
     }

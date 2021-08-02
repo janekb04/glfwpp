@@ -97,6 +97,8 @@ namespace glfw
             _id{jid_}
         {
         }
+        Joystick(const Joystick&) = default;
+        Joystick& operator=(const Joystick&) = default;
         operator EnumType() const
         {
             return _id;
@@ -199,9 +201,9 @@ namespace glfw
         }
     };
 
-    Event<Joystick, JoystickEvent> joystickEvent;
+    inline Event<Joystick, JoystickEvent> joystickEvent;
 
-    [[nodiscard]] bool updateGamepadMappings(const char* string_)
+    [[nodiscard]] inline bool updateGamepadMappings(const char* string_)
     {
         return glfwUpdateGamepadMappings(string_);
     }

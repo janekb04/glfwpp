@@ -7,8 +7,8 @@
 
 void cleanupImgui()
 {
-    ImGui_ImplGlfw_Shutdown();
     ImGui_ImplOpenGL3_Shutdown();
+    ImGui_ImplGlfw_Shutdown();
     ImGui::DestroyContext();
 }
 
@@ -70,7 +70,7 @@ int main()
 
     initImgui(wnd);
 
-    wnd.keyEvent.setCallback([](glfw::KeyCode, int, glfw::KeyState, glfw::ModifierKeyBit) {
+    wnd.keyEvent.setCallback([](glfw::Window&, glfw::KeyCode, int, glfw::KeyState, glfw::ModifierKeyBit) {
         std::cout << "hi";
     });
 

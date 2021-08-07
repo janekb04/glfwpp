@@ -1017,18 +1017,18 @@ namespace glfw
             if(allocator)
             {
                 VkAllocationCallbacks allocator_tmp = *allocator;
-                result = createSurface(instance, &allocator_tmp, &surface);
+                result = createSurface(static_cast<VkInstance>(instance), &allocator_tmp, &surface);
             }
             else
             {
-                result = createSurface(instance, nullptr, &surface);
+                result = createSurface(static_cast<VkInstance>(instance), nullptr, &surface);
             }
 
             if(result < 0)
             {
                 throw Error("Could not create window surface");
             }
-            return surface;
+            return static_cast<vk::SurfaceKHR>(surface);
         }
 #endif  // VULKAN_HPP
     };

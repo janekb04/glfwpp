@@ -28,7 +28,9 @@ jobs:
 
     - name: Install GLFW dependencies
       if: ${{matrix.os == 'ubuntu-latest'}}
-      run: sudo apt-get -m install libxrandr-dev libxinerama-dev libx11-dev libxcursor-dev libxi-dev libxext-dev libegl1-mesa-dev
+      run: |
+        sudo apt-get update
+        sudo apt-get -m install libxrandr-dev libxinerama-dev libx11-dev libxcursor-dev libxi-dev libxext-dev libegl1-mesa-dev
 
     - name: Create Build Environment
       run: mkdir ${{runner.workspace}}/build

@@ -117,16 +117,22 @@ Here is a quick comparison of GLFW and GLFWPP. The following code creates a Open
 The functionality is split between files, as follows:
 
 -   `error.h` - things related to error handling (exception types etc.). All GLFW errors are detected by the library and thrown as exceptions. The exception type matches [the respective GLFW error code](https://www.glfw.org/docs/latest/group__errors.html).
+
 -   `glfwpp.h` - main header with, includes all other headers. Contains:
     -   [The `init` function](https://www.glfw.org/docs/latest/intro_guide.html#intro_init_init). [Initialization hints](https://www.glfw.org/docs/latest/intro_guide.html#init_hints) are passed with `glfw::InitHints`. The RAII wrapper `glfw::GlfwLibrary` takes care of calling [`glfwTerminate()`](https://www.glfw.org/docs/latest/intro_guide.html#intro_init_terminate).
     -   [Version management](https://www.glfw.org/docs/latest/intro_guide.html#intro_version).
     -   [Time input](https://www.glfw.org/docs/latest/input_guide.html#time).
     -   [Clipboard input and output](https://www.glfw.org/docs/latest/input_guide.html#clipboard).
     -   [Vulkan specific functionality](https://www.glfw.org/docs/latest/vulkan_guide.html). Compatible with both `vulkan.h` and [Vulkan-Hpp](https://github.com/KhronosGroup/Vulkan-Hpp).
+
 -   `event.h` - `glfw::Event` class used for specifying all user callbacks as well as event management functions.
+
 -   `joystick.h` - `glfw::Joystick` class and [functionality related to joystick input](https://www.glfw.org/docs/latest/input_guide.html#joystick)
+
 -   `monitor.h` - `glfw::Monitor` and other functionality related to [monitor management](https://www.glfw.org/docs/latest/monitor_guide.html).
+
 -   `window.h` - `glfw::Window` class, `glfw::Cursor` class, `glfw::KeyCode` class and other functionality related to managing [windows](https://www.glfw.org/docs/latest/window_guide.html), [window contexts](https://www.glfw.org/docs/latest/context_guide.html) and [window input](https://www.glfw.org/docs/latest/input_guide.html) (clipboard and time IO in `glfwpp.h`). [Window hints](https://www.glfw.org/docs/latest/window_guide.html#window_hints) are specified using `glfw::WindowHints`.
+
 -   `native.h` - functions for [native access](https://www.glfw.org/docs/latest/group__native.html) wrapping around `glfw3native.h`.
 
 ## Interoperability

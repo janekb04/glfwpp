@@ -27,14 +27,6 @@ void renderImgui(Func&& guiRenderFunc_)
 
     ImGui::Render();
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-
-    if(ImGui::GetIO().ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
-    {
-        glfw::Window& backupCurrentContext = glfw::getCurrentContext();
-        ImGui::UpdatePlatformWindows();
-        ImGui::RenderPlatformWindowsDefault();
-        glfw::makeContextCurrent(backupCurrentContext);
-    }
 }
 
 void initImgui(const glfw::Window& wnd)
@@ -45,11 +37,8 @@ void initImgui(const glfw::Window& wnd)
     io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
     io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;
     io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
-    io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;
 
     ImGuiStyle& style = ImGui::GetStyle();
-    style.WindowRounding = 0.0f;
-    style.Colors[ImGuiCol_WindowBg].w = 1.0f;
 
     ImGui_ImplGlfw_InitForOpenGL(wnd, true);
     ImGui_ImplOpenGL3_Init();

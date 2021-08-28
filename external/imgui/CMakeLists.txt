@@ -11,4 +11,4 @@ target_include_directories(Imgui PUBLIC
         imgui
         imgui/backends
         )
-target_link_libraries(Imgui PRIVATE glfw libglew_static)
+target_link_libraries(Imgui PUBLIC glfw)

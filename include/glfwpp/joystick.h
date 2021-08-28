@@ -7,11 +7,14 @@
 
 namespace glfw
 {
+#if GLFW_VERSION_MAJOR >= 3 && GLFW_VERSION_MINOR >= 3
     struct GamepadState
     {
         bool buttons[15];
         float axes[6];
     };
+#endif
+#if GLFW_VERSION_MAJOR >= 3 && GLFW_VERSION_MINOR >= 3
     enum class GamepadAxis
     {
         LeftX = GLFW_GAMEPAD_AXIS_LEFT_X,
@@ -22,6 +25,8 @@ namespace glfw
         RightTrigger = GLFW_GAMEPAD_AXIS_RIGHT_TRIGGER,
         MaxValue = GLFW_GAMEPAD_AXIS_LAST
     };
+#endif
+#if GLFW_VERSION_MAJOR >= 3 && GLFW_VERSION_MINOR >= 3
     enum class GamepadButton
     {
         A = GLFW_GAMEPAD_BUTTON_A,
@@ -45,6 +50,8 @@ namespace glfw
         Triangle = GLFW_GAMEPAD_BUTTON_TRIANGLE,
         MaxValue = GLFW_GAMEPAD_BUTTON_LAST
     };
+#endif
+#if GLFW_VERSION_MAJOR >= 3 && GLFW_VERSION_MINOR >= 3
     enum class JoystickHatStateBit
     {
         Centered = GLFW_HAT_CENTERED,
@@ -58,6 +65,7 @@ namespace glfw
         LeftDown = GLFW_HAT_LEFT_DOWN
     };
     GLFWPP_ENUM_FLAGS_OPERATORS(JoystickHatStateBit)
+#endif
     enum class JoystickEvent
     {
         Connected = GLFW_CONNECTED,
@@ -133,6 +141,7 @@ namespace glfw
             return buttons;
         }
 
+#if GLFW_VERSION_MAJOR >= 3 && GLFW_VERSION_MINOR >= 3
         [[nodiscard]] std::vector<JoystickHatStateBit> getHats() const
         {
             int count;
@@ -146,37 +155,49 @@ namespace glfw
             }
             return hats;
         }
+#endif
 
         [[nodiscard]] const char* getName() const
         {
             return glfwGetJoystickName(_id);
         }
 
+#if GLFW_VERSION_MAJOR >= 3 && GLFW_VERSION_MINOR >= 3
         [[nodiscard]] const char* getGuid() const
         {
             return glfwGetJoystickGUID(_id);
         }
+#endif
 
+#if GLFW_VERSION_MAJOR >= 3 && GLFW_VERSION_MINOR >= 3
         void setUserPointer(void* ptr_)
         {
             glfwSetJoystickUserPointer(_id, ptr_);
         }
+#endif
 
+#if GLFW_VERSION_MAJOR >= 3 && GLFW_VERSION_MINOR >= 3
         [[nodiscard]] void* getUserPointer() const
         {
             return glfwGetJoystickUserPointer(_id);
         }
+#endif
 
+#if GLFW_VERSION_MAJOR >= 3 && GLFW_VERSION_MINOR >= 3
         [[nodiscard]] bool isGamepad() const
         {
             return glfwJoystickIsGamepad(_id);
         }
+#endif
 
+#if GLFW_VERSION_MAJOR >= 3 && GLFW_VERSION_MINOR >= 3
         [[nodiscard]] const char* getGamepadName() const
         {
             return glfwGetGamepadName(_id);
         }
+#endif
 
+#if GLFW_VERSION_MAJOR >= 3 && GLFW_VERSION_MINOR >= 3
         [[nodiscard]] GamepadState getGamepadState() const
         {
             GLFWgamepadstate state;
@@ -199,14 +220,17 @@ namespace glfw
             }
             return result;
         }
+#endif
     };
 
     inline Event<Joystick, JoystickEvent> joystickEvent;
 
+#if GLFW_VERSION_MAJOR >= 3 && GLFW_VERSION_MINOR >= 3
     [[nodiscard]] inline bool updateGamepadMappings(const char* string_)
     {
         return glfwUpdateGamepadMappings(string_);
     }
+#endif
 }  // namespace glfw
 
 #endif  //GLFWPP_JOYSTICK_H

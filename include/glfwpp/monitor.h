@@ -64,12 +64,14 @@ namespace glfw
             return {x, y};
         }
 
+#if GLFW_VERSION_MAJOR >= 3 && GLFW_VERSION_MINOR >= 3
         [[nodiscard]] std::tuple<int, int, int, int> getWorkArea() const
         {
             int xPos, yPos, width, height;
             glfwGetMonitorWorkarea(_handle, &xPos, &yPos, &width, &height);
             return {xPos, yPos, width, height};
         }
+#endif
 
         [[nodiscard]] std::tuple<int, int> getPhysicalSize() const
         {
@@ -78,27 +80,33 @@ namespace glfw
             return {widthMillimeters, heightMillimeters};
         }
 
+#if GLFW_VERSION_MAJOR >= 3 && GLFW_VERSION_MINOR >= 3
         [[nodiscard]] std::tuple<float, float> getContentScale() const
         {
             float xScale, yScale;
             glfwGetMonitorContentScale(_handle, &xScale, &yScale);
             return {xScale, yScale};
         }
+#endif
 
         [[nodiscard]] const char* getName() const
         {
             return glfwGetMonitorName(_handle);
         }
 
+#if GLFW_VERSION_MAJOR >= 3 && GLFW_VERSION_MINOR >= 3
         void setUserPointer(void* ptr_)
         {
             glfwSetMonitorUserPointer(_handle, ptr_);
         }
+#endif
 
+#if GLFW_VERSION_MAJOR >= 3 && GLFW_VERSION_MINOR >= 3
         [[nodiscard]] void* getUserPointer() const
         {
             return glfwGetMonitorUserPointer(_handle);
         }
+#endif
 
         [[nodiscard]] std::vector<VideoMode> getVideoModes() const
         {

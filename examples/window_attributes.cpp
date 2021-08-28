@@ -31,6 +31,7 @@ int main()
         }
         switch(keyCode_)
         {
+#if GLFW_VERSION_MAJOR >= 3 && GLFW_VERSION_MINOR >= 3
             case glfw::KeyCode::F:
                 wnd.setAttribFloating(val);
                 break;
@@ -43,18 +44,23 @@ int main()
             default:
                 break;
         }
+#endif
     });
 
     while(!wnd.shouldClose())
     {
         glClear(GL_COLOR_BUFFER_BIT);
 
+#if GLFW_VERSION_MAJOR >= 3 && GLFW_VERSION_MINOR >= 3
         wnd.setOpacity((sin(glfw::getTime()) + 1.0) / 2.0);
+#endif
         wnd.setTitle(std::to_string(glfw::getTime()).c_str());
 
         if(!wnd.getAttribFocused())
         {
+#if GLFW_VERSION_MAJOR >= 3 && GLFW_VERSION_MINOR >= 3
             wnd.requestAttention();
+#endif
         }
 
         glfw::pollEvents();

@@ -5,6 +5,7 @@
 #include "event.h"
 #include "helper.h"
 #include "monitor.h"
+#include "version.h"
 #include <GLFW/glfw3.h>
 #include <optional>
 
@@ -21,7 +22,9 @@ namespace glfw
     {
         Native = GLFW_NATIVE_CONTEXT_API,
         Egl = GLFW_EGL_CONTEXT_API,
+#if GLFW_VERSION_MAJOR >= 3 && GLFW_VERSION_MINOR >= 3
         OsMesa = GLFW_OSMESA_CONTEXT_API
+#endif
     };
     enum class ContextRobustness
     {
@@ -50,10 +53,18 @@ namespace glfw
         bool autoIconify = true;
         bool floating = false;
         bool maximized = false;
+#if GLFW_VERSION_MAJOR >= 3 && GLFW_VERSION_MINOR >= 3
         bool centerCursor = true;
+#endif
+#if GLFW_VERSION_MAJOR >= 3 && GLFW_VERSION_MINOR >= 3
         bool transparentFramebuffer = false;
+#endif
+#if GLFW_VERSION_MAJOR >= 3 && GLFW_VERSION_MINOR >= 3
         bool focusOnShow = true;
+#endif
+#if GLFW_VERSION_MAJOR >= 3 && GLFW_VERSION_MINOR >= 3
         bool scaleToMonitor = false;
+#endif
 
         int redBits = 8;
         int greenBits = 8;
@@ -83,12 +94,16 @@ namespace glfw
         bool openglDebugContext = false;
         OpenGlProfile openglProfile = OpenGlProfile::Any;
 
+#if GLFW_VERSION_MAJOR >= 3 && GLFW_VERSION_MINOR >= 3
         bool cocoaRetinaFramebuffer = true;
         const char* cocoaFrameName = "";
         bool cocoaGraphicsSwitching = false;
+#endif
 
+#if GLFW_VERSION_MAJOR >= 3 && GLFW_VERSION_MINOR >= 3
         const char* x11ClassName = "";
         const char* x11InstanceName = "";
+#endif
 
         void apply() const
         {
@@ -99,10 +114,18 @@ namespace glfw
             glfwWindowHint(GLFW_AUTO_ICONIFY, autoIconify);
             glfwWindowHint(GLFW_FLOATING, floating);
             glfwWindowHint(GLFW_MAXIMIZED, maximized);
+#if GLFW_VERSION_MAJOR >= 3 && GLFW_VERSION_MINOR >= 3
             glfwWindowHint(GLFW_CENTER_CURSOR, centerCursor);
+#endif
+#if GLFW_VERSION_MAJOR >= 3 && GLFW_VERSION_MINOR >= 3
             glfwWindowHint(GLFW_TRANSPARENT_FRAMEBUFFER, transparentFramebuffer);
+#endif
+#if GLFW_VERSION_MAJOR >= 3 && GLFW_VERSION_MINOR >= 3
             glfwWindowHint(GLFW_FOCUS_ON_SHOW, focusOnShow);
+#endif
+#if GLFW_VERSION_MAJOR >= 3 && GLFW_VERSION_MINOR >= 3
             glfwWindowHint(GLFW_SCALE_TO_MONITOR, scaleToMonitor);
+#endif
 
             glfwWindowHint(GLFW_RED_BITS, redBits);
             glfwWindowHint(GLFW_GREEN_BITS, greenBits);
@@ -132,21 +155,19 @@ namespace glfw
             glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, openglDebugContext);
             glfwWindowHint(GLFW_OPENGL_PROFILE, static_cast<int>(openglProfile));
 
+#if GLFW_VERSION_MAJOR >= 3 && GLFW_VERSION_MINOR >= 3
             glfwWindowHint(GLFW_COCOA_RETINA_FRAMEBUFFER, cocoaRetinaFramebuffer);
             glfwWindowHintString(GLFW_COCOA_FRAME_NAME, cocoaFrameName);
             glfwWindowHint(GLFW_COCOA_GRAPHICS_SWITCHING, cocoaGraphicsSwitching);
+#endif
 
+#if GLFW_VERSION_MAJOR >= 3 && GLFW_VERSION_MINOR >= 3
             glfwWindowHintString(GLFW_X11_CLASS_NAME, x11ClassName);
             glfwWindowHintString(GLFW_X11_INSTANCE_NAME, x11InstanceName);
+#endif
         }
     };
     using Image = GLFWimage;
-    struct Version
-    {
-        int major;
-        int minor;
-        int revision;
-    };
 
     class Cursor
     {
@@ -389,10 +410,12 @@ namespace glfw
         {
             return glfwGetKeyName(_value, 0);
         }
+#if GLFW_VERSION_MAJOR >= 3 && GLFW_VERSION_MINOR >= 3
         [[nodiscard]] int getScanCode() const
         {
             return glfwGetKeyScancode(_value);
         }
+#endif
     };
     [[nodiscard]] inline const char* getKeyName(KeyCode::EnumType);
     [[nodiscard]] inline const char* getKeyName(int scanCode_)
@@ -405,8 +428,10 @@ namespace glfw
         Control = GLFW_MOD_CONTROL,
         Alt = GLFW_MOD_ALT,
         Super = GLFW_MOD_SUPER,
+#if GLFW_VERSION_MAJOR >= 3 && GLFW_VERSION_MINOR >= 3
         CapsLock = GLFW_MOD_CAPS_LOCK,
         NumLock = GLFW_MOD_NUM_LOCK
+#endif
     };
     GLFWPP_ENUM_FLAGS_OPERATORS(ModifierKeyBit)
     enum class MouseButton
@@ -449,9 +474,13 @@ namespace glfw
         Event<Window&> refreshEvent;
         Event<Window&, bool> focusEvent;
         Event<Window&, bool> iconifyEvent;
+#if GLFW_VERSION_MAJOR >= 3 && GLFW_VERSION_MINOR >= 3
         Event<Window&, bool> maximizeEvent;
+#endif
         Event<Window&, int, int> framebufferSizeEvent;
+#if GLFW_VERSION_MAJOR >= 3 && GLFW_VERSION_MINOR >= 3
         Event<Window&, float, float> contentScaleEvent;
+#endif
 
     private:
         static Window& _getWrapperFromHandle(GLFWwindow* handle_)
@@ -494,21 +523,25 @@ namespace glfw
             Window& wrapper = _getWrapperFromHandle(window_);
             wrapper.iconifyEvent(wrapper, value_);
         }
+#if GLFW_VERSION_MAJOR >= 3 && GLFW_VERSION_MINOR >= 3
         static void _maximizeCallback(GLFWwindow* window_, int value_)
         {
             Window& wrapper = _getWrapperFromHandle(window_);
             wrapper.maximizeEvent(wrapper, value_);
         }
+#endif
         static void _framebufferSizeCallback(GLFWwindow* window_, int width_, int height_)
         {
             Window& wrapper = _getWrapperFromHandle(window_);
             wrapper.framebufferSizeEvent(wrapper, width_, height_);
         }
+#if GLFW_VERSION_MAJOR >= 3 && GLFW_VERSION_MINOR >= 3
         static void _contentScaleCallback(GLFWwindow* window_, float xScale_, float yScale_)
         {
             Window& wrapper = _getWrapperFromHandle(window_);
             wrapper.contentScaleEvent(wrapper, xScale_, yScale_);
         }
+#endif
 
     public:
         Event<Window&, KeyCode, int, KeyState, ModifierKeyBit> keyEvent;
@@ -586,9 +619,13 @@ namespace glfw
                 glfwSetWindowRefreshCallback(_handle, _refreshCallback);
                 glfwSetWindowFocusCallback(_handle, _focusCallback);
                 glfwSetWindowIconifyCallback(_handle, _iconifyCallback);
+#if GLFW_VERSION_MAJOR >= 3 && GLFW_VERSION_MINOR >= 3
                 glfwSetWindowMaximizeCallback(_handle, _maximizeCallback);
+#endif
                 glfwSetFramebufferSizeCallback(_handle, _framebufferSizeCallback);
+#if GLFW_VERSION_MAJOR >= 3 && GLFW_VERSION_MINOR >= 3
                 glfwSetWindowContentScaleCallback(_handle, _contentScaleCallback);
+#endif
 
                 glfwSetKeyCallback(_handle, _keyCallback);
                 glfwSetCharCallback(_handle, _charCallback);
@@ -715,22 +752,28 @@ namespace glfw
             return {width, height};
         }
 
+#if GLFW_VERSION_MAJOR >= 3 && GLFW_VERSION_MINOR >= 3
         [[nodiscard]] std::tuple<float, float> getContentScale() const
         {
             float xScale, yScale;
             glfwGetWindowContentScale(_handle, &xScale, &yScale);
             return {xScale, yScale};
         }
+#endif
 
+#if GLFW_VERSION_MAJOR >= 3 && GLFW_VERSION_MINOR >= 3
         [[nodiscard]] float getOpacity() const
         {
             return glfwGetWindowOpacity(_handle);
         }
+#endif
 
+#if GLFW_VERSION_MAJOR >= 3 && GLFW_VERSION_MINOR >= 3
         void setOpacity(float opacity_)
         {
             glfwSetWindowOpacity(_handle, opacity_);
         }
+#endif
 
         void iconify()
         {
@@ -762,10 +805,12 @@ namespace glfw
             glfwFocusWindow(_handle);
         }
 
+#if GLFW_VERSION_MAJOR >= 3 && GLFW_VERSION_MINOR >= 3
         void requestAttention()
         {
             glfwRequestWindowAttention(_handle);
         }
+#endif
 
         [[nodiscard]] Monitor getMonitor() const
         {
@@ -792,10 +837,12 @@ namespace glfw
             return glfwGetWindowAttrib(_handle, GLFW_MAXIMIZED);
         }
 
+#if GLFW_VERSION_MAJOR >= 3 && GLFW_VERSION_MINOR >= 3
         [[nodiscard]] bool getAttribHovered() const
         {
             return glfwGetWindowAttrib(_handle, GLFW_HOVERED);
         }
+#endif
 
         [[nodiscard]] bool getAttribVisible() const
         {
@@ -822,15 +869,18 @@ namespace glfw
             return glfwGetWindowAttrib(_handle, GLFW_FLOATING);
         }
 
+#if GLFW_VERSION_MAJOR >= 3 && GLFW_VERSION_MINOR >= 3
         [[nodiscard]] bool getAttribTransparentFramebuffer() const
         {
             return glfwGetWindowAttrib(_handle, GLFW_TRANSPARENT_FRAMEBUFFER);
         }
-
+#endif
+#if GLFW_VERSION_MAJOR >= 3 && GLFW_VERSION_MINOR >= 3
         [[nodiscard]] bool getAttribFocusOnShow() const
         {
             return glfwGetWindowAttrib(_handle, GLFW_FOCUS_ON_SHOW);
         }
+#endif
 
         [[nodiscard]] ClientApi getAttribClientApi() const
         {
@@ -880,30 +930,40 @@ namespace glfw
             return static_cast<ContextRobustness>(glfwGetWindowAttrib(_handle, GLFW_CONTEXT_ROBUSTNESS));
         }
 
+#if GLFW_VERSION_MAJOR >= 3 && GLFW_VERSION_MINOR >= 3
         void setAttribDecorated(bool value_)
         {
             glfwSetWindowAttrib(_handle, GLFW_DECORATED, value_);
         }
+#endif
 
+#if GLFW_VERSION_MAJOR >= 3 && GLFW_VERSION_MINOR >= 3
         void setAttribResizable(bool value_)
         {
             glfwSetWindowAttrib(_handle, GLFW_RESIZABLE, value_);
         }
+#endif
 
+#if GLFW_VERSION_MAJOR >= 3 && GLFW_VERSION_MINOR >= 3
         void setAttribFloating(bool value_)
         {
             glfwSetWindowAttrib(_handle, GLFW_FLOATING, value_);
         }
+#endif
 
+#if GLFW_VERSION_MAJOR >= 3 && GLFW_VERSION_MINOR >= 3
         void setAttribAutoIconify(bool value_)
         {
             glfwSetWindowAttrib(_handle, GLFW_AUTO_ICONIFY, value_);
         }
+#endif
 
+#if GLFW_VERSION_MAJOR >= 3 && GLFW_VERSION_MINOR >= 3
         void setAttribFocusOnShow(bool value_)
         {
             glfwSetWindowAttrib(_handle, GLFW_FOCUS_ON_SHOW, value_);
         }
+#endif
 
         void setUserPointer(void* ptr_)
         {
@@ -943,14 +1003,18 @@ namespace glfw
         {
             return glfwGetInputMode(_handle, GLFW_STICKY_MOUSE_BUTTONS);
         }
+#if GLFW_VERSION_MAJOR >= 3 && GLFW_VERSION_MINOR >= 3
         [[nodiscard]] bool getInputModeLockKeyMods() const
         {
             return glfwGetInputMode(_handle, GLFW_LOCK_KEY_MODS);
         }
+#endif
+#if GLFW_VERSION_MAJOR >= 3 && GLFW_VERSION_MINOR >= 3
         [[nodiscard]] bool getInputModeRawMouseMotion() const
         {
             return glfwGetInputMode(_handle, GLFW_RAW_MOUSE_MOTION);
         }
+#endif
 
         void setInputModeCursor(CursorMode mode_)
         {
@@ -964,14 +1028,18 @@ namespace glfw
         {
             return glfwSetInputMode(_handle, GLFW_STICKY_MOUSE_BUTTONS, value_);
         }
+#if GLFW_VERSION_MAJOR >= 3 && GLFW_VERSION_MINOR >= 3
         void setInputModeLockKeyMods(bool value_)
         {
             return glfwSetInputMode(_handle, GLFW_LOCK_KEY_MODS, value_);
         }
+#endif
+#if GLFW_VERSION_MAJOR >= 3 && GLFW_VERSION_MINOR >= 3
         void setInputModeRawMouseMotion(bool value_)
         {
             return glfwSetInputMode(_handle, GLFW_RAW_MOUSE_MOTION, value_);
         }
+#endif
 
         [[nodiscard]] bool getKey(KeyCode key_) const
         {

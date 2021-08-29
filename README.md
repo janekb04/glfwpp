@@ -1,14 +1,15 @@
 # glfwpp ![logo](logo.png)
+
 [![CMake](https://github.com/janekb04/glfwpp/workflows/CMake/badge.svg)](https://github.com/janekb04/glfwpp/actions?query=workflow%3ACMake)
 [![clang-format](https://github.com/janekb04/glfwpp/workflows/clang-format/badge.svg)](https://github.com/janekb04/glfwpp/actions?query=workflow%3Aclang-format)
 [![dependabot](https://badgen.net/github/dependabot/janekb04/glfwpp?icon=dependabot&label)](https://github.com/janekb04/glfwpp/network/updates)
 [![Total alerts](https://img.shields.io/lgtm/alerts/g/janekb04/glfwpp.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/janekb04/glfwpp/alerts/)
 [![Language grade: C/C++](https://img.shields.io/lgtm/grade/cpp/g/janekb04/glfwpp.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/janekb04/glfwpp/context:cpp)
-[![Codacy Badge](https://app.codacy.com/project/badge/Grade/69102e4c9b3744eea1fdd3a5758aee91)](https://www.codacy.com/gh/janekb04/glfwpp/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=janekb04/glfwpp&amp;utm_campaign=Badge_Grade)
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/69102e4c9b3744eea1fdd3a5758aee91)](https://www.codacy.com/gh/janekb04/glfwpp/dashboard?utm_source=github.com&utm_medium=referral&utm_content=janekb04/glfwpp&utm_campaign=Badge_Grade)
 [![CodeFactor](https://www.codefactor.io/repository/github/janekb04/glfwpp/badge/main)](https://www.codefactor.io/repository/github/janekb04/glfwpp/overview/main)
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fjanekb04%2Fglfwpp.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fjanekb04%2Fglfwpp?ref=badge_shield)
 
-A thin modern C++17 header only wrapper for [GLFW 3.3.4](https://www.glfw.org/). From [the official GLFW website](https://www.glfw.org/):
+A thin modern C++17 header only wrapper for [GLFW](https://www.glfw.org/) (from version 3.2 up to the current 3.3.4). From [the official GLFW website](https://www.glfw.org/):
 
 > GLFW is an Open Source, multi-platform library for OpenGL, OpenGL ES and Vulkan development on the desktop. It provides a simple API for creating windows, contexts and surfaces, receiving input and events.
 > GLFW is written in C and supports Windows, macOS, X11 and Wayland.
@@ -17,10 +18,12 @@ A thin modern C++17 header only wrapper for [GLFW 3.3.4](https://www.glfw.org/).
 I like C++ and OOP, so when I find a C library, I immediately look for a wrapper which offers classes with RAII instead of free `create` and `destroy` functions, identifiers wrapped in `namespace`s, methods instead of free functions, scoped `enum`s instead of macros and exceptions instead of error codes. As I didn't really find a low-level thin and header-only wrapper, so I made one myself.
 
 To use, just clone the repo (recursively) and link against the target `GLFWPP` using CMake:
+
 ```cmake
 add_executable(myExecutable mySource1.cpp mySource2.cpp mySource3.cpp)
 target_link_libraries(myExecutable PRIVATE GLFWPP)
 ```
+
 Make sure to disable building the examples by setting the option `GLFWPP_BUILD_EXAMPLES` to `OFF`, if you don't want them built, as they are built by default. Also remember to install [the necessary GLFW dependencies](https://www.glfw.org/docs/latest/compile.html). You can also consult [`cmake.yml`](https://github.com/janekb04/glfwpp/blob/main/.github/workflows/cmake.yml) to see the complete installation and building process of GLFWPP, its dependencies and the examples on Ubuntu, macOS and Windows. Examples may be found in the `/examples` directory. Alternatively, just copy-paste the headers and include `glfwpp.h` (not recommended). 
 
 Note: To use functionality from `glfw3native.h`, `native.h` has to be included separately.
@@ -36,9 +39,12 @@ Note: To use functionality from `glfw3native.h`, `native.h` has to be included s
 -   Mostly very thin wrapping matching nearly exactly the original GLFW naming which makes it both easier to port and allows to use the official GLFW documentation.
 -   Performance overhead should be low, due to the thin nature of the wrapper. Note: The `glfw::Event` as mentioned above could have a little performance overhead, but it shouldn't be an issue. Another factor is the use of exceptions for error handling. However, most exception implementations have performance penalties only in the exceptional path, which, by assumption, happens rarely.
 -   Now also compatible with [Vulkan-Hpp](https://github.com/KhronosGroup/Vulkan-Hpp).
+-   Now also compatible with [Emscripten](https://emscripten.org/).
 
 ## Example
+
 Here is a quick comparison of GLFW and GLFWPP. The following code creates a OpenGL 4.6 context and clears the screen.
+
 <table>
   <tr>
     <th>
@@ -135,6 +141,8 @@ The functionality is split between files, as follows:
 
 -   `native.h` - functions for [native access](https://www.glfw.org/docs/latest/group__native.html) wrapping around `glfw3native.h`.
 
+-   `version.h` - function for querying the GLFW runtime and compile time [version](https://www.glfw.org/docs/latest/intro_guide.html#intro_version) and version string.
+
 ## Interoperability
 
 GLFWPP code and GLFW can be mixed with no issues as long as you mind these rules:
@@ -144,4 +152,5 @@ GLFWPP code and GLFW can be mixed with no issues as long as you mind these rules
 -   Where applicable, `glfw::` objects provide conversion operation to and from the underlying `GLFWxxxx*` handles. However it must be noted that the conversion to the underlying handles retains the ownership of those handles. As such, for example, you must not `glfwDestroy` them. At the same time the constructors from handles take the ownership of the given handle and as such in this case you also must not `glfwDestroy` them yourself.
 
 ## License
+
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fjanekb04%2Fglfwpp.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Fjanekb04%2Fglfwpp?ref=badge_large)

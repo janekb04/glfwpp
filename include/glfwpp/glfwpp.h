@@ -9,6 +9,7 @@
 #include "event.h"
 #include "joystick.h"
 #include "monitor.h"
+#include "version.h"
 #include "window.h"
 
 namespace glfw
@@ -26,7 +27,9 @@ namespace glfw
             assert(errorCode_ != GLFW_INVALID_VALUE);
 
             // These errors should never occur
+#if GLFW_VERSION_MAJOR >= 3 && GLFW_VERSION_MINOR >= 3
             assert(errorCode_ != GLFW_NO_ERROR);
+#endif
             assert(errorCode_ != GLFW_INVALID_ENUM);
 
             // Allocation failure must be treated separately
@@ -62,6 +65,7 @@ namespace glfw
         }
     }  // namespace impl
 
+#if GLFW_VERSION_MAJOR >= 3 && GLFW_VERSION_MINOR >= 3
     struct InitHints
     {
         bool cocoaChdirResources = true;
@@ -73,6 +77,7 @@ namespace glfw
             glfwInitHint(GLFW_COCOA_MENUBAR, cocoaMenubar);
         }
     };
+#endif
 
     struct GlfwLibrary
     {
@@ -89,7 +94,9 @@ namespace glfw
         {
             glfwSetErrorCallback(impl::errorCallback);
 
+#if GLFW_VERSION_MAJOR >= 3 && GLFW_VERSION_MINOR >= 3
             glfwInitHint(GLFW_JOYSTICK_HAT_BUTTONS, false);  // disable deprecated behavior
+#endif
             if(!glfwInit())
             {
                 throw glfw::Error("Could not initialize GLFW");
@@ -104,22 +111,12 @@ namespace glfw
 
     [[nodiscard]] inline GlfwLibrary init();
 
-    [[nodiscard]] inline Version getVersion()
-    {
-        Version version{};
-        glfwGetVersion(&version.major, &version.minor, &version.revision);
-        return version;
-    }
-
-    [[nodiscard]] inline const char* getVersionString()
-    {
-        return glfwGetVersionString();
-    }
-
+#if GLFW_VERSION_MAJOR >= 3 && GLFW_VERSION_MINOR >= 3
     [[nodiscard]] inline bool rawMouseMotionSupported()
     {
         return glfwRawMouseMotionSupported();
     }
+#endif
 
     inline void setClipboardString(const char* content_)
     {

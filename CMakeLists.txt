@@ -33,11 +33,6 @@ else()
     target_link_libraries(GLFWPP INTERFACE glfw)
 endif()
 
-#Enable exceptions if Clang-cl
-if ((${CMAKE_CXX_COMPILER_ID} STREQUAL "Clang" AND "x${CMAKE_CXX_SIMULATE_ID}" STREQUAL "xMSVC"))
-    target_compile_options(GLFWPP INTERFACE /EHs)
-endif ()
-
 #Build examples
 if (GLFWPP_BUILD_EXAMPLES)
     if (NOT (CMAKE_SYSTEM_NAME STREQUAL "Emscripten"))

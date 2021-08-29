@@ -151,7 +151,6 @@ The functionality is split between files, as follows:
 
 -   `glfwpp.h` - main header with, includes all other headers. Contains:
     -   [The `init` function](https://www.glfw.org/docs/latest/intro_guide.html#intro_init_init). [Initialization hints](https://www.glfw.org/docs/latest/intro_guide.html#init_hints) are passed with `glfw::InitHints`. The RAII wrapper `glfw::GlfwLibrary` takes care of calling [`glfwTerminate()`](https://www.glfw.org/docs/latest/intro_guide.html#intro_init_terminate).
-    -   [Version management](https://www.glfw.org/docs/latest/intro_guide.html#intro_version).
     -   [Time input](https://www.glfw.org/docs/latest/input_guide.html#time).
     -   [Clipboard input and output](https://www.glfw.org/docs/latest/input_guide.html#clipboard).
     -   [Vulkan specific functionality](https://www.glfw.org/docs/latest/vulkan_guide.html). Compatible with both `vulkan.h` and [Vulkan-Hpp](https://github.com/KhronosGroup/Vulkan-Hpp).

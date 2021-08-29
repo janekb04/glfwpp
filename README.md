@@ -9,6 +9,10 @@
 [![CodeFactor](https://www.codefactor.io/repository/github/janekb04/glfwpp/badge/main)](https://www.codefactor.io/repository/github/janekb04/glfwpp/overview/main)
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fjanekb04%2Fglfwpp.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fjanekb04%2Fglfwpp?ref=badge_shield)
 
+<p align="center">
+  <img src="https://i.stack.imgur.com/cmt94.gif">
+</p>
+
 GLFWPP or (GLFW C++ Wrapper) is a thin modern C++17 layer on top of [GLFW](https://www.glfw.org/). It supports GLFW versions from 3.2 up to the current 3.3.4. From [the official GLFW website](https://www.glfw.org/):
 
 > GLFW is an Open Source, multi-platform library for OpenGL, OpenGL ES and Vulkan development on the desktop. It provides a simple API for creating windows, contexts and surfaces, receiving input and events.
@@ -17,11 +21,32 @@ GLFWPP or (GLFW C++ Wrapper) is a thin modern C++17 layer on top of [GLFW](https
 
 I like C++ and OOP, so when I find a C library, I immediately look for a wrapper which offers classes with RAII instead of free `create` and `destroy` functions, identifiers wrapped in `namespace`s, methods instead of free functions, scoped `enum`s instead of macros and exceptions instead of error codes. As I didn't really find a low-level thin and header-only wrapper, so I made one myself.
 
-To use, just clone the repo (recursively) and link against the target `GLFWPP` using CMake:
+## Quick Start
+
+To use, just clone the repo recursively:
+
+```bash
+git clone https://github.com/janekb04/glfwpp --recurse-submodules
+```
+
+and link against the target `GLFWPP` using CMake:
 
 ```cmake
 add_executable(myExecutable mySource1.cpp mySource2.cpp mySource3.cpp)
 target_link_libraries(myExecutable PRIVATE GLFWPP)
+```
+
+Now you just have to include `glfwpp.h` and you're ready to go:
+
+```cpp
+#include <glfwpp/glfwpp.h>
+int main()
+{
+    auto GLFW = glfw::init();
+    glfw::Window window{ 640, 480, "Hello GLFWPP"};
+    while (!window.shouldClose())
+        glfw::pollEvents();
+}
 ```
 
 Make sure to disable building the examples by setting the option `GLFWPP_BUILD_EXAMPLES` to `OFF`, if you don't want them built, as they are built by default. Also remember to install [the necessary GLFW dependencies](https://www.glfw.org/docs/latest/compile.html). You can also consult [`cmake.yml`](https://github.com/janekb04/glfwpp/blob/main/.github/workflows/cmake.yml) to see the complete installation and building process of GLFWPP, its dependencies and the examples on Ubuntu, macOS and Windows. Examples may be found in the `/examples` directory. Alternatively, just copy-paste the headers and include `glfwpp.h` (not recommended). 

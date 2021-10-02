@@ -670,7 +670,7 @@ namespace glfw
             _handle = std::exchange(other._handle, nullptr);
             _userPtr = std::exchange(other._userPtr, nullptr);
 
-            if(other._handle)
+            if(_handle)
             {
                 _setPointerFromHandle(_handle, this);
             }

@@ -13,7 +13,7 @@
   <img src="https://i.stack.imgur.com/cmt94.gif">
 </p>
 
-GLFWPP or (GLFW C++ Wrapper) is a thin, modern C++17 layer on top of [GLFW](https://www.glfw.org/). It supports GLFW versions from 3.2 up to the current 3.3.4. From [the official GLFW website](https://www.glfw.org/):
+GLFWPP or (GLFW C++ Wrapper) is a thin, modern C++17 layer on top of [GLFW](https://www.glfw.org/). It supports GLFW versions from 3.2 up to the current 3.3.5. From [the official GLFW website](https://www.glfw.org/):
 
 > GLFW is an Open Source, multi-platform library for OpenGL, OpenGL ES and Vulkan development on the desktop. It provides a simple API for creating windows, contexts and surfaces, receiving input and events.
 > GLFW is written in C and supports Windows, macOS, X11 and Wayland.

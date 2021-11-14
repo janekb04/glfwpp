@@ -55,7 +55,7 @@ namespace glfw
                 _ptr = std::exchange(other._ptr, nullptr);
             }
 
-            [[nodiscard]] constexpr operator bool() const noexcept
+            [[nodiscard]] constexpr explicit operator bool() const noexcept
             {
                 return static_cast<bool>(_ptr);
             }

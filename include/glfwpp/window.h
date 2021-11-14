@@ -438,14 +438,16 @@ namespace glfw
                 // to the address `this` of its containing Window object.
                 // This is done to prevent HandleContainer from needing to have
                 // a pointer to the enclosing Window class object.
-                _setPointerFromHandle(static_cast<GLFWwindow*>(*this), reinterpret_cast<Window*>(this));
+                if(static_cast<GLFWwindow*>(*this))
+                    _setPointerFromHandle(static_cast<GLFWwindow*>(*this), reinterpret_cast<Window*>(this));
             }
 
             HandleContainer& operator=(HandleContainer&& other)
             {
                 static_cast<detail::OwningPtr<GLFWwindow>&>(*this) = std::move(other);
                 // NOTE: as above
-                _setPointerFromHandle(static_cast<GLFWwindow*>(*this), reinterpret_cast<Window*>(this));
+                if(static_cast<GLFWwindow*>(*this))
+                    _setPointerFromHandle(static_cast<GLFWwindow*>(*this), reinterpret_cast<Window*>(this));
 
                 return *this;
             }

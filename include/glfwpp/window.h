@@ -425,7 +425,31 @@ namespace glfw
     class Window
     {
     private:
-        detail::OwningPtr<GLFWwindow> _handle;
+        class HandleContainer : public detail::OwningPtr<GLFWwindow>
+        {
+        public:
+            using detail::OwningPtr<GLFWwindow>::OwningPtr;
+
+            HandleContainer(HandleContainer&& other) :
+                detail::OwningPtr<GLFWwindow>{std::move(other)}
+            {
+                // NOTE: We use the fact that _handle is the first member of
+                // class Window, which means that its address `this` is equal
+                // to the address `this` of its containing Window object.
+                // This is done to prevent HandleContainer from needing to have
+                // a pointer to the enclosing Window class object.
+                _setPointerFromHandle(static_cast<GLFWwindow*>(*this), reinterpret_cast<Window*>(this));
+            }
+
+            HandleContainer& operator=(HandleContainer&& other)
+            {
+                static_cast<detail::OwningPtr<GLFWwindow>&>(*this) = std::move(other);
+                // NOTE: as above
+                _setPointerFromHandle(static_cast<GLFWwindow*>(*this), reinterpret_cast<Window*>(this));
+
+                return *this;
+            }
+        } _handle;
         detail::OwningPtr<void> _userPtr;
 
     public:
@@ -616,28 +640,9 @@ namespace glfw
 
         Window& operator=(const Window&) = delete;
 
-        Window(Window&& other) noexcept :
-            _handle{std::exchange(other._handle, nullptr)},
-            _userPtr{std::exchange(other._userPtr, nullptr)}
-        {
-            if(_handle)
-            {
-                _setPointerFromHandle(_handle, this);
-            }
-        }
+        Window(Window&& other) noexcept = default;
 
-        Window& operator=(Window&& other) noexcept
-        {
-            _handle = std::exchange(other._handle, nullptr);
-            _userPtr = std::exchange(other._userPtr, nullptr);
-
-            if(_handle)
-            {
-                _setPointerFromHandle(_handle, this);
-            }
-
-            return *this;
-        }
+        Window& operator=(Window&& other) = default;
 
         ~Window()
         {

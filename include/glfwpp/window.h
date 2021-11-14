@@ -172,6 +172,13 @@ namespace glfw
     class Cursor : public detail::OwningPtr<GLFWcursor>
     {
     public:
+        Cursor& operator=(Cursor&& other)
+        {
+            glfwDestroyCursor(static_cast<GLFWcursor*>(*this));
+            static_cast<detail::OwningPtr<GLFWcursor>&>(*this) = std::move(other);
+            return *this;
+        }
+
         ~Cursor()
         {
             glfwDestroyCursor(static_cast<GLFWcursor*>(*this));
@@ -444,12 +451,18 @@ namespace glfw
 
             HandleContainer& operator=(HandleContainer&& other)
             {
+                glfwDestroyWindow(static_cast<GLFWwindow*>(*this));
                 static_cast<detail::OwningPtr<GLFWwindow>&>(*this) = std::move(other);
                 // NOTE: as above
                 if(static_cast<GLFWwindow*>(*this))
                     _setPointerFromHandle(static_cast<GLFWwindow*>(*this), reinterpret_cast<Window*>(this));
 
                 return *this;
+            }
+
+            ~HandleContainer()
+            {
+                glfwDestroyWindow(static_cast<GLFWwindow*>(*this));
             }
         } _handle;
         detail::OwningPtr<void> _userPtr;
@@ -645,11 +658,6 @@ namespace glfw
         Window(Window&& other) noexcept = default;
 
         Window& operator=(Window&& other) = default;
-
-        ~Window()
-        {
-            glfwDestroyWindow(_handle);
-        }
 
         //Retains ownership
         operator GLFWwindow*() const

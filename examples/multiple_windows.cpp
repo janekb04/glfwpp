@@ -1,43 +1,37 @@
 #include <glfwpp/glfwpp.h>
+#include <string>
 #include <vector>
 
-static void keyboard_callback(glfw::Window& W, glfw::KeyCode K, int, glfw::KeyState S, glfw::ModifierKeyBit)
+// based on https://github.com/janekb04/glfwpp/issues/136
+
+static void keyboard_callback(glfw::Window& wnd, glfw::KeyCode K, int, glfw::KeyState S, glfw::ModifierKeyBit)
 {
     if(K == glfw::KeyCode::Escape && S == glfw::KeyState::Release)
-        W.setShouldClose(true);
+    {
+        wnd.setShouldClose(true);
+    }
 }
 
 int main()
 {
-    std::vector<glfw::Window> DSE{};
+    std::vector<glfw::Window> v{};
 
     [[maybe_unused]] auto GLFW = glfw::init();
 
-    //DSE.reserve(10);
-
-    DSE.emplace_back(640, 480, "GLFWPP N_1");
-    DSE.back().keyEvent.setCallback(keyboard_callback);
-
-    DSE.emplace_back(640, 480, "GLFWPP N_2");
-    DSE.back().keyEvent.setCallback(keyboard_callback);
-
-    DSE.emplace_back(640, 480, "GLFWPP N_3");
-    DSE.back().keyEvent.setCallback(keyboard_callback);
-
-    while(!DSE.empty())
+    for(int windows = 0; windows < 11; ++windows)
     {
-        for(auto& W : DSE)
-        {
-            glfw::makeContextCurrent(W);
-            glfw::pollEvents();
+        v.emplace_back(640, 480, ("Window " + std::to_string(windows)).c_str());
+        v.back().keyEvent.setCallback(keyboard_callback);
+    }
 
+    while(!v.empty())
+    {
+        glfw::pollEvents();
 
-            if(W.shouldClose())
-            {
-                auto it = std::find_if(DSE.begin(), DSE.end(), [&W](const auto& cW) { return cW == W; });
-                if(it != DSE.end())
-                    DSE.erase(it);
-            }
-        }
+        v.erase(
+                std::remove_if(v.begin(), v.end(), [](const glfw::Window& wnd) {
+                    return wnd.shouldClose();
+                }),
+                v.end());
     }
 }

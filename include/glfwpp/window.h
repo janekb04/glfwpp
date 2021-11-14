@@ -172,14 +172,17 @@ namespace glfw
     class Cursor : public detail::OwningPtr<GLFWcursor>
     {
     public:
-        Cursor& operator=(Cursor&& other)
+        Cursor() noexcept = default;
+        Cursor(Cursor&&) noexcept = default;
+
+        Cursor& operator=(Cursor&& other) noexcept
         {
             glfwDestroyCursor(static_cast<GLFWcursor*>(*this));
             static_cast<detail::OwningPtr<GLFWcursor>&>(*this) = std::move(other);
             return *this;
         }
 
-        ~Cursor()
+        ~Cursor() noexcept
         {
             glfwDestroyCursor(static_cast<GLFWcursor*>(*this));
         }
@@ -437,7 +440,7 @@ namespace glfw
         public:
             using detail::OwningPtr<GLFWwindow>::OwningPtr;
 
-            HandleContainer(HandleContainer&& other) :
+            HandleContainer(HandleContainer&& other) noexcept :
                 detail::OwningPtr<GLFWwindow>{std::move(other)}
             {
                 // NOTE: We use the fact that _handle is the first member of
@@ -449,7 +452,7 @@ namespace glfw
                     _setPointerFromHandle(static_cast<GLFWwindow*>(*this), reinterpret_cast<Window*>(this));
             }
 
-            HandleContainer& operator=(HandleContainer&& other)
+            HandleContainer& operator=(HandleContainer&& other) noexcept
             {
                 glfwDestroyWindow(static_cast<GLFWwindow*>(*this));
                 static_cast<detail::OwningPtr<GLFWwindow>&>(*this) = std::move(other);
@@ -460,7 +463,7 @@ namespace glfw
                 return *this;
             }
 
-            ~HandleContainer()
+            ~HandleContainer() noexcept
             {
                 glfwDestroyWindow(static_cast<GLFWwindow*>(*this));
             }
@@ -657,7 +660,7 @@ namespace glfw
 
         Window(Window&& other) noexcept = default;
 
-        Window& operator=(Window&& other) = default;
+        Window& operator=(Window&& other) noexcept = default;
 
         //Retains ownership
         operator GLFWwindow*() const

@@ -21,6 +21,10 @@ if (NOT (CMAKE_SYSTEM_NAME STREQUAL "Emscripten"))
 	target_link_libraries(glfwpp_example_imgui_integration PRIVATE libglew_static GLFWPP Imgui)
 	target_compile_definitions(glfwpp_example_imgui_integration PRIVATE GLEW_STATIC)
 
+	add_executable(glfwpp_example_multiple_windows multiple_windows.cpp)
+	target_link_libraries(glfwpp_example_multiple_windows PRIVATE libglew_static GLFWPP)
+	target_compile_definitions(glfwpp_example_multiple_windows PRIVATE GLEW_STATIC)
+
 	add_executable(glfwpp_test_multiple_tus multiple_tus1.cpp multiple_tus2.cpp)
 	target_link_libraries(glfwpp_test_multiple_tus PRIVATE libglew_static GLFWPP)
 	target_compile_definitions(glfwpp_test_multiple_tus PRIVATE GLEW_STATIC)
@@ -34,6 +38,7 @@ if (NOT (CMAKE_SYSTEM_NAME STREQUAL "Emscripten"))
 		glfwpp_example_events
 		glfwpp_example_window_attributes
 		glfwpp_example_imgui_integration
+		glfwpp_example_multiple_windows
 		glfwpp_test_multiple_tus
 		glfwpp_test_type_traits
 	)

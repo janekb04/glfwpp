@@ -53,6 +53,7 @@ namespace glfw
             constexpr OwningPtr& operator=(OwningPtr&& other) noexcept
             {
                 _ptr = std::exchange(other._ptr, nullptr);
+                return *this;
             }
 
             [[nodiscard]] constexpr explicit operator bool() const noexcept

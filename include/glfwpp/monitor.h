@@ -54,7 +54,6 @@ namespace glfw
         {
             return Monitor{glfwGetPrimaryMonitor()};
         }
-        friend class Window;
 
     public:
         [[nodiscard]] std::tuple<int, int> getPos() const

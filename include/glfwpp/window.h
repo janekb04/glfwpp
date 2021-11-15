@@ -169,52 +169,25 @@ namespace glfw
     };
     using Image = GLFWimage;
 
-    class Cursor
+    class Cursor : public detail::OwningPtr<GLFWcursor>
     {
-    private:
-        GLFWcursor* _handle;
-
-        friend class Window;
-
     public:
-        Cursor() :
-            Cursor{nullptr}
-        {
-        }
+        using detail::OwningPtr<GLFWcursor>::OwningPtr;
 
-        // Takes ownership
-        explicit Cursor(GLFWcursor* handle_) :
-            _handle{handle_}
-        {
-        }
-
-        Cursor(const Cursor&) = delete;
-
-        Cursor& operator=(const Cursor&) = delete;
-
-        Cursor(Cursor&& other) noexcept :
-            _handle{std::exchange(other._handle, nullptr)}
-        {
-        }
+        Cursor() noexcept = default;
+        Cursor(Cursor&&) noexcept = default;
 
         Cursor& operator=(Cursor&& other) noexcept
         {
-            _handle = std::exchange(other._handle, nullptr);
+            glfwDestroyCursor(static_cast<GLFWcursor*>(*this));
+            static_cast<detail::OwningPtr<GLFWcursor>&>(*this) = std::move(other);
             return *this;
         }
 
-        ~Cursor()
+        ~Cursor() noexcept
         {
-            glfwDestroyCursor(_handle);
+            glfwDestroyCursor(static_cast<GLFWcursor*>(*this));
         }
-
-        // Retains ownership
-        explicit operator GLFWcursor*() const
-        {
-            return _handle;
-        }
-
-        explicit operator bool() const = delete;
 
     public:
         [[nodiscard]] static Cursor createCursor(const Image& image_, int xHot_, int yHot_)
@@ -464,8 +437,40 @@ namespace glfw
     class Window
     {
     private:
-        GLFWwindow* _handle;
-        void* _userPtr;
+        class HandleContainer : public detail::OwningPtr<GLFWwindow>
+        {
+        public:
+            using detail::OwningPtr<GLFWwindow>::OwningPtr;
+
+            HandleContainer(HandleContainer&& other) noexcept :
+                detail::OwningPtr<GLFWwindow>{std::move(other)}
+            {
+                // NOTE: We use the fact that _handle is the first member of
+                // class Window, which means that its address `this` is equal
+                // to the address `this` of its containing Window object.
+                // This is done to prevent HandleContainer from needing to have
+                // a pointer to the enclosing Window class object.
+                if(static_cast<GLFWwindow*>(*this))
+                    _setPointerFromHandle(static_cast<GLFWwindow*>(*this), reinterpret_cast<Window*>(this));
+            }
+
+            HandleContainer& operator=(HandleContainer&& other) noexcept
+            {
+                glfwDestroyWindow(static_cast<GLFWwindow*>(*this));
+                static_cast<detail::OwningPtr<GLFWwindow>&>(*this) = std::move(other);
+                // NOTE: as above
+                if(static_cast<GLFWwindow*>(*this))
+                    _setPointerFromHandle(static_cast<GLFWwindow*>(*this), reinterpret_cast<Window*>(this));
+
+                return *this;
+            }
+
+            ~HandleContainer() noexcept
+            {
+                glfwDestroyWindow(static_cast<GLFWwindow*>(*this));
+            }
+        } _handle;
+        detail::OwningPtr<void> _userPtr;
 
     public:
         Event<Window&, int, int> posEvent;
@@ -598,16 +603,16 @@ namespace glfw
         }
 
     public:
-        explicit Window(std::nullptr_t = nullptr) :
-            _handle{nullptr},
-            _userPtr{nullptr}
+        explicit Window() noexcept = default;
+        explicit Window(std::nullptr_t) noexcept :
+            Window{}
         {
         }
 
         //Takes ownership
         explicit Window(GLFWwindow* handle_) :
             _handle{handle_},
-            _userPtr{nullptr}
+            _userPtr{}
         {
             if(_handle)
             {
@@ -646,8 +651,8 @@ namespace glfw
                     width_,
                     height_,
                     title_,
-                    monitor_ ? monitor_->_handle : nullptr,
-                    share_ ? share_->_handle : nullptr)}
+                    monitor_ ? static_cast<GLFWmonitor*>(*monitor_) : nullptr,
+                    share_ ? static_cast<GLFWwindow*>(share_->_handle) : nullptr)}
         {
         }
 
@@ -655,33 +660,9 @@ namespace glfw
 
         Window& operator=(const Window&) = delete;
 
-        Window(Window&& other) noexcept :
-            _handle{std::exchange(other._handle, nullptr)},
-            _userPtr{std::exchange(other._userPtr, nullptr)}
-        {
-            if(_handle)
-            {
-                _setPointerFromHandle(_handle, this);
-            }
-        }
+        Window(Window&& other) noexcept = default;
 
-        Window& operator=(Window&& other) noexcept
-        {
-            _handle = std::exchange(other._handle, nullptr);
-            _userPtr = std::exchange(other._userPtr, nullptr);
-
-            if(_handle)
-            {
-                _setPointerFromHandle(_handle, this);
-            }
-
-            return *this;
-        }
-
-        ~Window()
-        {
-            glfwDestroyWindow(_handle);
-        }
+        Window& operator=(Window&& other) noexcept = default;
 
         //Retains ownership
         operator GLFWwindow*() const
@@ -819,7 +800,7 @@ namespace glfw
 
         void setMonitor(Monitor monitor_, int xPos_, int yPos_, int width_, int height_, int refreshRate_)
         {
-            glfwSetWindowMonitor(_handle, monitor_._handle, xPos_, yPos_, width_, height_, refreshRate_);
+            glfwSetWindowMonitor(_handle, static_cast<GLFWmonitor*>(monitor_), xPos_, yPos_, width_, height_, refreshRate_);
         }
 
         [[nodiscard]] bool getAttribFocused() const
@@ -1063,7 +1044,7 @@ namespace glfw
 
         void setCursor(const Cursor& cursor_)
         {
-            glfwSetCursor(_handle, cursor_._handle);
+            glfwSetCursor(_handle, static_cast<GLFWcursor*>(cursor_));
         }
 
 #if defined(VK_VERSION_1_0)

@@ -172,6 +172,8 @@ namespace glfw
     class Cursor : public detail::OwningPtr<GLFWcursor>
     {
     public:
+        using detail::OwningPtr<GLFWcursor>::OwningPtr;
+
         Cursor() noexcept = default;
         Cursor(Cursor&&) noexcept = default;
 

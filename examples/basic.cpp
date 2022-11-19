@@ -1,6 +1,8 @@
 #include <GL/glew.h>
-#include <cmath>
 #include <glfwpp/glfwpp.h>
+
+#include <cmath>
+#include <string>
 
 int main()
 {
@@ -12,7 +14,7 @@ int main()
     hints.contextVersionMinor = 6;
     hints.apply();
     // Or with C++20:
-    //glfw::WindowHints{
+    // glfw::WindowHints{
     //        .clientApi = glfw::ClientApi::OpenGl,
     //        .contextVersionMajor = 4,
     //        .contextVersionMinor = 6}
@@ -20,9 +22,12 @@ int main()
     glfw::Window wnd(800, 600, "GLFWPP basic example");
 
     glfw::makeContextCurrent(wnd);
-    if(glewInit() != GLEW_OK)
+    GLenum err = glewInit();
+    if(err != GLEW_OK)
     {
-        throw std::runtime_error("Could not initialize GLEW");
+        std::string err_string = "Could not initialize GLEW: ";
+        err_string.append(reinterpret_cast<const char*>(glewGetErrorString(err)));
+        throw std::runtime_error(err_string);
     }
 
     while(!wnd.shouldClose())

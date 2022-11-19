@@ -2,6 +2,7 @@
 #define GLFWPP_HELPER_H
 
 #include <type_traits>
+#include <utility>
 
 #define GLFWPP_ENUM_FLAGS_OPERATORS(Enum)                                                                       \
     inline std::underlying_type_t<Enum> operator~(Enum lhs)                                                     \
@@ -69,4 +70,4 @@ namespace glfw
     }  // namespace detail
 }  // namespace glfw
 
-#endif  //GLFWPP_HELPER_H
+#endif  // GLFWPP_HELPER_H

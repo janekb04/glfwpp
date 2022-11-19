@@ -5,3 +5,5 @@ out
 cmake-build*
 build
 *.DotSettings.user
+compile_commands.json
+.cache

@@ -28,7 +28,7 @@ I like C++ and OOP, so when I find a C library, I immediately look for a wrapper
 To use, just clone the repo recursively:
 
 ```powershell
-git clone https://github.com/janekb04/glfwpp --recurse-submodules
+git clone https://github.com/janekb04/glfwpp
 ```
 
 Remember to install [the necessary GLFW dependencies](https://www.glfw.org/docs/latest/compile.html), if you're on Linux. Make sure to disable building the examples by setting the option `GLFWPP_BUILD_EXAMPLES` to `OFF` using `set(GLFWPP_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)` in your `CMakeLists.txt`, if you don't want them built, as they are built by default. If you don't disable them, you will also have to install [the Vulkan SDK](https://vulkan.lunarg.com).
